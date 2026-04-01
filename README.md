@@ -9,6 +9,7 @@ A collection of Claude Code skills for various use cases. Install individual ski
 | [codebase-to-course](#codebase-to-course) | Transform any codebase into a beautiful, interactive single-page HTML course that teaches how the code works to non-technical people |
 | [codebase-to-demo](#codebase-to-demo) | Transform any codebase or automation into a polished, interactive HTML demo deck for non-technical buyers and decision-makers |
 | [excalidraw-diagram](#excalidraw-diagram) | Generate Excalidraw diagrams with JSON from natural language descriptions |
+| [frontend-slides](#frontend-slides) | Create stunning, animation-rich HTML presentations from scratch or by converting PowerPoint files |
 | [skill-builder](#skill-builder) | Create new skills, optimize existing skills, or audit skill quality following Claude Code best practices |
 
 ---
@@ -39,6 +40,12 @@ npx skills add devenkhatri/all-agent-skills-repo/codebase-to-demo
 
 ```bash
 npx skills add devenkhatri/all-agent-skills-repo/excalidraw-diagram
+```
+
+#### Frontend Slides
+
+```bash
+npx skills add devenkhatri/all-agent-skills-repo/frontend-slides
 ```
 
 #### Skill Builder
@@ -143,6 +150,35 @@ excalidraw-diagram/
 
 ---
 
+### frontend-slides
+
+Create zero-dependency, animation-rich HTML presentations that run entirely in the browser. Helps non-designers discover their aesthetic through visual exploration.
+
+**Core Principles:**
+- Zero Dependencies — Single HTML files with inline CSS/JS. No npm, no build tools
+- Show, Don't Tell — Generate visual previews, not abstract choices
+- Distinctive Design — No generic "AI slop" aesthetic
+- Viewport Fitting — Every slide MUST fit exactly within 100vh
+
+**Features:**
+- Typography with distinctive fonts
+- CSS-only animations and micro-interactions
+- Layered backgrounds with gradients and patterns
+- Responsive design with height breakpoints
+
+**Files:**
+```
+frontend-slides/
+├── SKILL.md              # Main skill instructions
+├── viewport-base.css     # Viewport fitting base styles
+├── html-template.md      # HTML structure templates
+├── animation-patterns.md # Animation examples
+├── STYLE_PRESETS.md     # Design presets
+└── scripts/             # Helper scripts
+```
+
+---
+
 ### skill-builder
 
 Guide for creating new Claude Code skills, optimizing existing skills, or auditing skill quality. Follows official Claude Code best practices.
@@ -181,6 +217,7 @@ skill-builder/
    - `/codebase-to-course` → "Turn this codebase into a course"
    - `/codebase-to-demo` → "Create a demo for this"
    - `/excalidraw-diagram` → "Draw a diagram of..."
+   - `/frontend-slides` → "Create a presentation" or "Make slides"
    - `/skill-builder` → "Help me build a skill"
 
 ---
