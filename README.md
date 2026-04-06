@@ -103,6 +103,7 @@ Transform any codebase or automation implementation into a compelling, interacti
 **Target Audience:** Non-technical buyers, business owners, executives evaluating implementations.
 
 **Output:** A single self-contained HTML file that includes:
+- **Hook slide** (Module 0) — two-line full-screen ice-breaker that opens the presentation with a punchy, specific pain statement and outcome tease
 - Before/After Toggle (visceral comparison of manual vs automated processes)
 - Clickable Architecture Map (SVG diagram with component details)
 - Sequence Diagram (step-by-step animated workflow trace)
@@ -110,8 +111,11 @@ Transform any codebase or automation implementation into a compelling, interacti
 - Integration Map (hub-and-spoke layout showing connections)
 - Tech Stack Justification cards with business reasons
 - Deployment & Scaling Notes with **calculated API costs in INR (₹) with USD toggle**
+- **Screenshots Gallery** (Module 8.5) — 3-6 real app and code screenshots captured via Playwright, embedded as base64, with lightbox and plain-language captions
 
 **Key Features:**
+- Hook ice-breaker generated from real Phase 1 analysis — specific costs, specific outcomes, not vague hype
+- Playwright-powered screenshot capture: starts the app locally, captures real UI screens and code, embeds them as base64 in the HTML
 - Web search to calculate real API execution costs based on the codebase
 - Per-API cost breakdown displayed in Indian Rupee (₹) with Indian number formatting
 - Currency toggle to switch between INR and USD views (defaults to INR)

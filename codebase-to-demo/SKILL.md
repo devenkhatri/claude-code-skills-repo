@@ -76,6 +76,7 @@ Before writing any HTML, deeply analyze the codebase to extract the business sto
 * **API & service costs** — every external API, paid service, or SaaS tool with pricing tiers (e.g., OpenAI, Anthropic, Stripe, Twilio, Supabase, Railway, etc.). Note the expected usage volume from the codebase.
 * **Failure modes** — how the system handles errors, retries, and edge cases
 * **Scale and deployment** — how it's hosted, who maintains it, what happens as volume grows
+* **App entry point** — identify how to start the app locally (`package.json` scripts, `Makefile`, README start command, `pyproject.toml` etc.) so real screenshots can be captured before building the HTML
 
 **Figure out the business context yourself.** Read the README, the workflow files, the API calls, and the config. Infer the industry and use case from the code. The demo should open with a crisp statement of what problem this solves — written for a buyer, not a developer.
 
@@ -87,6 +88,7 @@ Structure the demo as **6-9 modules** following the Pitch Arc below. Each module
 
 | Module | Buyer's question | What to show |
 |---|---|---|
+| 0 — The Hook | *[No question — this is the hook before they start asking]* | Two lines. Full-screen. Punchy opener that names their pain and teases the reveal. The audience leans in before Module 1 starts. |
 | 1 — The Problem | "Do you understand my world?" | The old way: manual, slow, error-prone. Use the Before/After Toggle to make it visceral. |
 | 2 — The Solution | "What does this actually do?" | A one-screen overview with the Integration Map — every input, output, and connection at a glance. |
 | 3 — How It Works | "Walk me through it" | The Sequence Diagram — a step-by-step animated trace of one real workflow, narrated in plain language. |
@@ -95,7 +97,17 @@ Structure the demo as **6-9 modules** following the Pitch Arc below. Each module
 | 6 — Why These Tools | "Why not just use [X]?" | Tech Stack Justification — one card per tool, with the business reason it was chosen over alternatives. |
 | 7 — Integrations | "What does it plug into?" | Integration Map detail — each connected platform with logo, what data flows in/out, and setup complexity. |
 | 8 — Going Live | "How do we actually run this?" | Deployment & Scaling Notes — hosting, maintenance, calculated API costs (INR with USD toggle), who to call when something breaks. |
+| 8.5 — See It In Action | "Is this real or just a concept?" | Screenshots gallery: 3-6 actual screenshots of the running app and codebase. Lightbox layout. Plain-language captions. Proof it's built and working. |
 | 9 — Next Steps | "What happens after I say yes?" | A clear, confident close: implementation timeline, what you need from them, and what they get. |
+
+**Hook Writing Rules (Module 0):**
+
+Module 0 is a full-screen opener — two lines, nothing else. Write them like this:
+
+- **Line 1:** A provocative stat or question that names a *specific* cost pulled from Phase 1 analysis — time lost, money wasted, error rate, or headcount. Make the audience feel the weight of the current reality. Example: *"Your team spends 3 hours every Friday copying data between systems that should talk to each other automatically."*
+- **Line 2:** A confident tease of what they're about to see — one sentence, specific outcome. Example: *"In the next 10 minutes, you'll see exactly how that's already been solved — for your business, with your data."*
+
+Both lines together must be readable in under 5 seconds. No bullets. No diagrams. No nav bar on this slide — the hook stands alone. Background: dark (`#0F1117`). Font: Bricolage Grotesque at display scale, centered, generous vertical padding. Underline the key pain phrase in Line 1 with the accent color.
 
 Not every implementation needs all 9. A simple two-step automation might only need 5-6 modules. Use judgment — every module must earn its place by answering a real buyer question.
 
@@ -107,8 +119,9 @@ Generate a single HTML file with embedded CSS and JavaScript. The file must be c
 
 **Build order:**
 
-1. **Foundation first** — HTML shell, complete CSS, navigation bar with module titles (not numbers — use the question the module answers, e.g., "How It Works"), scroll-snap behavior, keyboard navigation.
-2. **One module at a time** — Build Module 1, verify it looks right, then Module 2. Never try to write all modules in one pass.
+0. **Screenshots first** — Before writing any HTML, attempt to capture real screenshots using Playwright browser tools (see Interactive Element 8). Start the app, navigate to key screens, capture and base64-encode 3-6 images. Store them as variables for embedding later. If the app can't be started, note which placeholder slots to leave.
+1. **Foundation first** — HTML shell, complete CSS, navigation bar with module titles (not numbers — use the question the module answers, e.g., "How It Works"), scroll-snap behavior, keyboard navigation. Module order: Hook → Problem → Solution → How It Works → Architecture → What Could Break → Why These Tools → Integrations → Going Live → Screenshots → Next Steps.
+2. **One module at a time** — Build Module 0 (Hook) first, verify it looks right, then Module 1. Never try to write all modules in one pass.
 3. **Interactive elements pass** — Add the Clickable Architecture Map, Sequence Diagram, Before/After Toggle, and "What Would Break" Explorer after the content scaffold is in place.
 4. **Polish pass** — Transitions, mobile responsiveness, visual consistency, animation timing.
 
@@ -124,6 +137,10 @@ Generate a single HTML file with embedded CSS and JavaScript. The file must be c
 ### Phase 4: Review and Deliver
 
 After generating the HTML file, open it in the browser. Walk through each module and confirm the business narrative is coherent end-to-end. Ask: "Does this answer the buyer's questions in the right order?"
+
+Also verify:
+- **The Hook (Module 0):** Read the two lines aloud. Do they land in under 5 seconds? Does Line 1 name a specific cost? Does Line 2 create genuine anticipation? If not, rewrite.
+- **Screenshots (Module 8.5):** Are all images loading? Are captions in plain buyer language? Does the lightbox open and close correctly with both click and ESC?
 
 ---
 
@@ -310,6 +327,81 @@ If disconnected: Queued until reconnected
 - If relevant: a data retention and backup summary
 
 **Tone:** Calm and reassuring. The buyer should feel like they're buying a managed service, not inheriting a DIY project.
+
+### 8. Screenshots Gallery
+
+**Purpose:** Prove the implementation is real and working — not just a concept deck. Show the buyer what they'd actually see if they opened the app today.
+
+**Implementation:**
+
+**Step 1 — Capture screenshots before writing HTML.**
+
+Try to capture real screenshots using Playwright browser tools:
+
+1. Read the project's `package.json`, `Makefile`, or README to find the start command
+2. Launch the app locally (e.g., `npm run dev`, `python app.py`, `uvicorn main:app`)
+3. Use `mcp__plugin_playwright_playwright__browser_navigate` to open the running app
+4. Use `mcp__plugin_playwright_playwright__browser_take_screenshot` to capture 2-4 app UI screens (landing page, main dashboard, a key workflow result, a data output view)
+5. For code screenshots: navigate to a key source file and capture it rendered with syntax highlighting (open in a browser-based viewer or the IDE)
+6. Encode each screenshot as a base64 data URI for embedding directly in the HTML `<img src="data:image/png;base64,...">`
+
+**Fallback:** If Playwright is unavailable or the app cannot be started, build placeholder cards — a styled `<div>` per screenshot slot labelled *"Screenshot [N]: [describe what to capture here]"* — and add a comment in the HTML instructing the user to replace them.
+
+**Target: 3-6 screenshots.** Suggested breakdown:
+- 2-3 app UI screens (what the buyer would actually see and interact with)
+- 1-2 code/architecture screenshots as proof-of-craft (the main workflow file, syntax highlighted)
+
+**Exception to the "No Code" rule:** This module is the one place where a screenshot of code is appropriate — it signals craftsmanship without asking the buyer to read code. Caption code screenshots as: *"Under the hood: the automation logic, built for reliability."*
+
+**Step 2 — Build the gallery module.**
+
+```html
+<!-- Gallery structure pattern -->
+<section class="module screenshots-gallery">
+  <h2 class="module-headline">See It In Action</h2>
+  <p class="module-subhead">Real screens from the live implementation — not mockups.</p>
+  <div class="gallery-grid">
+    <div class="gallery-card" data-lightbox="1">
+      <img src="data:image/png;base64,..." alt="The main dashboard after a lead is processed" loading="lazy">
+      <p class="gallery-caption">The dashboard updates the moment a new lead comes in — no refresh needed.</p>
+    </div>
+    <!-- repeat for each screenshot -->
+  </div>
+
+  <!-- Lightbox overlay -->
+  <div class="lightbox" id="lightbox" hidden>
+    <button class="lightbox-close" aria-label="Close">✕</button>
+    <img class="lightbox-img" src="" alt="">
+    <p class="lightbox-caption"></p>
+  </div>
+</section>
+```
+
+**Gallery CSS rules:**
+- Grid: `display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem`
+- Cards: `border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-md); cursor: zoom-in`
+- Images: `width: 100%; aspect-ratio: 16/9; object-fit: cover`
+- Captions: DM Sans, 14px, muted color, padding 12px
+
+**Lightbox JavaScript:**
+```javascript
+// Lightbox handler
+document.querySelectorAll('.gallery-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const img = card.querySelector('img');
+    const caption = card.querySelector('.gallery-caption').textContent;
+    document.getElementById('lightbox').removeAttribute('hidden');
+    document.querySelector('.lightbox-img').src = img.src;
+    document.querySelector('.lightbox-caption').textContent = caption;
+  });
+});
+document.querySelector('.lightbox-close').addEventListener('click', () => {
+  document.getElementById('lightbox').setAttribute('hidden', '');
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.getElementById('lightbox').setAttribute('hidden', '');
+});
+```
 
 ---
 
