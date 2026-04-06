@@ -313,6 +313,99 @@ After generating all SVG slides, **save each slide to the current directory**.
 
 ---
 
+## Caption & Hashtag Generation
+
+After generating and saving all SVG slides, create a caption with hashtags and save it to a `.md` file.
+
+### Caption Rules
+
+**Line 1 - The Hook (under 8 words):**
+- Must be strong and compelling
+- Under 8 words to avoid mobile truncation
+- Create curiosity or promise value
+- Examples:
+  - "5 AI Tools That Changed Everything"
+  - "Stop Wasting Time on This"
+  - "The Secret to 10x Growth"
+
+**Line 2 - The Re-Hook:**
+- Punchy line to keep them reading
+- Add context or urgency
+- Examples:
+  - "Here's what actually works in 2026..."
+  - "Your competitors are already using these."
+  - "Save this for later!"
+
+**Body (optional 1-2 lines):**
+- Brief context about the carousel
+- Keep it concise
+
+### Hashtag Rules
+
+**3-5 relevant, specific hashtags:**
+- Include niche-specific tags
+- Industry-relevant tags
+- Action-oriented tags
+- Examples: #Drupal, #Automation, #SaaS, #DevOps, #DigitalTransformation, #ContentCreation, #MarketingTips
+
+**Avoid:**
+- Generic hashtags (#love, #instagood)
+- Too many hashtags (max 5)
+- Unrelated hashtags
+
+### Caption Format
+
+```
+{hook line}
+{re-hook line}
+
+{optional body}
+
+{hashtag1} {hashtag2} {hashtag3} {hashtag4} {hashtag5}
+```
+
+### File Saving
+
+**Save caption to a separate folder:**
+- Create a folder named `carousel-output` in the current directory
+- Save SVG files to `carousel-output/slides/`
+- Save caption to `carousel-output/caption.md`
+
+**Folder structure:**
+```
+carousel-output/
+├── slides/
+│   ├── {topic}-slide-1.svg
+│   ├── {topic}-slide-2.svg
+│   └── ...
+└── caption.md
+```
+
+**caption.md content:**
+```markdown
+# Carousel Caption
+
+## Hook (Line 1 - under 8 words):
+[Your compelling hook here]
+
+## Re-Hook (Line 2):
+[Your punchy second line]
+
+## Body (Optional):
+[Optional brief context]
+
+## Hashtags:
+#tag1 #tag2 #tag3 #tag4 #tag5
+
+---
+
+## Full Caption (Copy-Paste Ready):
+
+[Full caption with line breaks]
+```
+
+---
+
 ## Quality Control Checklist
 
 Before finalizing, verify:
@@ -362,3 +455,4 @@ Always optimize for:
 - Strong branding consistency
 - Polished SVG output only
 - **Save all SVG files to the current directory**
+- **Generate caption with hashtags and save to carousel-output/caption.md**
