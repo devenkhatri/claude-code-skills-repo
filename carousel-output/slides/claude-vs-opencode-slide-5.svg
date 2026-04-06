@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 1080 1350">
+  <defs>
+    <linearGradient id="bg5" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f0f23"/>
+      <stop offset="100%" style="stop-color:#1a1a2e"/>
+    </linearGradient>
+    <linearGradient id="gradientPurple" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#6366f1"/>
+      <stop offset="100%" style="stop-color:#a855f7"/>
+    </linearGradient>
+    <linearGradient id="gradientCyan" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#22d3ee"/>
+      <stop offset="100%" style="stop-color:#06b6d4"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1350" fill="url(#bg5)"/>
+  <text x="540" y="140" font-family="Arial Black, sans-serif" font-size="52" font-weight="900" fill="#ffffff" text-anchor="middle">THE VERDICT</text>
+  <rect x="290" y="175" width="500" height="4" rx="2" fill="url(#gradientPurple)"/>
+  <rect x="140" y="250" width="800" height="280" rx="24" fill="#1e293b" stroke="url(#gradientPurple)" stroke-width="2"/>
+  <text x="540" y="320" font-family="Arial Black, sans-serif" font-size="36" fill="#ffffff" text-anchor="middle">BOTH ARE EXCELLENT</text>
+  <text x="540" y="380" font-family="Arial, sans-serif" font-size="26" fill="#e2e8f0" text-anchor="middle">Claude Code = Power + Enterprise</text>
+  <text x="540" y="430" font-family="Arial, sans-serif" font-size="26" fill="#e2e8f0" text-anchor="middle">OpenCode = Flexibility + Open Source</text>
+  <text x="540" y="510" font-family="Arial, sans-serif" font-size="24" fill="#94a3b8" text-anchor="middle">Choose based on your workflow, not brand loyalty.</text>
+  <rect x="140" y="560" width="800" height="280" rx="24" fill="#1e293b" stroke="url(#gradientCyan)" stroke-width="2"/>
+  <text x="540" y="630" font-family="Arial Black, sans-serif" font-size="36" fill="#ffffff" text-anchor="middle">THE REAL WINNER?</text>
+  <text x="540" y="700" font-family="Arial, sans-serif" font-size="26" fill="#e2e8f0" text-anchor="middle">You get better at coding.</text>
+  <text x="540" y="760" font-family="Arial, sans-serif" font-size="26" fill="#e2e8f0" text-anchor="middle">Both tools amplify your skills.</text>
+  <text x="540" y="820" font-family="Arial, sans-serif" font-size="24" fill="#94a3b8" text-anchor="middle">That's the point.</text>
+  <text x="540" y="1200" font-family="Arial, sans-serif" font-size="24" fill="#64748b" text-anchor="middle">@devengoratela</text>
+</svg>

@@ -366,14 +366,14 @@ After generating and saving all SVG slides, create a caption with hashtags and s
 
 ### File Saving
 
-**Save caption to a separate folder:**
-- Create a folder named `carousel-output` in the current directory
-- Save SVG files to `carousel-output/slides/`
-- Save caption to `carousel-output/caption.md`
+**Save to a date-wise folder:**
+- Create a folder with format `YYYYMMDD-HHMM` (e.g., `20260406-1430`) in the current directory
+- Save SVG files to the slides subfolder
+- Save caption to caption.md in the same folder
 
 **Folder structure:**
 ```
-carousel-output/
+20260406-1430/
 ├── slides/
 │   ├── {topic}-slide-1.svg
 │   ├── {topic}-slide-2.svg
@@ -479,5 +479,5 @@ Always optimize for:
 - Useful concise information
 - Strong branding consistency
 - Polished SVG output only
-- **Save all SVG files to the current directory**
-- **Generate caption with hashtags and save to carousel-output/caption.md**
+- **Save all SVG files to date-wise folder (YYYYMMDD-HHMM)**
+- **Generate caption with hashtags and save to {date}/caption.md**

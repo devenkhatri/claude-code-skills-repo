@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 1080 1350">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0D0D0D"/>
+      <stop offset="100%" style="stop-color:#1A1A2E"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1350" fill="url(#bg)"/>
+  <rect x="0" y="0" width="1080" height="8" fill="#FF6B35"/>
+  
+  <text x="540" y="160" text-anchor="middle" font-family="SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif" font-size="42" font-weight="700" fill="#888888">
+    THE PROBLEM WITH
+  </text>
+  <text x="540" y="220" text-anchor="middle" font-family="SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif" font-size="56" font-weight="900" fill="#FF6B35">
+    TRADITIONAL RAG
+  </text>
+  
+  <rect x="60" y="320" width="960" height="180" rx="20" fill="#1E1E2E"/>
+  <text x="540" y="370" text-anchor="middle" font-family="SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif" font-size="32" font-weight="700" fill="#FFFFFF">
+    "You upload files → retrieve chunks → LLM answers"
+  </text>
+  <text x="540" y="420" text-anchor="middle" font-family="SF Pro Text, -apple-system, BlinkMacSystemFont, sans-serif" font-size="24" fill="#888888">
+    Every question = rediscover knowledge from scratch
+  </text>
+  
+  <text x="540" y="600" text-anchor="middle" font-family="SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif" font-size="32" font-weight="700" fill="#FFFFFF">
+    ❌ No accumulation
+  </text>
+  <text x="540" y="660" text-anchor="middle" font-family="SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif" font-size="32" font-weight="700" fill="#FFFFFF">
+    ❌ No synthesis across docs
+  </text>
+  <text x="540" y="720" text-anchor="middle" font-family="SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif" font-size="32" font-weight="700" fill="#FFFFFF">
+    ❌ Nothing gets built up over time
+  </text>
+  
+  <text x="540" y="850" text-anchor="middle" font-family="SF Pro Text, -apple-system, BlinkMacSystemFont, sans-serif" font-size="26" fill="#888888">
+    Ask a subtle question requiring 5 docs?
+  </text>
+  <text x="540" y="900" text-anchor="middle" font-family="SF Pro Text, -apple-system, BlinkMacSystemFont, sans-serif" font-size="28" font-weight="600" fill="#FFFFFF">
+    The LLM has to piece it together every time
+  </text>
+</svg>
