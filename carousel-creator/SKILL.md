@@ -412,6 +412,7 @@ Before finalizing, verify:
 - [ ] Output is SVG only (no HTML)
 - [ ] Each slide is 1080×1350 (4:5 ratio)
 - [ ] Minimum 5 slides included
+- [ ] **SVG files are valid with no errors** (check for missing tags, unclosed elements, invalid attributes)
 - [ ] Text is readable on mobile
 - [ ] Design is clean and premium
 - [ ] Branding integrated if provided
@@ -420,6 +421,30 @@ Before finalizing, verify:
 - [ ] Slides are consistent
 - [ ] First slide is powerful
 - [ ] Final slide is action-oriented
+
+---
+
+## SVG Validation
+
+After generating each SVG, verify it has no errors:
+
+**Check for common SVG errors:**
+- Missing or unclosed `<svg>` tag
+- Unclosed tags (e.g., `</rect>`, `</text>` missing)
+- Invalid attribute values
+- Missing required attributes (width, height, viewBox)
+- Malformed CSS within `<style>` tags
+
+**Validation method:**
+1. Open each SVG in a browser to verify it renders
+2. Check for console errors
+3. Verify all tags are properly closed
+4. Confirm canvas size matches 1080x1350
+
+**If errors found:**
+- Fix the SVG code immediately
+- Re-save the corrected file
+- Verify the fix by re-opening in browser
 
 ---
 
