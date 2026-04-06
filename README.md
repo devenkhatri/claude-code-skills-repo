@@ -8,6 +8,7 @@ A collection of Claude Code skills for various use cases. Install individual ski
 |-------|-------------|
 | [codebase-to-course](#codebase-to-course) | Transform any codebase into a beautiful, interactive single-page HTML course that teaches how the code works to non-technical people |
 | [codebase-to-demo](#codebase-to-demo) | Transform any codebase or automation into a polished, interactive HTML demo deck for non-technical buyers and decision-makers |
+| [carousel-creator](#carousel-creator) | Create premium Instagram and LinkedIn carousel posts as SVG slides with swipe-worthy design |
 | [excalidraw-diagram](#excalidraw-diagram) | Generate Excalidraw diagrams with JSON from natural language descriptions |
 | [frontend-slides](#frontend-slides) | Create stunning, animation-rich HTML presentations from scratch or by converting PowerPoint files |
 | [skill-builder](#skill-builder) | Create new skills, optimize existing skills, or audit skill quality following Claude Code best practices |
@@ -34,6 +35,12 @@ npx skills add devenkhatri/all-agent-skills-repo/codebase-to-course
 
 ```bash
 npx skills add devenkhatri/all-agent-skills-repo/codebase-to-demo
+```
+
+#### Carousel Creator
+
+```bash
+npx skills add devenkhatri/all-agent-skills-repo/carousel-creator
 ```
 
 #### Excalidraw Diagram
@@ -132,7 +139,50 @@ codebase-to-demo/
 
 ---
 
-### excalidraw-diagram
+### carousel-creator
+
+Create premium, polished Instagram and LinkedIn carousel posts as individual SVG slides. Generate swipe-worthy, visually striking carousels that feel designed by a top-tier social media agency.
+
+**Target Audience:** Content creators, marketers, business owners, personal brands.
+
+**Output:** Individual SVG slides optimized for Instagram/LinkedIn:
+- Aspect Ratio: 4:5
+- Canvas Size: 1080 × 1350 px
+- Minimum 5 slides, ideal 5-10 slides
+- Fully renderable, mobile-readable SVG code
+
+**Key Features:**
+- Strategic content flow: Hook → Context → Value → Breakdown → Summary → CTA
+- Strong first slide (stops scroll, creates curiosity)
+- Clean typography with visual hierarchy
+- Brand integration support (colors, logo, handle)
+- CTA always includes "Follow @devengoratela for more"
+- Consistent design across all slides (one cohesive system)
+- SVG output only (no HTML/CSS/JS)
+
+**Content Strategy:**
+- Hook slide: Bold, premium, curiosity-driven
+- Context slide: Why it matters to the audience
+- Main value slides: Core content delivery
+- Breakdown slides: Tips, steps, frameworks
+- Summary slide: Key takeaways
+- CTA slide: Follow, save, share
+
+**Trigger Phrases:**
+- "Create a carousel about..."
+- "Make an Instagram carousel for..."
+- "Design a carousel for LinkedIn"
+- "Create swipe-worthy content"
+- "Make a carousel post"
+
+**Files:**
+```
+carousel-creator/
+├── SKILL.md    # Main skill instructions
+└── README.md   # Documentation
+```
+
+---
 
 Generate Excalidraw diagrams using JSON from natural language descriptions. Default for all diagram requests.
 
@@ -223,6 +273,7 @@ skill-builder/
 2. Use a skill by typing its name or trigger phrase:
    - `/codebase-to-course` → "Turn this codebase into a course"
    - `/codebase-to-demo` → "Create a demo for this"
+   - `/carousel-creator` → "Create a carousel about..."
    - `/excalidraw-diagram` → "Draw a diagram of..."
    - `/frontend-slides` → "Create a presentation" or "Make slides"
    - `/skill-builder` → "Help me build a skill"
