@@ -1,0 +1,1657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Agent Skills — Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400;1,9..40,500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-bg: #FAF7F2;
+      --color-bg-warm: #F5F0E8;
+      --color-bg-code: #1E1E2E;
+      --color-text: #2C2A28;
+      --color-text-secondary: #6B6560;
+      --color-text-muted: #9E9790;
+      --color-border: #E5DFD6;
+      --color-border-light: #EEEBE5;
+      --color-surface: #FFFFFF;
+      --color-surface-warm: #FDF9F3;
+      --color-accent: #2A7B9B;
+      --color-accent-hover: #236A87;
+      --color-accent-light: #E4F2F7;
+      --color-accent-muted: #5A9DB8;
+      --color-success: #2D8B55;
+      --color-success-light: #E8F5EE;
+      --color-error: #C93B3B;
+      --color-error-light: #FDE8E8;
+      --color-info: #2A7B9B;
+      --color-info-light: #E4F2F7;
+      --font-display: 'Bricolage Grotesque', Georgia, serif;
+      --font-body: 'DM Sans', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+      --text-xs: 0.75rem;
+      --text-sm: 0.875rem;
+      --text-base: 1rem;
+      --text-lg: 1.125rem;
+      --text-xl: 1.25rem;
+      --text-2xl: 1.5rem;
+      --text-3xl: 1.875rem;
+      --text-4xl: 2.25rem;
+      --text-5xl: 3rem;
+      --text-6xl: 3.75rem;
+      --leading-tight: 1.15;
+      --leading-snug: 1.3;
+      --leading-normal: 1.6;
+      --leading-loose: 1.8;
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-5: 1.25rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-10: 2.5rem;
+      --space-12: 3rem;
+      --space-16: 4rem;
+      --space-20: 5rem;
+      --space-24: 6rem;
+      --content-width: 800px;
+      --content-width-wide: 1000px;
+      --nav-height: 56px;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-full: 9999px;
+      --shadow-sm: 0 1px 2px rgba(44, 42, 40, 0.05);
+      --shadow-md: 0 4px 12px rgba(44, 42, 40, 0.08);
+      --shadow-lg: 0 8px 24px rgba(44, 42, 40, 0.1);
+      --shadow-xl: 0 16px 48px rgba(44, 42, 40, 0.12);
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+      --duration-fast: 150ms;
+      --duration-normal: 300ms;
+      --duration-slow: 500ms;
+      --stagger-delay: 120ms;
+      --color-actor-1: #2A7B9B;
+      --color-actor-2: #D4A843;
+      --color-actor-3: #7B6DAA;
+      --color-actor-4: #2D8B55;
+      --color-actor-5: #D94F30;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-snap-type: y proximity;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: var(--leading-normal);
+      color: var(--color-text);
+      background: var(--color-bg);
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb {
+      background: var(--color-border);
+      border-radius: var(--radius-full);
+    }
+
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--nav-height);
+      background: #0F1117;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      padding: 0 var(--space-6);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .nav-title {
+      color: white;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: var(--text-lg);
+    }
+    .nav-links {
+      display: flex;
+      gap: var(--space-6);
+    }
+    .nav-link {
+      color: var(--color-text-muted);
+      text-decoration: none;
+      font-size: var(--text-sm);
+      transition: color var(--duration-fast) var(--ease-out);
+      cursor: pointer;
+    }
+    .nav-link:hover, .nav-link.active { color: white; }
+
+    .progress-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 2px;
+      background: var(--color-accent);
+      width: 0%;
+      transition: width var(--duration-fast) var(--ease-out);
+    }
+
+    .module {
+      min-height: 100dvh;
+      scroll-snap-align: start;
+      padding: var(--space-16) var(--space-6);
+      padding-top: calc(var(--nav-height) + var(--space-12));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .module:nth-child(odd) { background: var(--color-bg); }
+    .module:nth-child(even) { background: var(--color-bg-warm); }
+
+    .module-content {
+      max-width: var(--content-width-wide);
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .module-header {
+      text-align: center;
+      margin-bottom: var(--space-12);
+    }
+    .module-number {
+      display: block;
+      font-family: var(--font-display);
+      font-size: var(--text-6xl);
+      font-weight: 800;
+      color: var(--color-accent);
+      opacity: 0.15;
+      line-height: 1;
+      margin-bottom: var(--space-4);
+    }
+    .module-title {
+      font-family: var(--font-display);
+      font-size: var(--text-4xl);
+      font-weight: 700;
+      line-height: var(--leading-tight);
+      margin-bottom: var(--space-4);
+    }
+    .module-subtitle {
+      font-size: var(--text-lg);
+      color: var(--color-text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .animate-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity var(--duration-slow) var(--ease-out),
+                  transform var(--duration-slow) var(--ease-out);
+    }
+    .animate-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .stagger-children > .animate-in {
+      transition-delay: calc(var(--stagger-index, 0) * var(--stagger-delay));
+    }
+
+    .hero {
+      text-align: center;
+      padding: var(--space-8) 0;
+    }
+    .hero-badge {
+      display: inline-block;
+      padding: var(--space-2) var(--space-4);
+      background: var(--color-accent-light);
+      color: var(--color-accent);
+      border-radius: var(--radius-full);
+      font-size: var(--text-sm);
+      font-weight: 600;
+      margin-bottom: var(--space-6);
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: var(--space-6);
+      color: var(--color-text);
+    }
+    .hero h1 span {
+      color: var(--color-accent);
+    }
+    .hero p {
+      font-size: var(--text-xl);
+      color: var(--color-text-secondary);
+      max-width: 600px;
+      margin: 0 auto var(--space-8);
+      line-height: var(--leading-loose);
+    }
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-4) var(--space-8);
+      background: var(--color-accent);
+      color: white;
+      font-weight: 600;
+      font-size: var(--text-lg);
+      border-radius: var(--radius-md);
+      text-decoration: none;
+      transition: all var(--duration-normal) var(--ease-out);
+      box-shadow: var(--shadow-md);
+    }
+    .hero-cta:hover {
+      background: var(--color-accent-hover);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .stat-callout {
+      text-align: center;
+      padding: var(--space-6);
+      background: var(--color-surface);
+      border-radius: var(--radius-lg);
+      margin: var(--space-8) 0;
+      border: 2px solid var(--color-accent);
+    }
+    .stat-callout .stat-number {
+      font-family: var(--font-display);
+      font-size: var(--text-5xl);
+      font-weight: 800;
+      color: var(--color-accent);
+    }
+    .stat-callout .stat-label {
+      font-size: var(--text-lg);
+      color: var(--color-text-secondary);
+    }
+
+    .before-after-toggle {
+      position: relative;
+      margin: var(--space-8) 0;
+    }
+    .toggle-controls {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-2);
+      margin-bottom: var(--space-6);
+    }
+    .toggle-btn {
+      padding: var(--space-3) var(--space-6);
+      border: 2px solid var(--color-border);
+      background: transparent;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-weight: 600;
+      font-size: var(--text-base);
+      transition: all var(--duration-normal) var(--ease-out);
+    }
+    .toggle-btn.active {
+      background: var(--color-accent);
+      border-color: var(--color-accent);
+      color: white;
+    }
+    .panel {
+      display: none;
+      animation: fadeIn 0.4s var(--ease-out);
+    }
+    .panel.active { display: block; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+    .timeline-step {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-4);
+      padding: var(--space-4);
+      background: var(--color-surface);
+      border-radius: var(--radius-md);
+      border-left: 4px solid var(--color-error);
+    }
+    .timeline-step.automated {
+      border-left-color: var(--color-success);
+    }
+    .timeline-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--color-error);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: var(--text-sm);
+      flex-shrink: 0;
+    }
+    .timeline-step.automated .timeline-num {
+      background: var(--color-success);
+    }
+    .timeline-body {
+      flex: 1;
+    }
+    .timeline-action {
+      font-weight: 600;
+      margin-bottom: var(--space-1);
+    }
+    .timeline-meta {
+      font-size: var(--text-sm);
+      color: var(--color-text-secondary);
+    }
+    .badge {
+      display: inline-block;
+      padding: var(--space-1) var(--space-2);
+      border-radius: var(--radius-sm);
+      font-size: var(--text-xs);
+      font-weight: 600;
+      margin-left: var(--space-2);
+    }
+    .badge-error {
+      background: var(--color-error-light);
+      color: var(--color-error);
+    }
+    .badge-success {
+      background: var(--color-success-light);
+      color: var(--color-success);
+    }
+    .badge-time {
+      background: var(--color-info-light);
+      color: var(--color-info);
+    }
+
+    .skill-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--space-6);
+      margin: var(--space-8) 0;
+    }
+    .skill-card {
+      background: var(--color-surface);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      box-shadow: var(--shadow-sm);
+      transition: all var(--duration-normal) var(--ease-out);
+    }
+    .skill-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+    .skill-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      background: var(--color-accent-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: var(--space-4);
+    }
+    .skill-card h3 {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: 700;
+      margin-bottom: var(--space-2);
+    }
+    .skill-card p {
+      font-size: var(--text-sm);
+      color: var(--color-text-secondary);
+      line-height: var(--leading-loose);
+    }
+
+    .arch-map {
+      position: relative;
+      margin: var(--space-8) 0;
+    }
+    .arch-svg {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      display: block;
+    }
+    .arch-node {
+      cursor: pointer;
+      transition: all var(--duration-normal) var(--ease-out);
+    }
+    .arch-node rect {
+      fill: var(--color-surface);
+      stroke: var(--color-border);
+      stroke-width: 2;
+    }
+    .arch-node:hover rect,
+    .arch-node.active rect {
+      stroke: var(--color-accent);
+      stroke-width: 3;
+    }
+    .arch-node text {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 600;
+      fill: var(--color-text);
+    }
+    .arch-line {
+      stroke: var(--color-border);
+      stroke-width: 2;
+      stroke-dasharray: 8 4;
+      animation: flowDash 1s linear infinite;
+    }
+    @keyframes flowDash {
+      to { stroke-dashoffset: -12; }
+    }
+    .arch-detail {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--color-bg-code);
+      color: #CDD6F4;
+      padding: var(--space-4);
+      border-radius: var(--radius-md);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all var(--duration-normal) var(--ease-out);
+    }
+    .arch-detail.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .arch-detail h4 {
+      color: var(--color-accent);
+      margin-bottom: var(--space-2);
+    }
+    .arch-detail .io-row {
+      display: flex;
+      gap: var(--space-4);
+      font-size: var(--text-sm);
+      margin-top: var(--space-2);
+    }
+    .input-badge, .output-badge {
+      padding: var(--space-1) var(--space-2);
+      border-radius: var(--radius-sm);
+      font-size: var(--text-xs);
+    }
+    .input-badge { background: var(--color-info-light); color: var(--color-info); }
+    .output-badge { background: var(--color-success-light); color: var(--color-success); }
+
+    .sequence-diagram {
+      margin: var(--space-8) 0;
+    }
+    .seq-progress-bar {
+      height: 4px;
+      background: var(--color-border-light);
+      border-radius: 2px;
+      margin-bottom: var(--space-4);
+    }
+    .seq-progress-fill {
+      height: 100%;
+      background: var(--color-accent);
+      border-radius: 2px;
+      width: 0%;
+      transition: width 0.4s var(--ease-out);
+    }
+    .seq-step {
+      display: none;
+      align-items: flex-start;
+      gap: var(--space-4);
+      padding: var(--space-4);
+      margin-bottom: var(--space-3);
+      background: var(--color-surface);
+      border-radius: var(--radius-md);
+      border-left: 3px solid var(--color-accent);
+    }
+    .seq-step.visible { display: flex; }
+    .step-marker {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--color-accent);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: var(--text-sm);
+      flex-shrink: 0;
+    }
+    .step-body {
+      flex: 1;
+    }
+    .step-component-badge {
+      display: inline-block;
+      padding: var(--space-1) var(--space-3);
+      border-radius: var(--radius-sm);
+      color: white;
+      font-size: var(--text-xs);
+      font-weight: 600;
+      margin-bottom: var(--space-2);
+    }
+    .step-description {
+      font-size: var(--text-sm);
+      color: var(--color-text-secondary);
+      line-height: var(--leading-loose);
+    }
+    .step-time {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      margin-left: var(--space-2);
+    }
+    .step-detail {
+      margin-top: var(--space-2);
+      font-size: var(--text-sm);
+    }
+    .step-detail summary {
+      cursor: pointer;
+      color: var(--color-accent);
+      font-weight: 600;
+    }
+    .step-detail p {
+      margin-top: var(--space-2);
+      color: var(--color-text-secondary);
+    }
+    .seq-controls {
+      display: flex;
+      gap: var(--space-3);
+      margin-top: var(--space-4);
+      flex-wrap: wrap;
+    }
+    .seq-btn {
+      padding: var(--space-2) var(--space-4);
+      border: none;
+      background: var(--color-accent);
+      color: white;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-weight: 600;
+      transition: all var(--duration-fast) var(--ease-out);
+    }
+    .seq-btn:hover {
+      background: var(--color-accent-hover);
+    }
+    .seq-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .seq-progress-text {
+      margin-left: auto;
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      align-self: center;
+    }
+
+    .resilience-explorer {
+      margin: var(--space-8) 0;
+    }
+    .scenario-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-3);
+      margin: var(--space-4) 0;
+    }
+    .scenario-btn {
+      padding: var(--space-3) var(--space-4);
+      border: 2px solid var(--color-border);
+      background: var(--color-surface);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-size: var(--text-sm);
+      transition: all var(--duration-normal) var(--ease-out);
+    }
+    .scenario-btn:hover {
+      border-color: var(--color-accent);
+    }
+    .scenario-btn.active {
+      border-color: var(--color-accent);
+      background: var(--color-accent-light);
+    }
+    .scenario-detail {
+      padding: var(--space-4);
+      border-radius: var(--radius-md);
+      background: var(--color-bg-code);
+      color: #CDD6F4;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all var(--duration-normal) var(--ease-out);
+    }
+    .scenario-detail.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .scenario-detail.severity-amber { border-left: 4px solid #f59f00; }
+    .scenario-detail.severity-green { border-left: 4px solid #10b981; }
+    .scenario-detail.severity-red { border-left: 4px solid #ef4444; }
+    .scenario-failure,
+    .scenario-response,
+    .scenario-buyer,
+    .scenario-recovery {
+      margin-bottom: var(--space-2);
+      font-size: var(--text-sm);
+    }
+    .scenario-failure strong,
+    .scenario-response strong,
+    .scenario-buyer strong,
+    .scenario-recovery strong {
+      color: var(--color-accent);
+    }
+    .recovery-btn {
+      margin-top: var(--space-4);
+      padding: var(--space-2) var(--space-4);
+      background: var(--color-text-muted);
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: var(--text-sm);
+    }
+
+    .tech-stack {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--space-6);
+      margin: var(--space-8) 0;
+    }
+    .stack-card {
+      background: var(--color-surface);
+      border-radius: var(--radius-md);
+      padding: var(--space-6);
+      border-top: 3px solid var(--color-accent);
+    }
+    .stack-header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      margin-bottom: var(--space-4);
+    }
+    .stack-logo {
+      font-size: 1.5rem;
+    }
+    .stack-role {
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .stack-reason {
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+      margin-bottom: var(--space-4);
+      font-size: var(--text-sm);
+    }
+    .stack-vs {
+      font-size: var(--text-sm);
+      padding: var(--space-3);
+      background: var(--color-bg-code);
+      border-radius: var(--radius-sm);
+    }
+    .vs-label {
+      font-weight: 600;
+      color: var(--color-accent);
+    }
+    .vs-reason {
+      color: #CDD6F4;
+    }
+
+    .integration-map {
+      position: relative;
+      margin: var(--space-8) 0;
+      text-align: center;
+    }
+    .int-hub {
+      display: inline-block;
+      padding: var(--space-4) var(--space-6);
+      background: var(--color-accent);
+      color: white;
+      border-radius: var(--radius-md);
+      margin-bottom: var(--space-6);
+    }
+    .int-hub-icon {
+      font-size: 2rem;
+      margin-bottom: var(--space-2);
+    }
+    .int-spokes {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+    }
+    .int-spoke {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: var(--space-4);
+      background: var(--color-surface);
+      border-radius: var(--radius-md);
+      border: 2px solid var(--color-border);
+      cursor: pointer;
+      transition: all var(--duration-normal) var(--ease-out);
+      min-width: 120px;
+    }
+    .int-spoke:hover {
+      border-color: var(--color-accent);
+      transform: translateY(-4px);
+    }
+    .int-spoke-icon {
+      font-size: 2rem;
+      margin-bottom: var(--space-2);
+    }
+    .int-spoke-label {
+      font-size: var(--text-sm);
+      font-weight: 600;
+    }
+    .int-legend {
+      margin-top: var(--space-6);
+      display: flex;
+      justify-content: center;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      font-size: var(--text-sm);
+      color: var(--color-text-secondary);
+    }
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: var(--space-1);
+    }
+    .legend-dot.ide { background: #3b82f6; }
+    .legend-dot.collaboration { background: #10b981; }
+    .legend-dot.ai { background: #8b5cf6; }
+    .legend-dot.automation { background: #f59f00; }
+
+    .deployment-notes {
+      margin: var(--space-8) 0;
+    }
+    .deploy-columns {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-6);
+    }
+    .deploy-column {
+      background: var(--color-surface);
+      padding: var(--space-6);
+      border-radius: var(--radius-md);
+    }
+    .deploy-column h4 {
+      color: var(--color-accent);
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      margin-bottom: var(--space-4);
+    }
+    .deploy-item {
+      margin-bottom: var(--space-3);
+      display: flex;
+      flex-direction: column;
+    }
+    .deploy-item strong {
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .deploy-item span {
+      font-size: var(--text-sm);
+    }
+    .deploy-contact {
+      margin-top: var(--space-6);
+      padding: var(--space-4);
+      background: var(--color-bg-code);
+      border-radius: var(--radius-md);
+    }
+    .deploy-contact h4 {
+      color: var(--color-accent);
+      margin-bottom: var(--space-3);
+    }
+    .contact-item {
+      display: flex;
+      gap: var(--space-3);
+      margin-top: var(--space-2);
+      font-size: var(--text-sm);
+      color: #CDD6F4;
+    }
+    .contact-label {
+      font-weight: 600;
+      color: var(--color-accent);
+    }
+
+    .next-steps {
+      text-align: center;
+      padding: var(--space-8);
+      background: var(--color-surface);
+      border-radius: var(--radius-lg);
+      margin: var(--space-8) 0;
+    }
+    .next-steps h3 {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      margin-bottom: var(--space-4);
+    }
+    .next-steps p {
+      color: var(--color-text-secondary);
+      margin-bottom: var(--space-6);
+    }
+    .next-steps-list {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-6);
+      flex-wrap: wrap;
+    }
+    .next-step-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-weight: 600;
+    }
+    .next-step-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--color-accent);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--text-sm);
+    }
+
+    .footer {
+      text-align: center;
+      padding: var(--space-8);
+      color: var(--color-text-muted);
+      font-size: var(--text-sm);
+    }
+
+    @media (max-width: 768px) {
+      .module { padding: var(--space-8) var(--space-4); }
+      .module-title { font-size: var(--text-3xl); }
+      .module-number { font-size: var(--text-4xl); }
+      .deploy-columns { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .int-spokes { gap: var(--space-2); }
+      .int-spoke { min-width: 90px; padding: var(--space-3); }
+    }
+
+    @media print {
+      .nav { display: none; }
+      .module { min-height: auto; page-break-after: always; }
+      .seq-controls, .scenario-buttons { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <span class="nav-title">All Agent Skills</span>
+      <div class="nav-links">
+        <a class="nav-link" data-target="problem">The Problem</a>
+        <a class="nav-link" data-target="solution">The Solution</a>
+        <a class="nav-link" data-target="how-it-works">How It Works</a>
+        <a class="nav-link" data-target="architecture">Architecture</a>
+        <a class="nav-link" data-target="resilience">Resilience</a>
+        <a class="nav-link" data-target="stack">Tech Stack</a>
+        <a class="nav-link" data-target="next-steps">Next Steps</a>
+      </div>
+    </div>
+    <div class="progress-bar" id="progress-bar"></div>
+  </nav>
+
+  <!-- Module 0: Hero -->
+  <section class="module" id="hero">
+    <div class="module-content">
+      <div class="hero animate-in">
+        <span class="hero-badge">Claude Code Extension</span>
+        <h1>Supercharge Your <span>AI Coding Assistant</span></h1>
+        <p>A collection of production-ready skills that extend Claude Code's capabilities — build courses, demos, diagrams, and more without writing a single prompt.</p>
+        <a href="#solution" class="hero-cta">
+          See What It Does
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Module 1: The Problem -->
+  <section class="module" id="problem">
+    <div class="module-content">
+      <header class="module-header animate-in">
+        <span class="module-number">01</span>
+        <h2 class="module-title">The Problem</h2>
+        <p class="module-subtitle">Every time you need something specific from Claude Code, you have to explain it from scratch.</p>
+      </header>
+
+      <div class="before-after-toggle animate-in">
+        <div class="toggle-controls">
+          <button class="toggle-btn active" data-panel="before">Without Skills</button>
+          <button class="toggle-btn" data-panel="after">With Skills</button>
+        </div>
+        
+        <div class="panel before-panel active">
+          <div class="timeline">
+            <div class="timeline-step">
+              <div class="timeline-num">1</div>
+              <div class="timeline-body">
+                <div class="timeline-action">You need to create a course from a codebase</div>
+                <div class="timeline-meta">
+                  Describe the entire process manually
+                  <span class="badge badge-error">5+ minutes</span>
+                </div>
+              </div>
+            </div>
+            <div class="timeline-step">
+              <div class="timeline-num">2</div>
+              <div class="timeline-body">
+                <div class="timeline-action">Next time you need a demo deck</div>
+                <div class="timeline-meta">
+                  Explain everything again from scratch
+                  <span class="badge badge-error">重复</span>
+                </div>
+              </div>
+            </div>
+            <div class="timeline-step">
+              <div class="timeline-num">3</div>
+              <div class="timeline-body">
+                <div class="timeline-action">You want to draw a diagram</div>
+                <div class="timeline-meta">
+                  Describe the layout, colors, and elements every time
+                  <span class="badge badge-error">No consistency</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="panel after-panel">
+          <div class="timeline">
+            <div class="timeline-step automated">
+              <div class="timeline-num">1</div>
+              <div class="timeline-body">
+                <div class="timeline-action">You need a course</div>
+                <div class="timeline-meta">
+                  Type <code>/codebase-to-course</code> — done
+                  <span class="badge badge-success">Instant</span>
+                </div>
+              </div>
+            </div>
+            <div class="timeline-step automated">
+              <div class="timeline-num">2</div>
+              <div class="timeline-body">
+                <div class="timeline-action">You need a demo deck</div>
+                <div class="timeline-meta">
+                  Type <code>/codebase-to-demo</code> — done
+                  <span class="badge badge-success">Instant</span>
+                </div>
+              </div>
+            </div>
+            <div class="timeline-step automated">
+              <div class="timeline-num">3</div>
+              <div class="timeline-body">
+                <div class="timeline-action">You need a diagram</div>
+                <div class="timeline-meta">
+                  Describe what you want — get a perfect diagram
+                  <span class="badge badge-success">Consistent</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-callout animate-in">
+        <div class="stat-number">10x</div>
+        <div class="stat-label">Faster from idea to output</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Module 2: The Solution -->
+  <section class="module" id="solution">
+    <div class="module-content">
+      <header class="module-header animate-in">
+        <span class="module-number">02</span>
+        <h2 class="module-title">The Solution</h2>
+        <p class="module-subtitle">Four specialized skills that work together to handle your most common workflows.</p>
+      </header>
+
+      <div class="skill-cards stagger-children">
+        <div class="skill-card animate-in">
+          <div class="skill-icon">📚</div>
+          <h3>Codebase to Course</h3>
+          <p>Transform any codebase into a stunning interactive HTML course. Perfect for onboarding, documentation, or teaching.</p>
+        </div>
+        <div class="skill-card animate-in">
+          <div class="skill-icon">🎯</div>
+          <h3>Codebase to Demo</h3>
+          <p>Create client-ready demo decks from any implementation. Sell your work with animated architecture diagrams.</p>
+        </div>
+        <div class="skill-card animate-in">
+          <div class="skill-icon">📊</div>
+          <h3>Excalidraw Diagram</h3>
+          <p>Generate beautiful diagrams from natural language. Architecture, flows, and visualizations in seconds.</p>
+        </div>
+        <div class="skill-card animate-in">
+          <div class="skill-icon">🛠️</div>
+          <h3>Skill Builder</h3>
+          <p>Create new skills or optimize existing ones. Build reusable workflows that scale with your needs.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Module 3: How It Works -->
+  <section class="module" id="how-it-works">
+    <div class="module-content">
+      <header class="module-header animate-in">
+        <span class="module-number">03</span>
+        <h2 class="module-title">How It Works</h2>
+        <p class="module-subtitle">Watch how a simple request transforms into a complete deliverable.</p>
+      </header>
+
+      <div class="sequence-diagram animate-in">
+        <div class="seq-progress-bar">
+          <div class="seq-progress-fill" id="seq-progress"></div>
+        </div>
+        <div class="seq-steps" id="seq-steps">
+          <div class="seq-step" data-step="1">
+            <div class="step-marker">1</div>
+            <div class="step-body">
+              <div class="step-component-badge" style="background: var(--color-actor-1)">You</div>
+              <p class="step-description">You type "/codebase-to-demo" and point at your project folder. That's it.</p>
+              <span class="step-time">+0s</span>
+            </div>
+          </div>
+          <div class="seq-step" data-step="2">
+            <div class="step-marker">2</div>
+            <div class="step-body">
+              <div class="step-component-badge" style="background: var(--color-actor-2)">Skill Loader</div>
+              <p class="step-description">The skill loads automatically, reading your project structure and configuration.</p>
+              <span class="step-time">+0.5s</span>
+            </div>
+          </div>
+          <div class="seq-step" data-step="3">
+            <div class="step-marker">3</div>
+            <div class="step-body">
+              <div class="step-component-badge" style="background: var(--color-actor-3)">Analysis</div>
+              <p class="step-description">The skill reads key files, traces data flows, and identifies business value automatically.</p>
+              <span class="step-time">+3s</span>
+            </div>
+          </div>
+          <div class="seq-step" data-step="4">
+            <div class="step-marker">4</div>
+            <div class="step-body">
+              <div class="step-component-badge" style="background: var(--color-actor-4)">Demo Generator</div>
+              <p class="step-description">It builds an interactive HTML demo with before/after toggles, architecture maps, and sequence diagrams.</p>
+              <span class="step-time">+8s</span>
+            </div>
+          </div>
+          <div class="seq-step" data-step="5">
+            <div class="step-marker">5</div>
+            <div class="step-body">
+              <div class="step-component-badge" style="background: var(--color-actor-5)">Your Deliverable</div>
+              <p class="step-description">A single HTML file opens in your browser — ready to share with clients.</p>
+              <span class="step-time">+10s</span>
+              <details class="step-detail">
+                <summary>Behind the scenes</summary>
+                <p>The demo includes scroll-snap navigation, animated SVG diagrams, and keyboard controls for presenting.</p>
+              </details>
+            </div>
+          </div>
+        </div>
+        <div class="seq-controls">
+          <button class="seq-btn" id="seq-next">Next Step</button>
+          <button class="seq-btn" id="seq-play">Play All</button>
+          <button class="seq-btn" id="seq-reset">Replay</button>
+          <span class="seq-progress-text" id="seq-progress-text">Step 0 / 5</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Module 4: Architecture -->
+  <section class="module" id="architecture">
+    <div class="module-content">
+      <header class="module-header animate-in">
+        <span class="module-number">04</span>
+        <h2 class="module-title">The Architecture</h2>
+        <p class="module-subtitle">Click any component to understand how the system works.</p>
+      </header>
+
+      <div class="arch-map animate-in">
+        <svg class="arch-svg" viewBox="0 0 800 400">
+          <path class="arch-line" d="M200,200 L320,200" />
+          <path class="arch-line" d="M480,200 L600,200" />
+          <path class="arch-line" d="M320,140 L400,80 L480,140" />
+          <path class="arch-line" d="M320,260 L400,320 L480,260" />
+          
+          <g class="arch-node" data-name="cli" transform="translate(80, 160)">
+            <rect x="0" y="0" width="120" height="80" rx="8" />
+            <text x="60" y="45" text-anchor="middle">Your Command</text>
+          </g>
+          
+          <g class="arch-node" data-name="skill-loader" transform="translate(320, 160)">
+            <rect x="0" y="0" width="160" height="80" rx="8" />
+            <text x="80" y="45" text-anchor="middle">Skill Loader</text>
+          </g>
+          
+          <g class="arch-node" data-name="output" transform="translate(600, 160)">
+            <rect x="0" y="0" width="120" height="80" rx="8" />
+            <text x="60" y="45" text-anchor="middle">HTML Output</text>
+          </g>
+          
+          <g class="arch-node" data-name="analyzer" transform="translate(320, 60)">
+            <rect x="0" y="0" width="160" height="60" rx="8" />
+            <text x="80" y="35" text-anchor="middle">Code Analyzer</text>
+          </g>
+          
+          <g class="arch-node" data-name="generator" transform="translate(320, 280)">
+            <rect x="0" y="0" width="160" height="60" rx="8" />
+            <text x="80" y="35" text-anchor="middle">Demo Generator</text>
+          </g>
+        </svg>
+        <div class="arch-detail" id="arch-detail">
+          <h4>Click any component to learn what it does</h4>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Module 5: Resilience -->
+  <section class="module" id="resilience">
+    <div class="module-content">
+      <header class="module-header animate-in">
+        <span class="module-number">05</span>
+        <h2 class="module-title">What Could Break?</h2>
+        <p class="module-subtitle">The skills handle errors gracefully — here's what happens when things go wrong.</p>
+      </header>
+
+      <div class="resilience-explorer animate-in">
+        <div class="scenario-buttons">
+          <button class="scenario-btn" data-scenario="empty">What if the folder is empty?</button>
+          <button class="scenario-btn" data-scenario="huge">What if the codebase is huge?</button>
+          <button class="scenario-btn" data-scenario="complex">What if the code is too complex?</button>
+        </div>
+        <div class="scenario-detail" id="scenario-detail">
+          <p>Click a scenario above to see how the system handles it.</p>
+        </div>
+        <button class="recovery-btn" id="reset-resilience">Reset</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Module 6: Tech Stack -->
+  <section class="module" id="stack">
+    <div class="module-content">
+      <header class="module-header animate-in">
+        <span class="module-number">06</span>
+        <h2 class="module-title">Why These Tools?</h2>
+        <p class="module-subtitle">Built on proven, industry-standard technologies chosen for reliability and flexibility.</p>
+      </header>
+
+      <div class="tech-stack animate-in">
+        <div class="stack-card">
+          <div class="stack-header">
+            <span class="stack-logo">🤖</span>
+            <h3>Claude Code</h3>
+            <span class="stack-role">AI Foundation</span>
+          </div>
+          <p class="stack-reason">The most capable AI coding assistant available. Understands complex codebases and follows natural language instructions precisely.</p>
+          <div class="stack-vs">
+            <span class="vs-label">vs. Manual coding:</span>
+            <span class="vs-reason">10x faster from idea to implementation with fewer bugs.</span>
+          </div>
+        </div>
+        <div class="stack-card">
+          <div class="stack-header">
+            <span class="stack-logo">⚡</span>
+            <h3>Skills System</h3>
+            <span class="stack-role">Extensibility</span>
+          </div>
+          <p class="stack-reason">Reusable workflows that remember your preferences and patterns. Build once, use forever.</p>
+          <div class="stack-vs">
+            <span class="vs-label">vs. Copy-paste:</span>
+            <span class="vs-reason">Consistent output quality with zero repetition.</span>
+          </div>
+        </div>
+        <div class="stack-card">
+          <div class="stack-header">
+            <span class="stack-logo">📄</span>
+            <h3>Single HTML</h3>
+            <span class="stack-role">Output Format</span>
+          </div>
+          <p class="stack-reason">Every deliverable is a self-contained HTML file. Works offline, no dependencies, instantly shareable.</p>
+          <div class="stack-vs">
+            <span class="vs-label">vs. Generated sites:</span>
+            <span class="vs-reason">One file to rule them all — email it, host it, keep it forever.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Module 7: Integrations -->
+  <section class="module" id="integrations">
+    <div class="module-content">
+      <header class="module-header animate-in">
+        <span class="module-number">07</span>
+        <h2 class="module-title">What Does It Connect To?</h2>
+        <p class="module-subtitle">The skills work with your existing tools and workflows.</p>
+      </header>
+
+      <div class="integration-map animate-in">
+        <div class="int-hub">
+          <div class="int-hub-icon">⚙️</div>
+          <div>Claude Code</div>
+        </div>
+        <div class="int-spokes">
+          <div class="int-spoke">
+            <div class="int-spoke-icon">📁</div>
+            <span class="int-spoke-label">Local Files</span>
+          </div>
+          <div class="int-spoke">
+            <div class="int-spoke-icon">🐙</div>
+            <span class="int-spoke-label">GitHub</span>
+          </div>
+          <div class="int-spoke">
+            <div class="int-spoke-icon">🌐</div>
+            <span class="int-spoke-label">Web Fetch</span>
+          </div>
+          <div class="int-spoke">
+            <div class="int-spoke-icon">🎨</div>
+            <span class="int-spoke-label">Excalidraw</span>
+          </div>
+        </div>
+        <div class="int-legend">
+          <span class="legend-item"><span class="legend-dot ide"></span> Source</span>
+          <span class="legend-item"><span class="legend-dot collaboration"></span> Output</span>
+          <span class="legend-item"><span class="legend-dot ai"></span> AI Services</span>
+          <span class="legend-item"><span class="legend-dot automation"></span> Automation</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Module 8: Deployment -->
+  <section class="module" id="deployment">
+    <div class="module-content">
+      <header class="module-header animate-in">
+        <span class="module-number">08</span>
+        <h2 class="module-title">How Do You Use It?</h2>
+        <p class="module-subtitle">Getting started is simple — no setup required.</p>
+      </header>
+
+      <div class="deployment-notes animate-in">
+        <div class="deploy-columns">
+          <div class="deploy-column">
+            <h4>Day 1</h4>
+            <div class="deploy-item">
+              <strong>Installation</strong>
+              <span>npm install -g @anthropic-ai/claude-code</span>
+            </div>
+            <div class="deploy-item">
+              <strong>Add Skills</strong>
+              <span>npx skills add devenkhatri/all-agent-skills-repo</span>
+            </div>
+            <div class="deploy-item">
+              <strong>Setup Time</strong>
+              <span>~5 minutes</span>
+            </div>
+          </div>
+          <div class="deploy-column">
+            <h4>Week 1</h4>
+            <div class="deploy-item">
+              <strong>Your First Course</strong>
+              <span>Point at any codebase, get a course</span>
+            </div>
+            <div class="deploy-item">
+              <strong>Your First Demo</strong>
+              <span>Transform any project into a client deck</span>
+            </div>
+            <div class="deploy-item">
+              <strong>Learning Curve</strong>
+              <span>Near zero — natural language only</span>
+            </div>
+          </div>
+          <div class="deploy-column">
+            <h4>At Scale</h4>
+            <div class="deploy-item">
+              <strong>Volume</strong>
+              <span>Unlimited courses and demos</span>
+            </div>
+            <div class="deploy-item">
+              <strong>Cost</span></strong>
+              <span>Free — open source skills</span>
+            </div>
+            <div class="deploy-item">
+              <strong>Maintenance</strong>
+              <span>Zero — just use and enjoy</span>
+            </div>
+          </div>
+        </div>
+        <div class="deploy-contact">
+          <h4>Need Help?</h4>
+          <div class="contact-item">
+            <span class="contact-label">Documentation:</span>
+            <span>claude.com/docs</span>
+          </div>
+          <div class="contact-item">
+            <span class="contact-label">Skills repo:</span>
+            <span>github.com/devenkhatri/all-agent-skills-repo</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Module 9: Next Steps -->
+  <section class="module" id="next-steps">
+    <div class="module-content">
+      <header class="module-header animate-in">
+        <span class="module-number">09</span>
+        <h2 class="module-title">Ready to Get Started?</h2>
+        <p class="module-subtitle">Three simple steps to supercharge your AI workflow.</p>
+      </header>
+
+      <div class="next-steps animate-in">
+        <h3>Your Action Plan</h3>
+        <p>Join developers who are building faster with AI assistance.</p>
+        <div class="next-steps-list">
+          <div class="next-step-item">
+            <span class="next-step-num">1</span>
+            <span>Install Claude Code</span>
+          </div>
+          <div class="next-step-item">
+            <span class="next-step-num">2</span>
+            <span>Add these skills</span>
+          </div>
+          <div class="next-step-item">
+            <span class="next-step-num">3</span>
+            <span>Build something amazing</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-callout animate-in" style="margin-top: var(--space-8);">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Free & Open Source</div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>All Agent Skills — Built with ❤️ for the AI coding community</p>
+  </footer>
+
+  <script>
+    (function() {
+      const progressBar = document.getElementById('progress-bar');
+      const navLinks = document.querySelectorAll('.nav-link');
+      
+      // Progress bar
+      function updateProgress() {
+        const scrollTop = window.scrollY;
+        const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = (scrollTop / scrollHeight) * 100;
+        progressBar.style.width = progress + '%';
+        
+        // Update active nav link
+        let current = '';
+        document.querySelectorAll('.module').forEach(module => {
+          const rect = module.getBoundingClientRect();
+          if (rect.top <= 150 && rect.bottom >= 150) {
+            current = module.id;
+          }
+        });
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.dataset.target === current);
+        });
+      }
+      
+      window.addEventListener('scroll', () => {
+        requestAnimationFrame(updateProgress);
+      }, { passive: true });
+      
+      // Nav link clicks
+      navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const target = document.getElementById(link.dataset.target);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth' });
+          }
+        });
+      });
+      
+      // Animation observer
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: '0px 0px -10% 0px', threshold: 0.1 });
+      
+      document.querySelectorAll('.animate-in').forEach(el => observer.observe(el));
+      
+      // Stagger children setup
+      document.querySelectorAll('.stagger-children').forEach(parent => {
+        Array.from(parent.children).forEach((child, i) => {
+          child.style.setProperty('--stagger-index', i);
+        });
+      });
+      
+      // Before/After toggle
+      document.querySelectorAll('.toggle-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const panel = btn.dataset.panel;
+          document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+          document.querySelector(`.${panel}-panel`).classList.add('active');
+        });
+      });
+      
+      // Sequence diagram
+      const seqSteps = document.querySelectorAll('.seq-step');
+      let seqIndex = 0;
+      const seqTotal = seqSteps.length;
+      
+      function updateSeqProgress() {
+        const progress = (seqIndex / seqTotal) * 100;
+        document.getElementById('seq-progress').style.width = progress + '%';
+        document.getElementById('seq-progress-text').textContent = `Step ${seqIndex} / ${seqTotal}`;
+        document.getElementById('seq-next').disabled = seqIndex >= seqTotal;
+      }
+      
+      document.getElementById('seq-next').addEventListener('click', () => {
+        if (seqIndex >= seqTotal) return;
+        const step = seqSteps[seqIndex];
+        step.classList.add('visible');
+        step.style.animation = 'fadeSlideUp 0.3s var(--ease-out)';
+        seqIndex++;
+        updateSeqProgress();
+      });
+      
+      document.getElementById('seq-play').addEventListener('click', () => {
+        if (seqIndex >= seqTotal) {
+          seqIndex = 0;
+          seqSteps.forEach(s => s.classList.remove('visible'));
+        }
+        const interval = setInterval(() => {
+          if (seqIndex >= seqTotal) {
+            clearInterval(interval);
+            return;
+          }
+          const step = seqSteps[seqIndex];
+          step.classList.add('visible');
+          step.style.animation = 'fadeSlideUp 0.3s var(--ease-out)';
+          seqIndex++;
+          updateSeqProgress();
+        }, 1500);
+      });
+      
+      document.getElementById('seq-reset').addEventListener('click', () => {
+        seqIndex = 0;
+        seqSteps.forEach(s => s.classList.remove('visible'));
+        updateSeqProgress();
+      });
+      
+      // Architecture map
+      const nodeData = {
+        'cli': {
+          businessName: 'Your Command',
+          oneLineSummary: 'You type a simple command or natural language request',
+          input: 'Your words (e.g., "make a demo from this")',
+          output: 'Intent understood by Claude Code'
+        },
+        'skill-loader': {
+          businessName: 'Skill Loader',
+          oneLineSummary: 'The appropriate skill loads automatically',
+          input: 'Intent from Claude Code',
+          output: 'Skill instructions and context'
+        },
+        'analyzer': {
+          businessName: 'Code Analyzer',
+          oneLineSummary: 'Reads and understands your codebase structure',
+          input: 'Project files and configuration',
+          output: 'Business value and architecture insights'
+        },
+        'generator': {
+          businessName: 'Demo Generator',
+          oneLineSummary: 'Builds your interactive HTML deliverable',
+          input: 'Analysis results and templates',
+          output: 'Complete HTML file'
+        },
+        'output': {
+          businessName: 'HTML Output',
+          oneLineSummary: 'A beautiful, shareable deliverable',
+          input: 'Generated content',
+          output: 'Self-contained HTML file'
+        }
+      };
+      
+      document.querySelectorAll('.arch-node').forEach(node => {
+        node.addEventListener('click', () => {
+          document.querySelectorAll('.arch-node').forEach(n => n.classList.remove('active'));
+          node.classList.add('active');
+          
+          const data = nodeData[node.dataset.name];
+          const detailPanel = document.getElementById('arch-detail');
+          detailPanel.innerHTML = `
+            <h4>${data.businessName}</h4>
+            <p>${data.oneLineSummary}</p>
+            <div class="io-row">
+              <span class="input-badge">IN: ${data.input}</span>
+              <span class="output-badge">OUT: ${data.output}</span>
+            </div>
+          `;
+          detailPanel.classList.add('visible');
+        });
+      });
+      
+      // Resilience explorer
+      const scenarios = [
+        {
+          label: 'What if the folder is empty?',
+          severity: 'green',
+          failureMode: 'There is no code to analyze.',
+          systemResponse: 'The skill provides helpful guidance on what folders or repositories to use.',
+          buyerExperience: 'You immediately know what to do instead of getting stuck.',
+          recoveryTime: 'Instant'
+        },
+        {
+          label: 'What if the codebase is huge?',
+          severity: 'amber',
+          failureMode: 'Analysis could take too long or run out of context.',
+          systemResponse: 'The skill prioritizes key files and provides a summary rather than analyzing everything.',
+          buyerExperience: 'You get a useful result faster, with an option to dive deeper.',
+          recoveryTime: 'A few seconds'
+        },
+        {
+          label: 'What if the code is too complex?',
+          severity: 'green',
+          failureMode: 'The output might not capture all nuances.',
+          systemResponse: 'The skill focuses on the main story and provides best-effort analysis.',
+          buyerExperience: 'You get a solid foundation you can refine manually.',
+          recoveryTime: 'Instant — editable HTML'
+        }
+      ];
+      
+      document.querySelectorAll('.scenario-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          
+          const scenario = scenarios.find(s => s.label === btn.textContent);
+          const detail = document.getElementById('scenario-detail');
+          detail.innerHTML = `
+            <div class="scenario-failure"><strong>Failure Mode:</strong> ${scenario.failureMode}</div>
+            <div class="scenario-response"><strong>System Response:</strong> ${scenario.systemResponse}</div>
+            <div class="scenario-buyer"><strong>What You'd Experience:</strong> ${scenario.buyerExperience}</div>
+            <div class="scenario-recovery"><strong>Recovery Time:</strong> ${scenario.recoveryTime}</div>
+          `;
+          detail.className = `scenario-detail visible severity-${scenario.severity}`;
+        });
+      });
+      
+      document.getElementById('reset-resilience').addEventListener('click', () => {
+        document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
+        const detail = document.getElementById('scenario-detail');
+        detail.className = 'scenario-detail';
+        detail.innerHTML = '<p>Click a scenario above to see how the system handles it.</p>';
+      });
+      
+      // Keyboard navigation
+      document.addEventListener('keydown', (e) => {
+        if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
+        
+        const modules = Array.from(document.querySelectorAll('.module'));
+        const currentIndex = modules.findIndex(m => {
+          const rect = m.getBoundingClientRect();
+          return rect.top >= 0 && rect.top <= 200;
+        });
+        
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+          e.preventDefault();
+          const nextIndex = Math.min(currentIndex + 1, modules.length - 1);
+          modules[nextIndex].scrollIntoView({ behavior: 'smooth' });
+        }
+        if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+          e.preventDefault();
+          const prevIndex = Math.max(currentIndex - 1, 0);
+          modules[prevIndex].scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

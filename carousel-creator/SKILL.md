@@ -286,6 +286,33 @@ Every slide must be fully finished SVG code.
 
 ---
 
+## File Saving
+
+After generating all SVG slides, **save each slide to the current directory**.
+
+**File naming convention:**
+- Use kebab-case for filenames
+- Include slide number and descriptive name
+- Format: `{topic-slug}-slide-{number}.svg`
+
+**Examples:**
+- `5-ai-tools-slide-1.svg` (hook slide)
+- `5-ai-tools-slide-2.svg` (context)
+- `5-ai-tools-slide-3.svg` (main value)
+- And so on...
+
+**How to save:**
+- Use the Write tool to save each SVG as a separate file
+- Save to the current working directory (use `.` or absolute path)
+- Do not wrap in HTML — save raw SVG code only
+
+**After saving:**
+- Confirm all files have been saved
+- List the saved files for the user
+- Provide instructions on how to use the files (open in browser, convert to PNG, etc.)
+
+---
+
 ## Quality Control Checklist
 
 Before finalizing, verify:
@@ -334,3 +361,4 @@ Always optimize for:
 - Useful concise information
 - Strong branding consistency
 - Polished SVG output only
+- **Save all SVG files to the current directory**

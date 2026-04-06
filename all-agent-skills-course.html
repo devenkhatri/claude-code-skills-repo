@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Agent Skills — Learn How They Work</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400;1,9..40,500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-bg: #FAF7F2;
+      --color-bg-warm: #F5F0E8;
+      --color-bg-code: #1E1E2E;
+      --color-text: #2C2A28;
+      --color-text-secondary: #6B6560;
+      --color-text-muted: #9E9790;
+      --color-border: #E5DFD6;
+      --color-border-light: #EEEBE5;
+      --color-surface: #FFFFFF;
+      --color-surface-warm: #FDF9F3;
+      --color-accent: #D94F30;
+      --color-accent-hover: #C4432A;
+      --color-accent-light: #FDEEE9;
+      --color-accent-muted: #E8836C;
+      --color-success: #2D8B55;
+      --color-success-light: #E8F5EE;
+      --color-error: #C93B3B;
+      --color-error-light: #FDE8E8;
+      --color-info: #2A7B9B;
+      --color-info-light: #E4F2F7;
+      --color-actor-1: #D94F30;
+      --color-actor-2: #2A7B9B;
+      --color-actor-3: #7B6DAA;
+      --color-actor-4: #D4A843;
+      --color-actor-5: #2D8B55;
+      --font-display: 'Bricolage Grotesque', Georgia, serif;
+      --font-body: 'DM Sans', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+      --text-xs: 0.75rem;
+      --text-sm: 0.875rem;
+      --text-base: 1rem;
+      --text-lg: 1.125rem;
+      --text-xl: 1.25rem;
+      --text-2xl: 1.5rem;
+      --text-3xl: 1.875rem;
+      --text-4xl: 2.25rem;
+      --text-5xl: 3rem;
+      --text-6xl: 3.75rem;
+      --leading-tight: 1.15;
+      --leading-snug: 1.3;
+      --leading-normal: 1.6;
+      --leading-loose: 1.8;
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-5: 1.25rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-10: 2.5rem;
+      --space-12: 3rem;
+      --space-16: 4rem;
+      --space-20: 5rem;
+      --space-24: 6rem;
+      --content-width: 800px;
+      --nav-height: 50px;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-full: 9999px;
+      --shadow-sm: 0 1px 2px rgba(44, 42, 40, 0.05);
+      --shadow-md: 0 4px 12px rgba(44, 42, 40, 0.08);
+      --shadow-lg: 0 8px 24px rgba(44, 42, 40, 0.1);
+      --shadow-xl: 0 16px 48px rgba(44, 42, 40, 0.12);
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+      --duration-fast: 150ms;
+      --duration-normal: 300ms;
+      --duration-slow: 500ms;
+      --stagger-delay: 120ms;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-snap-type: y proximity;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: var(--leading-normal);
+      color: var(--color-text);
+      background: var(--color-bg);
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb {
+      background: var(--color-border);
+      border-radius: var(--radius-full);
+    }
+
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--nav-height);
+      background: var(--color-bg-code);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      padding: 0 var(--space-6);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .nav-title {
+      color: #CDD6F4;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: var(--text-lg);
+    }
+    .nav-dots {
+      display: flex;
+      gap: var(--space-2);
+    }
+    .nav-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 2px solid var(--color-text-muted);
+      background: transparent;
+      cursor: pointer;
+      transition: all var(--duration-fast) var(--ease-out);
+    }
+    .nav-dot:hover { border-color: var(--color-accent); }
+    .nav-dot.active {
+      border-color: var(--color-accent);
+      background: var(--color-accent);
+      box-shadow: 0 0 8px rgba(217, 79, 48, 0.4);
+    }
+    .progress-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 2px;
+      background: var(--color-accent);
+      width: 0%;
+      transition: width var(--duration-fast) var(--ease-out);
+    }
+
+    .module {
+      min-height: 100dvh;
+      scroll-snap-align: start;
+      padding: var(--space-16) var(--space-6);
+      padding-top: calc(var(--nav-height) + var(--space-12));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .module:nth-child(odd) { background: var(--color-bg); }
+    .module:nth-child(even) { background: var(--color-bg-warm); }
+
+    .module-content {
+      max-width: var(--content-width);
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .module-header {
+      text-align: center;
+      margin-bottom: var(--space-12);
+    }
+    .module-number {
+      display: block;
+      font-family: var(--font-display);
+      font-size: var(--text-6xl);
+      font-weight: 800;
+      color: var(--color-accent);
+      opacity: 0.15;
+      line-height: 1;
+      margin-bottom: var(--space-4);
+    }
+    .module-title {
+      font-family: var(--font-display);
+      font-size: var(--text-4xl);
+      font-weight: 700;
+      line-height: var(--leading-tight);
+      margin-bottom: var(--space-4);
+    }
+    .module-subtitle {
+      font-size: var(--text-lg);
+      color: var(--color-text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .animate-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity var(--duration-slow) var(--ease-out),
+                  transform var(--duration-slow) var(--ease-out);
+    }
+    .animate-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .stagger-children > .animate-in {
+      transition-delay: calc(var(--stagger-index, 0) * var(--stagger-delay));
+    }
+
+    .hero {
+      text-align: center;
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: var(--space-6);
+    }
+    .hero h1 span {
+      color: var(--color-accent);
+    }
+    .hero p {
+      font-size: var(--text-xl);
+      color: var(--color-text-secondary);
+      max-width: 600px;
+      margin: 0 auto var(--space-8);
+      line-height: var(--leading-loose);
+    }
+
+    .term {
+      border-bottom: 1.5px dashed var(--color-accent-muted);
+      cursor: pointer;
+      position: relative;
+    }
+    .term:hover, .term.active {
+      border-bottom-color: var(--color-accent);
+      color: var(--color-accent);
+    }
+    .term-tooltip {
+      position: fixed;
+      background: var(--color-bg-code);
+      color: #CDD6F4;
+      padding: var(--space-3) var(--space-4);
+      border-radius: var(--radius-sm);
+      font-size: var(--text-sm);
+      font-family: var(--font-body);
+      line-height: var(--leading-normal);
+      width: max(200px, min(320px, 80vw));
+      box-shadow: var(--shadow-lg);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity var(--duration-fast);
+      z-index: 10000;
+    }
+    .term-tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: var(--color-bg-code);
+    }
+    .term-tooltip.visible { opacity: 1; }
+    .term-tooltip.flip {
+      bottom: auto;
+      top: calc(100% + 8px);
+    }
+    .term-tooltip.flip::after {
+      top: auto;
+      bottom: 100%;
+      border-top-color: transparent;
+      border-bottom-color: var(--color-bg-code);
+    }
+
+    .translation-block {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      margin: var(--space-8) 0;
+    }
+    .translation-code {
+      background: var(--color-bg-code);
+      color: #CDD6F4;
+      padding: var(--space-6);
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      line-height: 1.7;
+      position: relative;
+      overflow-x: hidden;
+    }
+    .translation-code pre, .translation-code code {
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-x: hidden;
+    }
+    .translation-english {
+      background: var(--color-surface-warm);
+      padding: var(--space-6);
+      font-size: var(--text-sm);
+      line-height: 1.7;
+      border-left: 3px solid var(--color-accent);
+    }
+    .translation-label {
+      position: absolute;
+      top: var(--space-2);
+      right: var(--space-3);
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      opacity: 0.5;
+    }
+    .translation-english .translation-label {
+      color: var(--color-text-muted);
+    }
+    .code-keyword { color: #CBA6F7; }
+    .code-string { color: #A6E3A1; }
+    .code-function { color: #89B4FA; }
+    .code-comment { color: #6C7086; }
+    .code-number { color: #FAB387; }
+    .code-property { color: #F9E2AF; }
+    .code-operator { color: #94E2D5; }
+
+    .callout {
+      display: flex;
+      gap: var(--space-4);
+      padding: var(--space-5);
+      border-radius: var(--radius-md);
+      margin: var(--space-8) 0;
+    }
+    .callout-accent {
+      background: var(--color-accent-light);
+      border-left: 4px solid var(--color-accent);
+    }
+    .callout-info {
+      background: var(--color-info-light);
+      border-left: 4px solid var(--color-info);
+    }
+    .callout-icon { font-size: 1.5rem; }
+    .callout-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      margin-bottom: var(--space-2);
+    }
+
+    .pattern-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: var(--space-4);
+      margin: var(--space-8) 0;
+    }
+    .pattern-card {
+      background: var(--color-surface);
+      border-radius: var(--radius-md);
+      padding: var(--space-6);
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--duration-normal) var(--ease-out);
+    }
+    .pattern-card:hover { transform: translateY(-4px); }
+    .pattern-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      margin-bottom: var(--space-3);
+    }
+    .pattern-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      margin-bottom: var(--space-2);
+    }
+    .pattern-desc {
+      font-size: var(--text-sm);
+      color: var(--color-text-secondary);
+      line-height: var(--leading-loose);
+    }
+
+    .chat-window {
+      background: var(--color-surface);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      margin: var(--space-8) 0;
+      box-shadow: var(--shadow-md);
+    }
+    .chat-messages {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      min-height: 200px;
+      margin-bottom: var(--space-4);
+    }
+    .chat-message {
+      display: none;
+      align-items: flex-start;
+      gap: var(--space-3);
+    }
+    .chat-message.visible { display: flex; }
+    .chat-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: var(--text-sm);
+      flex-shrink: 0;
+    }
+    .chat-bubble {
+      background: var(--color-bg-warm);
+      padding: var(--space-3) var(--space-4);
+      border-radius: var(--radius-md);
+      max-width: 80%;
+    }
+    .chat-sender {
+      font-size: var(--text-xs);
+      font-weight: 600;
+      display: block;
+      margin-bottom: var(--space-1);
+    }
+    .chat-bubble p {
+      font-size: var(--text-sm);
+      color: var(--color-text-secondary);
+      margin: 0;
+    }
+    .chat-typing {
+      display: none;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-3);
+    }
+    .chat-typing-dots {
+      display: flex;
+      gap: 4px;
+    }
+    .typing-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--color-text-muted);
+      animation: typingBounce 1.4s infinite;
+    }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typingBounce {
+      0%, 60%, 100% { transform: translateY(0); }
+      30% { transform: translateY(-6px); }
+    }
+    .chat-controls {
+      display: flex;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .chat-btn {
+      padding: var(--space-2) var(--space-4);
+      background: var(--color-accent);
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      cursor: pointer;
+      transition: background var(--duration-fast) var(--ease-out);
+    }
+    .chat-btn:hover { background: var(--color-accent-hover); }
+    .chat-progress {
+      margin-left: auto;
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+    }
+
+    .flow-animation {
+      background: var(--color-surface);
+      border-radius: var(--radius-lg);
+      padding: var(--space-8);
+      margin: var(--space-8) 0;
+      text-align: center;
+    }
+    .flow-actors {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-8);
+      margin-bottom: var(--space-6);
+      flex-wrap: wrap;
+    }
+    .flow-actor {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-4);
+      border-radius: var(--radius-md);
+      transition: all var(--duration-normal) var(--ease-out);
+    }
+    .flow-actor-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+    }
+    .flow-actor.active {
+      box-shadow: 0 0 0 3px var(--color-accent), 0 0 20px rgba(217, 79, 48, 0.2);
+      transform: scale(1.05);
+    }
+    .flow-actor span {
+      font-size: var(--text-sm);
+      font-weight: 600;
+    }
+    .flow-arrow {
+      font-size: 2rem;
+      color: var(--color-text-muted);
+      margin: var(--space-4) 0;
+    }
+    .flow-step-label {
+      font-size: var(--text-lg);
+      color: var(--color-text-secondary);
+      margin-bottom: var(--space-4);
+      min-height: 50px;
+    }
+    .flow-controls {
+      display: flex;
+      gap: var(--space-3);
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .flow-btn {
+      padding: var(--space-2) var(--space-4);
+      background: var(--color-accent);
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .flow-btn:hover { background: var(--color-accent-hover); }
+    .flow-progress {
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+    }
+
+    .file-tree {
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      margin: var(--space-8) 0;
+      background: var(--color-surface);
+      padding: var(--space-6);
+      border-radius: var(--radius-md);
+    }
+    .ft-folder, .ft-file {
+      padding: var(--space-2) var(--space-3);
+      border-left: 2px solid var(--color-border-light);
+      margin-left: var(--space-4);
+    }
+    .ft-folder { margin-bottom: var(--space-2); }
+    .ft-folder > .ft-name { color: var(--color-accent); font-weight: 600; }
+    .ft-folder > .ft-name::before { content: '📁 '; }
+    .ft-file > .ft-name::before { content: '📄 '; }
+    .ft-name { color: var(--color-text); }
+    .ft-desc {
+      color: var(--color-text-secondary);
+      font-family: var(--font-body);
+      margin-left: var(--space-2);
+      font-size: var(--text-xs);
+    }
+    .ft-children { margin-left: var(--space-4); }
+
+    .step-cards {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      margin: var(--space-8) 0;
+    }
+    .step-card {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-4);
+      padding: var(--space-4) var(--space-5);
+      background: var(--color-surface);
+      border-radius: var(--radius-md);
+      border-left: 3px solid var(--color-accent);
+      box-shadow: var(--shadow-sm);
+    }
+    .step-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--color-accent);
+      color: white;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      flex-shrink: 0;
+    }
+    .step-body p {
+      margin: var(--space-1) 0 0;
+      color: var(--color-text-secondary);
+      font-size: var(--text-sm);
+    }
+
+    .icon-rows {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+      margin: var(--space-8) 0;
+    }
+    .icon-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      padding: var(--space-4);
+      background: var(--color-surface);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+    }
+    .icon-row p {
+      margin: 0;
+      color: var(--color-text-secondary);
+      font-size: var(--text-sm);
+    }
+    .icon-circle {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 768px) {
+      .translation-block { grid-template-columns: 1fr; }
+      .translation-english { border-left: none; border-top: 3px solid var(--color-accent); }
+      .module { padding: var(--space-8) var(--space-4); }
+      .module-title { font-size: var(--text-3xl); }
+      .module-number { font-size: var(--text-4xl); }
+      .nav-dots { display: none; }
+    }
+
+    @media print {
+      .nav { display: none; }
+      .module { min-height: auto; page-break-after: always; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <span class="nav-title">All Agent Skills Course</span>
+      <div class="nav-dots">
+        <button class="nav-dot active" data-target="module-1"></button>
+        <button class="nav-dot" data-target="module-2"></button>
+        <button class="nav-dot" data-target="module-3"></button>
+        <button class="nav-dot" data-target="module-4"></button>
+        <button class="nav-dot" data-target="module-5"></button>
+        <button class="nav-dot" data-target="module-6"></button>
+        <button class="nav-dot" data-target="module-7"></button>
+      </div>
+    </div>
+    <div class="progress-bar" id="progress-bar"></div>
+  </nav>
+
+  <!-- Module 1: What This App Does -->
+  <section class="module" id="module-1">
+    <div class="module-content">
+      <header class="module-header animate-in">
+        <span class="module-number">01</span>
+        <h1 class="module-title">What This Project Does</h1>
+        <p class="module-subtitle">A collection of skills that make your AI coding assistant do more — with less effort from you.</p>
+      </header>
+
+      <div class="animate-in">
+        <p>Imagine you have a super-smart assistant that can write code for you. But every time you need something specific — like turning code into a tutorial, or creating a client presentation — you have to explain the whole process from scratch.</p>
+        
+        <p style="margin-top: var(--space-4);">That's exhausting. This project solves that by giving your AI assistant <span class="term" data-definition="Skills are like presets or shortcuts — reusable sets of instructions that tell the AI exactly how to handle a specific task, so you don't have to explain it every time.">skills</span>.</p>
+      </div>
+
+      <div class="callout callout-accent animate-in">
+        <div class="callout-icon">💡</div>
+        <div class="callout-content">
+          <strong class="callout-title">Why This Matters for You</strong>
+          <p>When you use AI to code, you give it instructions in plain English. But complex tasks need many instructions. Skills package those instructions into one command — like a macro for your AI assistant.</p>
+        </div>
+      </div>
+
+      <div class="pattern-cards stagger-children">
+        <div class="pattern-card animate-in">
+          <div class="pattern-icon" style="background: var(--color-actor-1)">📚</div>
+          <h4 class="pattern-title">Codebase to Course</h4>
+          <p class="pattern-desc">Turn any codebase into an interactive HTML course that teaches how it works.</p>
+        </div>
+        <div class="pattern-card animate-in">
+          <div class="pattern-icon" style="background: var(--color-actor-2)">🎯</div>
+          <h4 class="pattern-title">Codebase to Demo</h4>
+          <p class="pattern-desc">Create client-ready demo decks with architecture diagrams and animations.</p>
+        </div>
+        <div class="pattern-card animate-in">
+          <div class="pattern-icon" style="background: var(--color-actor-3)">📊</div>
+          <h4 class="pattern-title">Excalidraw Diagram</h4>
+          <p class="pattern-desc">Generate beautiful diagrams from simple descriptions.</p>
+        </div>
+        <div class="pattern-card animate-in">
+          <div class="pattern-icon" style="background: var(--color-actor-4)">🛠️</div>
+          <h4 class="pattern-title">Skill Builder</h4>
+          <p class="pattern-desc">Create your own skills to automate recurring tasks.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Module 2: Meet the Actors -->
+  <section class="module" id="module-2">
+    <div class="module-content">
+      <header class="module-header animate-in">
+        <span class="module-number">02</span>
+        <h1 class="module-title">Meet the Skills</h1>
+        <p class="module-subtitle">Each skill has a specific job — here's what they bring to the table.</p>
+      </header>
+
+      <div class="icon-rows stagger-children">
+        <div class="icon-row animate-in">
+          <div class="icon-circle" style="background: var(--color-actor-1)">📚</div>
+          <div>
+            <strong>Codebase-to-Course</strong>
+            <p>Takes any folder of code and transforms it into a beautiful, interactive HTML course. Uses scroll-based navigation, animated diagrams, and plain-English explanations.</p>
+          </div>
+        </div>
+        <div class="icon-row animate-in">
+          <div class="icon-circle" style="background: var(--color-actor-2)">🎯</div>
+          <div>
+            <strong>Codebase-to-Demo</strong>
+            <p>Transforms code into a sales demo for clients. Includes before/after comparisons, architecture maps, and sequence diagrams — everything you need to pitch your work.</p>
+          </div>
+        </div>
+        <div class="icon-row animate-in">
+          <div class="icon-circle" style="background: var(--color-actor-3)">📊</div>
+          <div>
+            <strong>Excalidraw Diagram</strong>
+            <p>Creates diagrams from natural language descriptions. Architecture, flows, mind maps — describe what you want, get a diagram.</p>
+          </div>
+        </div>
+        <div class="icon-row animate-in">
+          <div class="icon-circle" style="background: var(--color-actor-4)">🛠️</div>
+          <div>
+            <strong>Skill Builder</strong>
+            <p>A meta-skill that helps you create new skills. Contains best practices, templates, and guidance for building reusable AI workflows.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout-info animate-in">
+        <div class="callout-icon">🤔</div>
+        <div class="callout-content">
+          <strong class="callout-title">Why Four Separate Skills?</strong>
+          <p>Each skill does one thing really well. This follows a key software principle: <span class="term" data-definition="Separation of concerns means each part of a system handles one specific job. Like a restaurant: the chef cooks, the waiter serves, the cashier handles payments. Nobody does everything.">separation of concerns</span>. When you need a course, you use the course skill. When you need a diagram, you use the diagram skill. No mixing, no confusion.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Module 3: How They Talk -->
+  <section class="module" id="module-3">
+    <div class="module-content">
+      <header class="module-header animate-in">
+        <span class="module-number">03</span>
+        <h1 class="module-title">How the Pieces Talk</h1>
+        <p class="module-subtitle">When you invoke a skill, here's what happens behind the scenes.</p>
+      </header>
+
+      <div class="chat-window animate-in">
+        <div class="chat-messages" id="chat-messages">
+          <div class="chat-message" data-msg="0" data-sender="user" style="display: flex;">
+            <div class="chat-avatar" style="background: var(--color-actor-4)">You</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-4)">You</span>
+              <p>Hey, turn this codebase into a course!</p>
+            </div>
+          </div>
+          <div class="chat-message" data-msg="1" data-sender="claude">
+            <div class="chat-avatar" style="background: var(--color-actor-1)">AI</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-1)">Claude Code</span>
+              <p>Got it! Let me load the codebase-to-course skill first...</p>
+            </div>
+          </div>
+          <div class="chat-message" data-msg="2" data-sender="skill">
+            <div class="chat-avatar" style="background: var(--color-actor-2)">📚</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-2)">Skill Loader</span>
+              <p>Loading skill instructions... Now I know exactly how to build a course!</p>
+            </div>
+          </div>
+          <div class="chat-message" data-msg="3" data-sender="analyzer">
+            <div class="chat-avatar" style="background: var(--color-actor-3)">🔍</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-3)">Code Analyzer</span>
+              <p>Reading your project files... Found 12 key components, 3 data flows, and the main entry point!</p>
+            </div>
+          </div>
+          <div class="chat-message" data-msg="4" data-sender="generator">
+            <div class="chat-avatar" style="background: var(--color-actor-5)">⚡</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-5)">HTML Generator</span>
+              <p>Building your course... Adding animations, translations, and diagrams!</p>
+            </div>
+          </div>
+          <div class="chat-message" data-msg="5" data-sender="claude">
+            <div class="chat-avatar" style="background: var(--color-actor-1)">AI</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-1)">Claude Code</span>
+              <p>Done! Your course is ready — open the HTML file to see it in action.</p>
+            </div>
+          </div>
+        </div>
+        <div class="chat-typing" id="chat-typing">
+          <div class="chat-avatar" id="typing-avatar">?</div>
+          <div class="chat-typing-dots">
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+          </div>
+        </div>
+        <div class="chat-controls">
+          <button class="chat-btn" onclick="playChatNext()">Next Message</button>
+          <button class="chat-btn" onclick="playChatAll()">Play All</button>
+          <button class="chat-btn" onclick="resetChat()">Replay</button>
+          <span class="chat-progress" id="chat-progress">1 / 6 messages</span>
+        </div>
+      </div>
+
+      <div class="callout callout-accent animate-in">
+        <div class="callout-icon">💡</div>
+        <div class="callout-content">
+          <strong class="callout-title">The Key Insight</strong>
+          <p>Skills work because they give the AI a <span class="term" data-definition="A template is a ready-made structure with placeholders. You fill in the blanks, and the template does the rest — like a form with fields to complete.">template</span> for complex tasks. Instead of improvising every step, the AI follows a proven recipe. That's why the output is consistent and high-quality.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Module 4: The Code Structure -->
+  <section class="module" id="module-4">
+    <div class="module-content">
+      <header class="module-header animate-in">
+        <span class="module-number">04</span>
+        <h1 class="module-title">What the Code Looks Like</h1>
+        <p class="module-subtitle">Let's peek at the actual skill definition — this is what makes skills work.</p>
+      </header>
+
+      <div class="translation-block animate-in">
+        <div class="translation-code">
+          <span class="translation-label">CODE</span>
+          <pre><code><span class="code-line"><span class="code-keyword">name</span>: codebase-to-course</span>
+<span class="code-line"><span class="code-keyword">description</span>: <span class="code-string">"Turn any codebase into a...</span></span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment"># The process section</span></span>
+<span class="code-line"><span class="code-keyword">1.</span> Analyze the codebase</span>
+<span class="code-line"><span class="code-keyword">2.</span> Design curriculum</span>
+<span class="code-line"><span class="code-keyword">3.</span> Build HTML course</span></code></pre>
+        </div>
+        <div class="translation-english">
+          <span class="translation-label">PLAIN ENGLISH</span>
+          <div class="translation-lines">
+            <p class="tl"><strong>Line 1:</strong> The skill's short name — this is what you type after the slash command.</p>
+            <p class="tl"><strong>Line 2:</strong> A description that tells the AI when to use this skill. It's like a keyword match.</p>
+            <p class="tl"><strong>Blank line:</strong> Just separating sections for readability.</p>
+            <p class="tl"><strong>Lines 5-7:</strong> The step-by-step process the AI follows. Each numbered item is a concrete action.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="file-tree animate-in">
+        <div class="ft-folder open">
+          <span class="ft-name">all-agent-skills-repo/</span>
+          <span class="ft-desc">The main folder containing all skills</span>
+          <div class="ft-children">
+            <div class="ft-folder">
+              <span class="ft-name">codebase-to-course/</span>
+              <span class="ft-desc">The course-building skill</span>
+              <div class="ft-children">
+                <div class="ft-file">
+                  <span class="ft-name">SKILL.md</span>
+                  <span class="ft-desc">The skill definition</span>
+                </div>
+                <div class="ft-file">
+                  <span class="ft-name">README.md</span>
+                  <span class="ft-desc">Documentation</span>
+                </div>
+                <div class="ft-folder">
+                  <span class="ft-name">references/</span>
+                  <span class="ft-desc">Design & implementation guides</span>
+                </div>
+              </div>
+            </div>
+            <div class="ft-folder">
+              <span class="ft-name">codebase-to-demo/</span>
+              <span class="ft-desc">The demo-building skill</span>
+            </div>
+            <div class="ft-folder">
+              <span class="ft-name">excalidraw-diagram/</span>
+              <span class="ft-desc">The diagram skill</span>
+            </div>
+            <div class="ft-folder">
+              <span class="ft-name">skill-builder/</span>
+              <span class="ft-desc">The meta-skill for building skills</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout-info animate-in">
+        <div class="callout-icon">📝</div>
+        <div class="callout-content">
+          <strong class="callout-title">The .md Files</strong>
+          <p>Each skill is defined in a <code>.md</code> file (Markdown). Markdown is just plain text with simple formatting — bold, lists, headers. Easy to read, easy to edit. That's why skills are so approachable: they're just documents.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Module 5: Data Flow -->
+  <section class="module" id="module-5">
+    <div class="module-content">
+      <header class="module-header animate-in">
+        <span class="module-number">05</span>
+        <h1 class="module-title">The Data Flow</h1>
+        <p class="module-subtitle">Watch how information moves from your request to the finished product.</p>
+      </header>
+
+      <div class="flow-animation animate-in">
+        <div class="flow-actors">
+          <div class="flow-actor" id="flow-actor-user">
+            <div class="flow-actor-icon" style="background: var(--color-actor-4)">You</div>
+            <span>You</span>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-actor" id="flow-actor-cli">
+            <div class="flow-actor-icon" style="background: var(--color-actor-1)">⌘</div>
+            <span>Claude Code</span>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-actor" id="flow-actor-skill">
+            <div class="flow-actor-icon" style="background: var(--color-actor-2)">📚</div>
+            <span>Skill</span>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-actor" id="flow-actor-out">
+            <div class="flow-actor-icon" style="background: var(--color-actor-5)">📄</div>
+            <span>Output</span>
+          </div>
+        </div>
+        <div class="flow-step-label" id="flow-label">Click "Next Step" to trace a request</div>
+        <div class="flow-controls">
+          <button class="flow-btn" onclick="flowNext()">Next Step</button>
+          <button class="flow-btn" onclick="flowReset()">Restart</button>
+          <span class="flow-progress" id="flow-progress">Step 0 / 4</span>
+        </div>
+      </div>
+
+      <div class="step-cards animate-in">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <strong>You make a request</strong>
+            <p>You type a command like "/codebase-to-course" or describe what you want in plain English.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <strong>Claude Code receives it</strong>
+            <p>The AI assistant reads your request and checks if any loaded skills match what you need.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <strong>Skill executes</strong>
+            <p>The skill provides step-by-step instructions that the AI follows to complete your task.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <strong>Output delivered</strong>
+            <p>The AI produces the final result — a course, demo, diagram, or whatever the skill is designed to create.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Module 6: External Connections -->
+  <section class="module" id="module-6">
+    <div class="module-content">
+      <header class="module-header animate-in">
+        <span class="module-number">06</span>
+        <h1 class="module-title">The Outside World</h1>
+        <p class="module-subtitle">These skills don't exist in a vacuum — they connect to tools you already use.</p>
+      </header>
+
+      <div class="pattern-cards stagger-children">
+        <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-1)">
+          <div class="pattern-icon" style="background: var(--color-actor-1)">🐙</div>
+          <h4 class="pattern-title">GitHub</h4>
+          <p class="pattern-desc">Skills can clone repos, read files, and push changes. Your AI assistant has full <span class="term" data-definition="Git is a version control system — it tracks every change you make to code, so you can go back in time if something breaks. Think of it as an unlimited undo button for your projects.">Git</span> superpowers.</p>
+        </div>
+        <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-2)">
+          <div class="pattern-icon" style="background: var(--color-actor-2)">📁</div>
+          <h4 class="pattern-title">Local Files</h4>
+          <p class="pattern-desc">Read and write files on your computer. The skills analyze your actual project files to understand what you're building.</p>
+        </div>
+        <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-3)">
+          <div class="pattern-icon" style="background: var(--color-actor-3)">🌐</div>
+          <h4 class="pattern-title">Web Fetch</h4>
+          <p class="pattern-desc">Fetch content from any URL. Great for reading documentation, fetching APIs, or grabbing data from the internet.</p>
+        </div>
+        <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-4)">
+          <div class="pattern-icon" style="background: var(--color-actor-4)">🎨</div>
+          <h4 class="pattern-title">Excalidraw</h4>
+          <p class="pattern-desc">Generate diagram files that open directly in Excalidraw — the hand-drawn style diagram tool loved by developers.</p>
+        </div>
+      </div>
+
+      <div class="callout callout-accent animate-in">
+        <div class="callout-icon">🔗</div>
+        <div class="callout-content">
+          <strong class="callout-title">Why This Matters</strong>
+          <p>Skills don't just think — they act. They can read your files, call <span class="term" data-definition="An API (Application Programming Interface) is a connection between two software systems. It's like a waiter in a restaurant: you (one system) tell the waiter what you want, the waiter relays it to the kitchen (another system), and brings back what you asked for.">APIs</span>, and create files. That's what makes them powerful: they're not just advisors, they're do-ers.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Module 7: The Big Picture -->
+  <section class="module" id="module-7">
+    <div class="module-content">
+      <header class="module-header animate-in">
+        <span class="module-number">07</span>
+        <h1 class="module-title">The Big Picture</h1>
+        <p class="module-subtitle">Why this approach works — and why it matters for you.</p>
+      </header>
+
+      <div class="animate-in">
+        <p>Think of skills as <span class="term" data-definition="A recipe is a set of precise instructions that always produce the same result. Follow the steps, and you get the dish — every time.">recipes</span> for your AI assistant. When you need something specific done repeatedly, you could:</p>
+        
+        <div class="step-cards">
+          <div class="step-card">
+            <div class="step-num" style="background: var(--color-error);">✗</div>
+            <div class="step-body">
+              <strong>Explain everything every time</strong>
+              <p>Waste time re-explaining the same process to your AI. Tedious and error-prone.</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num" style="background: var(--color-success);">✓</div>
+            <div class="step-body">
+              <strong>Use a skill</strong>
+              <p>One command, consistent results. The skill handles the complexity so you don't have to.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout-info animate-in">
+        <div class="callout-icon">🚀</div>
+        <div class="callout-content">
+          <strong class="callout-title">Your Next Step</strong>
+          <p>Now that you understand how skills work, try using one! Install Claude Code, add these skills, and type "/codebase-to-course" on any folder of code. Watch the magic happen.</p>
+        </div>
+      </div>
+
+      <div class="hero animate-in" style="margin-top: var(--space-12);">
+        <h1>Ready to <span>Learn More</span>?</h1>
+        <p>The best way to understand skills is to use them. Pick a skill, try it out, and see how much faster your AI workflow becomes.</p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (function() {
+      // Progress bar
+      const progressBar = document.getElementById('progress-bar');
+      const navDots = document.querySelectorAll('.nav-dot');
+      
+      function updateProgress() {
+        const scrollTop = window.scrollY;
+        const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = (scrollTop / scrollHeight) * 100;
+        progressBar.style.width = progress + '%';
+        
+        // Update active dot
+        let current = 0;
+        const modules = document.querySelectorAll('.module');
+        modules.forEach((module, i) => {
+          const rect = module.getBoundingClientRect();
+          if (rect.top <= window.innerHeight / 2) {
+            current = i;
+          }
+        });
+        navDots.forEach((dot, i) => {
+          dot.classList.toggle('active', i === current);
+        });
+      }
+      
+      window.addEventListener('scroll', () => {
+        requestAnimationFrame(updateProgress);
+      }, { passive: true });
+      
+      // Nav dot clicks
+      navDots.forEach(dot => {
+        dot.addEventListener('click', () => {
+          const target = document.getElementById('module-' + (parseInt(dot.dataset.target.split('-')[1]) + 1));
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth' });
+          }
+        });
+      });
+      
+      // Animation observer
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: '0px 0px -10% 0px', threshold: 0.1 });
+      
+      document.querySelectorAll('.animate-in').forEach(el => observer.observe(el));
+      
+      // Stagger children
+      document.querySelectorAll('.stagger-children').forEach(parent => {
+        Array.from(parent.children).forEach((child, i) => {
+          child.style.setProperty('--stagger-index', i);
+        });
+      });
+      
+      // Chat animation
+      let chatIndex = 0;
+      const chatMessages = document.querySelectorAll('#chat-messages .chat-message');
+      const chatActors = {
+        'user': { initials: 'You', color: 'var(--color-actor-4)' },
+        'claude': { initials: 'AI', color: 'var(--color-actor-1)' },
+        'skill': { initials: '📚', color: 'var(--color-actor-2)' },
+        'analyzer': { initials: '🔍', color: 'var(--color-actor-3)' },
+        'generator': { initials: '⚡', color: 'var(--color-actor-5)' }
+      };
+      
+      window.playChatNext = function() {
+        if (chatIndex >= chatMessages.length) return;
+        const msg = chatMessages[chatIndex];
+        const sender = msg.dataset.sender;
+        
+        const typing = document.getElementById('chat-typing');
+        const avatar = document.getElementById('typing-avatar');
+        avatar.textContent = chatActors[sender].initials;
+        avatar.style.background = chatActors[sender].color;
+        typing.style.display = 'flex';
+        
+        setTimeout(() => {
+          typing.style.display = 'none';
+          msg.style.display = 'flex';
+          msg.style.animation = 'fadeSlideUp 0.3s var(--ease-out)';
+          chatIndex++;
+          document.getElementById('chat-progress').textContent = chatIndex + ' / ' + chatMessages.length + ' messages';
+        }, 600);
+      };
+      
+      window.playChatAll = function() {
+        chatIndex = 0;
+        chatMessages.forEach(m => m.style.display = 'none');
+        const interval = setInterval(() => {
+          if (chatIndex >= chatMessages.length) { clearInterval(interval); return; }
+          playChatNext();
+        }, 1200);
+      };
+      
+      window.resetChat = function() {
+        chatIndex = 0;
+        chatMessages.forEach(m => m.style.display = 'none');
+        document.getElementById('chat-progress').textContent = '1 / ' + chatMessages.length + ' messages';
+      };
+      
+      // Flow animation
+      const flowSteps = [
+        { highlight: 'user', label: 'You make a request: "/codebase-to-course"' },
+        { highlight: 'cli', label: 'Claude Code receives your request' },
+        { highlight: 'skill', label: 'The skill loads with its instructions' },
+        { highlight: 'out', label: 'HTML course is generated and saved' }
+      ];
+      let flowIndex = 0;
+      
+      window.flowNext = function() {
+        if (flowIndex >= flowSteps.length) return;
+        const step = flowSteps[flowIndex];
+        
+        document.querySelectorAll('.flow-actor').forEach(a => a.classList.remove('active'));
+        document.getElementById('flow-actor-' + step.highlight).classList.add('active');
+        
+        document.getElementById('flow-label').textContent = step.label;
+        flowIndex++;
+        document.getElementById('flow-progress').textContent = 'Step ' + flowIndex + ' / ' + flowSteps.length;
+      };
+      
+      window.flowReset = function() {
+        flowIndex = 0;
+        document.querySelectorAll('.flow-actor').forEach(a => a.classList.remove('active'));
+        document.getElementById('flow-label').textContent = 'Click "Next Step" to trace a request';
+        document.getElementById('flow-progress').textContent = 'Step 0 / ' + flowSteps.length;
+      };
+      
+      // Tooltips
+      let activeTooltip = null;
+      
+      function positionTooltip(term, tip) {
+        const rect = term.getBoundingClientRect();
+        const tipWidth = 280;
+        let left = rect.left + rect.width / 2 - tipWidth / 2;
+        left = Math.max(8, Math.min(left, window.innerWidth - tipWidth - 8));
+        
+        document.body.appendChild(tip);
+        const tipHeight = tip.offsetHeight;
+        
+        if (rect.top - tipHeight - 8 < 0) {
+          tip.style.top = (rect.bottom + 8) + 'px';
+          tip.style.left = left + 'px';
+          tip.classList.add('flip');
+        } else {
+          tip.style.top = (rect.top - tipHeight - 8) + 'px';
+          tip.style.left = left + 'px';
+          tip.classList.remove('flip');
+        }
+      }
+      
+      document.querySelectorAll('.term').forEach(term => {
+        const tip = document.createElement('span');
+        tip.className = 'term-tooltip';
+        tip.textContent = term.dataset.definition;
+        
+        term.addEventListener('mouseenter', () => {
+          if (activeTooltip && activeTooltip !== tip) {
+            activeTooltip.classList.remove('visible');
+            activeTooltip.remove();
+          }
+          positionTooltip(term, tip);
+          requestAnimationFrame(() => tip.classList.add('visible'));
+          activeTooltip = tip;
+        });
+        
+        term.addEventListener('mouseleave', () => {
+          tip.classList.remove('visible');
+          setTimeout(() => { if (!tip.classList.contains('visible')) tip.remove(); }, 150);
+          activeTooltip = null;
+        });
+        
+        term.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (activeTooltip && activeTooltip !== tip) {
+            activeTooltip.classList.remove('visible');
+            activeTooltip.remove();
+          }
+          if (tip.classList.contains('visible')) {
+            tip.classList.remove('visible');
+            tip.remove();
+            activeTooltip = null;
+          } else {
+            positionTooltip(term, tip);
+            requestAnimationFrame(() => tip.classList.add('visible'));
+            activeTooltip = tip;
+          }
+        });
+      });
+      
+      document.addEventListener('click', () => {
+        if (activeTooltip) {
+          activeTooltip.classList.remove('visible');
+          activeTooltip.remove();
+          activeTooltip = null;
+        }
+      });
+      
+      // Keyboard navigation
+      document.addEventListener('keydown', (e) => {
+        if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
+        
+        const modules = Array.from(document.querySelectorAll('.module'));
+        const currentIndex = modules.findIndex(m => {
+          const rect = m.getBoundingClientRect();
+          return rect.top >= -100 && rect.top <= 200;
+        });
+        
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+          e.preventDefault();
+          const nextIndex = Math.min(currentIndex + 1, modules.length - 1);
+          modules[nextIndex].scrollIntoView({ behavior: 'smooth' });
+        }
+        if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+          e.preventDefault();
+          const prevIndex = Math.max(currentIndex - 1, 0);
+          modules[prevIndex].scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
