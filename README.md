@@ -159,6 +159,24 @@ Create premium, polished Instagram and LinkedIn carousel posts as individual SVG
 - CTA always includes "Follow @devengoratela for more"
 - Consistent design across all slides (one cohesive system)
 - SVG output only (no HTML/CSS/JS)
+- **Caption & hashtag generation** with optimization for engagement
+- **Auto-save to carousel-output folder**
+
+**Caption Optimization:**
+- Hook: Under 8 words to avoid mobile truncation
+- Re-Hook: Punchy second line to keep reading
+- Hashtags: 3-5 relevant, specific hashtags
+- Saved to `carousel-output/caption.md`
+
+**Output Structure:**
+```
+carousel-output/
+├── slides/
+│   ├── {topic}-slide-1.svg
+│   ├── {topic}-slide-2.svg
+│   └── ...
+└── caption.md
+```
 
 **Content Strategy:**
 - Hook slide: Bold, premium, curiosity-driven
