@@ -73,6 +73,7 @@ Before writing any HTML, deeply analyze the codebase to extract the business sto
 * **The data journey** — what enters the system, how it's processed, and what comes out
 * **External integrations** — every third-party tool, API, or platform the system touches
 * **The tech stack** — what was chosen, and the business reason why (stability, cost, flexibility, etc.)
+* **API & service costs** — every external API, paid service, or SaaS tool with pricing tiers (e.g., OpenAI, Anthropic, Stripe, Twilio, Supabase, Railway, etc.). Note the expected usage volume from the codebase.
 * **Failure modes** — how the system handles errors, retries, and edge cases
 * **Scale and deployment** — how it's hosted, who maintains it, what happens as volume grows
 
@@ -93,7 +94,7 @@ Structure the demo as **6-9 modules** following the Pitch Arc below. Each module
 | 5 — What Could Break | "What happens when something goes wrong?" | The "What Would Break If…" Explorer — show resilience, retry logic, and alerts in a visual way. |
 | 6 — Why These Tools | "Why not just use [X]?" | Tech Stack Justification — one card per tool, with the business reason it was chosen over alternatives. |
 | 7 — Integrations | "What does it plug into?" | Integration Map detail — each connected platform with logo, what data flows in/out, and setup complexity. |
-| 8 — Going Live | "How do we actually run this?" | Deployment & Scaling Notes — hosting, maintenance, cost at scale, who to call when something breaks. |
+| 8 — Going Live | "How do we actually run this?" | Deployment & Scaling Notes — hosting, maintenance, calculated API costs (INR with USD toggle), who to call when something breaks. |
 | 9 — Next Steps | "What happens after I say yes?" | A clear, confident close: implementation timeline, what you need from them, and what they get. |
 
 Not every implementation needs all 9. A simple two-step automation might only need 5-6 modules. Use judgment — every module must earn its place by answering a real buyer question.
@@ -321,6 +322,35 @@ Every module opens with the buyer's problem, not the solution. "Right now, your 
 ### Numbers Make It Real
 
 Wherever possible, include estimates: time saved, error rate reduction, cost per transaction, volume capacity. If you can't find exact numbers in the codebase, use conservative estimates based on the architecture and flag them as estimates. Vague benefits ("saves time") are weak. Specific benefits ("reduces processing time from 45 minutes to 90 seconds") are compelling.
+
+### Estimate Real API Costs
+
+When building Module 8, calculate actual execution costs instead of using static examples:
+
+1. **Identify all paid services:** List every external API, hosting platform, and SaaS tool used in the codebase
+2. **Research current pricing:** Use web search to find the latest pricing for each service (e.g., OpenAI GPT-4 pricing, Supabase storage costs, Railway compute pricing)
+3. **Calculate monthly estimates:** Based on the expected usage inferred from the codebase (API call frequency, data volume, user count)
+4. **Convert to INR:** Fetch live USD→INR rate, add 2-5% conversion levy for international transactions
+5. **Show per-API breakdown:** Display each service's estimated monthly cost separately in INR
+6. **Include currency toggle:** Add a toggle to switch between INR and USD views (default to INR)
+7. **Show rate source:** Display "Rate from [source] on [date] with X% levy applied"
+8. **Add total row:** Show the sum of all API costs as "Estimated Monthly Cost"
+
+Example output format:
+```
+┌─────────────────────────────────────────┐
+│  Estimated API Costs (INR)    [INR|USD] │
+├─────────────────────────────────────────┤
+│  OpenAI GPT-4 API        ₹4,500/month   │
+│  Supabase Database       ₹1,200/month   │
+│  Railway Hosting         ₹2,000/month   │
+│  ─────────────────────────────────────   │
+│  Total                   ₹7,700/month   │
+│                                         │
+│  Rate: 1 USD = ₹83.50 + 2.5% levy       │
+│  Source: exchangerate.host, Apr 2026    │
+└─────────────────────────────────────────┘
+```
 
 ### No Code in the Demo
 

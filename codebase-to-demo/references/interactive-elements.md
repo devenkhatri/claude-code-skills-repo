@@ -605,11 +605,12 @@ Answer "why not just use [simpler/cheaper/alternative]?" before the buyer asks i
 
 ## Deployment & Scaling Notes
 
-Address the "what happens after we go live?" fear.
+Address the "what happens after we go live?" fear. Include calculated API costs in INR with USD toggle.
 
 **HTML:**
 ```html
 <div class="deployment-notes">
+  <!-- Deployment columns (Day 1 / 6 Months / At Scale) -->
   <div class="deploy-columns">
     <div class="deploy-column">
       <h4>Day 1</h4>
@@ -620,10 +621,6 @@ Address the "what happens after we go live?" fear.
       <div class="deploy-item">
         <strong>Expected Volume</strong>
         <span>~50 leads/day</span>
-      </div>
-      <div class="deploy-item">
-        <strong>Monthly Cost</strong>
-        <span>$25/month</span>
       </div>
       <div class="deploy-item">
         <strong>Maintenance</strong>
@@ -641,10 +638,6 @@ Address the "what happens after we go live?" fear.
         <span>~500 leads/day</span>
       </div>
       <div class="deploy-item">
-        <strong>Monthly Cost</strong>
-        <span>$50/month</span>
-      </div>
-      <div class="deploy-item">
         <strong>Maintenance</strong>
         <span>2 hours/month</span>
       </div>
@@ -660,15 +653,51 @@ Address the "what happens after we go live?" fear.
         <span>5,000+ leads/day</span>
       </div>
       <div class="deploy-item">
-        <strong>Monthly Cost</strong>
-        <span>$200/month</span>
-      </div>
-      <div class="deploy-item">
         <strong>Maintenance</strong>
         <span>4 hours/month</span>
       </div>
     </div>
   </div>
+
+  <!-- API Cost Calculator Section -->
+  <div class="api-cost-section">
+    <div class="cost-header">
+      <h4>Estimated API Costs</h4>
+      <div class="currency-toggle">
+        <button class="currency-btn active" data-currency="inr">INR</button>
+        <button class="currency-btn" data-currency="usd">USD</button>
+      </div>
+    </div>
+    <div class="cost-breakdown">
+      <!-- Populated based on analyzed APIs from the codebase -->
+      <div class="cost-row">
+        <span class="service-name">OpenAI GPT-4 API</span>
+        <span class="service-cost inr">₹4,500/month</span>
+        <span class="service-cost usd hidden">$54/month</span>
+      </div>
+      <div class="cost-row">
+        <span class="service-name">Supabase Database</span>
+        <span class="service-cost inr">₹1,200/month</span>
+        <span class="service-cost usd hidden">$14/month</span>
+      </div>
+      <div class="cost-row">
+        <span class="service-name">Railway Hosting</span>
+        <span class="service-cost inr">₹2,000/month</span>
+        <span class="service-cost usd hidden">$24/month</span>
+      </div>
+      <div class="cost-total">
+        <span class="total-label">Total Estimated</span>
+        <span class="total-value inr">₹7,700/month</span>
+        <span class="total-value usd hidden">$92/month</span>
+      </div>
+    </div>
+    <div class="rate-info">
+      <span class="rate-note">Rate: 1 USD = ₹83.50 + 2.5% levy</span>
+      <span class="rate-source">Source: exchangerate.host, Apr 2026</span>
+    </div>
+  </div>
+
+  <!-- Who to Call section -->
   <div class="deploy-contact">
     <h4>Who to Call</h4>
     <div class="contact-item">
@@ -685,17 +714,126 @@ Address the "what happens after we go live?" fear.
 
 **CSS:**
 ```css
-.deployment-notes { margin: var(--space-8) 0; }
-.deploy-columns { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6); }
-.deploy-column { background: var(--color-surface); padding: var(--space-6); border-radius: var(--radius-md); }
-.deploy-column h4 { color: var(--color-accent); margin-bottom: var(--space-4); }
-.deploy-item { margin-bottom: var(--space-3); display: flex; flex-direction: column; }
-.deploy-item strong { font-size: var(--text-xs); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
-.deploy-item span { font-size: var(--text-sm); }
-.deploy-contact { margin-top: var(--space-6); padding: var(--space-4); background: var(--color-bg-code); border-radius: var(--radius-md); }
-.contact-item { display: flex; gap: var(--space-3); margin-top: var(--space-2); }
-.contact-label { font-weight: 600; color: var(--color-accent); }
+.api-cost-section {
+  margin-top: var(--space-6);
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+}
 
-@media (max-width: 768px) {
-  .deploy-columns { grid-template-columns: 1fr; }
-}```
+.cost-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-4);
+}
+
+.cost-header h4 {
+  color: var(--color-accent);
+  margin: 0;
+}
+
+.currency-toggle {
+  display: flex;
+  background: var(--color-bg-code);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.currency-btn {
+  padding: var(--space-2) var(--space-3);
+  border: none;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.currency-btn.active {
+  background: var(--color-accent);
+  color: white;
+}
+
+.cost-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.cost-row {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.service-name {
+  color: var(--color-text);
+  font-size: var(--text-sm);
+}
+
+.service-cost {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-text-light);
+}
+
+.hidden { display: none; }
+
+.cost-total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 2px solid var(--color-accent);
+}
+
+.total-label {
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+.total-value {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: var(--text-lg);
+  color: var(--color-accent);
+}
+
+.rate-info {
+  margin-top: var(--space-3);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+```
+
+**JavaScript:**
+```javascript
+// Currency toggle functionality
+document.querySelectorAll('.currency-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const container = btn.closest('.api-cost-section');
+    const currency = btn.dataset.currency;
+    
+    container.querySelectorAll('.currency-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    
+    const inrElements = container.querySelectorAll('.inr');
+    const usdElements = container.querySelectorAll('.usd');
+    
+    if (currency === 'inr') {
+      inrElements.forEach(el => el.classList.remove('hidden'));
+      usdElements.forEach(el => el.classList.add('hidden'));
+    } else {
+      inrElements.forEach(el => el.classList.add('hidden'));
+      usdElements.forEach(el => el.classList.remove('hidden'));
+    }
+  });
+});
+```

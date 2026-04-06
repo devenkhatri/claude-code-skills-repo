@@ -102,7 +102,14 @@ Transform any codebase or automation implementation into a compelling, interacti
 - "What Would Break If" Explorer (resilience and failure handling)
 - Integration Map (hub-and-spoke layout showing connections)
 - Tech Stack Justification cards with business reasons
-- Deployment & Scaling Notes
+- Deployment & Scaling Notes with **calculated API costs in INR (₹) with USD toggle**
+
+**Key Features:**
+- Web search to calculate real API execution costs based on the codebase
+- Per-API cost breakdown displayed in Indian Rupee (₹) with Indian number formatting
+- Currency toggle to switch between INR and USD views (defaults to INR)
+- Live USD→INR conversion rate with 2.5% service levy
+- Rate source attribution displayed in the cost section
 
 **Trigger Phrases:**
 - "Create a demo for this"

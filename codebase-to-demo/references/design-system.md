@@ -58,6 +58,29 @@ Complete CSS design tokens for the course. Copy this entire `:root` block into t
 }
 ```
 
+### Currency Formatting (INR)
+
+For Indian Rupee display, use Indian number formatting:
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--currency-symbol` | `₹` | INR symbol prefix |
+| `--currency-locale` | `en-IN` | Indian locale for number formatting |
+
+**INR Formatting:**
+```javascript
+// JavaScript formatting
+new Intl.NumberFormat('en-IN', { 
+  style: 'currency', 
+  currency: 'INR' 
+}).format(12345.67)
+// Output: ₹12,345.67
+```
+
+**Indian number grouping:** 1,23,456.78 (lakhs: 1 lakh = 100,000)
+
+---
+
 **Rules:**
 - Even-numbered modules use `--color-bg`, odd-numbered use `--color-bg-warm` (alternating backgrounds create visual rhythm)
 - Actor colors should be visually distinct from each other and from the accent
