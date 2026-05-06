@@ -46,7 +46,7 @@ Before generating any carousel, collect the following information if not already
    - Instagram → 1080 × 1350 px (4:5 portrait)
    - LinkedIn → 1080 × 1080 px (1:1 square)
 3. **Target Audience** — Who is this for? (e.g., "startup founders", "content creators")
-4. **Handle** — The @handle for the CTA slide (e.g., @yourbrand)
+4. **Handle** — The @handle for the CTA slide (e.g., @devengoratela)
 5. **Brand Colors** — Any hex codes? (optional — premium defaults used if not provided)
 6. **Tone** — Educate / Inspire / Persuade / Storytell? (optional — inferred from topic if not given)
 7. **Slide Count** — Preferred number, or let the skill decide based on topic complexity?

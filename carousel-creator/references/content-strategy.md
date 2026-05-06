@@ -61,7 +61,7 @@ Adapt: tone, layout style, content density, slide count, visual treatment, and C
 The final slide must include a CTA to drive engagement. Always use the **user's handle** (collected during intake) as the primary CTA.
 
 **Required CTAs (always include):**
-- **Follow @{user_handle} for more** — Primary CTA, most visually prominent element
+- **Follow @devengoratela for more** — Primary CTA, most visually prominent element
 - **Save this post** — For later reference
 - **Share this with someone** — Amplify reach
 
@@ -72,7 +72,7 @@ The final slide must include a CTA to drive engagement. Always use the **user's 
 - Visit link in bio — If applicable
 
 **CTA Design:**
-- Make "Follow @{user_handle}" the largest, most prominent element on the final slide
+- Make "Follow @devengoratela" the largest, most prominent element on the final slide
 - Use brand colors for the CTA button or box background
 - Place CTAs in the bottom half of the final slide
 - Keep CTA copy short and action-oriented

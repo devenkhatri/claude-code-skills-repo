@@ -120,14 +120,14 @@ Every SVG slide should be layered in this order:
 │                          │
 │  🔔 Enjoyed this?        │
 │                          │
-│  Follow @{handle}        │
+│  Follow @devengoratela   │
 │  for more content        │
 │                          │
 │  ─────────────────────── │
 │                          │
 │  💾 Save    📤 Share     │
 │                          │
-│  ── @handle footer ──    │
+│  @devengoratela footer   │
 └──────────────────────────┘
 ```
 
