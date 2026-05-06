@@ -603,9 +603,9 @@ body {
 <!-- MODULE 0: HOOK -->
 <section class="module" id="module-hook" style="position:relative;">
   <div class="hook-content animate-in">
-    <span class="hook-eyebrow">Claude Code Extension · 6 Skills · One Install</span>
+    <span class="hook-eyebrow">Claude Code Extension · 7 Skills · One Install</span>
     <h1 class="hook-line1">Your AI assistant has been doing the same task<br><span class="pain">manually, every single time</span> you ask it.</h1>
-    <p class="hook-line2">In the next few minutes, you'll see how six pre-built skills give Claude Code permanent superpowers — so you stop re-explaining the same workflows forever.</p>
+    <p class="hook-line2">In the next few minutes, you'll see how seven pre-built skills give Claude Code permanent superpowers — so you stop re-explaining the same workflows forever.</p>
   </div>
   <div class="hook-scroll-hint">
     <span>SCROLL</span>
@@ -718,7 +718,7 @@ body {
   <div class="module-content">
     <header class="module-header animate-in">
       <span class="module-number">02</span>
-      <h1 class="module-title">Six permanent superpowers for Claude Code.</h1>
+      <h1 class="module-title">Seven permanent superpowers for Claude Code.</h1>
       <p class="module-subtitle">One install gives your AI assistant a full set of production-ready skills — each one handling a specific professional workflow end-to-end.</p>
     </header>
 
@@ -760,6 +760,11 @@ body {
           <span class="int-spoke-icon">🔧</span>
           <span class="int-spoke-name">/skill-builder</span>
           <span class="int-spoke-desc">Create and audit your own skills</span>
+        </div>
+        <div class="int-spoke" data-platform="auditor">
+          <span class="int-spoke-icon">🔍</span>
+          <span class="int-spoke-name">/ui-ux-auditor</span>
+          <span class="int-spoke-desc">Pre-launch UI/UX audit from video, URL, or screenshots</span>
         </div>
       </div>
     </div>
@@ -853,14 +858,15 @@ body {
 
     <div class="arch-map animate-in">
       <div class="arch-svg-wrap">
-        <svg class="arch-svg" viewBox="0 0 860 420" xmlns="http://www.w3.org/2000/svg">
+        <svg class="arch-svg" viewBox="0 0 860 490" xmlns="http://www.w3.org/2000/svg">
           <!-- Connection lines -->
           <line class="arch-line" x1="430" y1="190" x2="120" y2="100"/>
           <line class="arch-line" x1="430" y1="190" x2="260" y2="70"/>
           <line class="arch-line" x1="430" y1="190" x2="600" y2="70"/>
           <line class="arch-line" x1="430" y1="190" x2="740" y2="100"/>
-          <line class="arch-line" x1="430" y1="230" x2="260" y2="350"/>
-          <line class="arch-line" x1="430" y1="230" x2="600" y2="350"/>
+          <line class="arch-line" x1="430" y1="230" x2="178" y2="350"/>
+          <line class="arch-line" x1="430" y1="230" x2="482" y2="350"/>
+          <line class="arch-line" x1="430" y1="230" x2="430" y2="408"/>
 
           <!-- Center: Claude Code -->
           <g class="arch-node arch-center" data-key="claude">
@@ -901,6 +907,13 @@ body {
             <rect x="482" y="308" width="160" height="72" rx="10"/>
             <text x="562" y="339" text-anchor="middle">skill-builder</text>
             <text class="node-sub" x="562" y="358" text-anchor="middle">SKILL.md → .claude/skills/</text>
+          </g>
+
+          <!-- Center bottom: ui-ux-auditor -->
+          <g class="arch-node" data-key="uiuxauditor">
+            <rect x="350" y="408" width="160" height="72" rx="10"/>
+            <text x="430" y="439" text-anchor="middle">ui-ux-auditor</text>
+            <text class="node-sub" x="430" y="458" text-anchor="middle">Audit report → artifact</text>
           </g>
         </svg>
         <p class="arch-hint">↑ Click any node to explore</p>
@@ -1095,6 +1108,7 @@ body {
         <span class="skill-chip">/frontend-slides</span>
         <span class="skill-chip">/excalidraw-diagram</span>
         <span class="skill-chip">/skill-builder</span>
+        <span class="skill-chip">/ui-ux-auditor</span>
       </div>
     </div>
 
@@ -1209,6 +1223,12 @@ body {
       summary: 'Guides you through creating or auditing Claude Code skills using a 6-round Discovery Interview. Produces production-ready SKILL.md files following official best practices.',
       input: 'Description of the workflow to automate',
       output: 'SKILL.md in .claude/skills/[name]/'
+    },
+    uiuxauditor: {
+      name: 'ui-ux-auditor',
+      summary: 'Performs a thorough, structured 11-dimension UI/UX audit of any application. Accepts video recordings, YouTube URLs, live web URLs, or zip files of screenshots — and produces a scored, launch-readiness report with critical findings, fix checklists, and a final verdict.',
+      input: 'Video file, YouTube URL, live web URL, or screenshots zip',
+      output: 'Structured markdown audit report (ui_ux_audit_report.md)'
     }
   };
 
@@ -1297,7 +1317,7 @@ body {
     'new-skill': {
       severity: 'green',
       rows: [
-        ['What happens', 'None of the six built-in skills covers the workflow you want to automate.'],
+        ['What happens', 'None of the seven built-in skills covers the workflow you want to automate.'],
         ['Skill response', 'Run /skill-builder — it guides you through a 6-round Discovery Interview to design and build a new skill from scratch following Claude Code best practices.'],
         ['What you get', 'A production-ready SKILL.md file installed in .claude/skills/ — works immediately, reusable forever.'],
         ['Time to build', 'Typically 20-30 minutes for a new skill from idea to working implementation.']
@@ -1327,7 +1347,8 @@ body {
     course: { desc: '→ OUT: Educational HTML file\nFreq: On-demand\nTeaches code to non-technical learners' },
     slides: { desc: '→ OUT: Animation-rich HTML\nFreq: On-demand\nZero dependencies, runs offline' },
     diagram: { desc: '→ OUT: .excalidraw JSON file\nFreq: On-demand\nFully editable in excalidraw.com' },
-    builder: { desc: '→ OUT: SKILL.md\nFreq: When creating new skills\nInstalled to .claude/skills/' }
+    builder: { desc: '→ OUT: SKILL.md\nFreq: When creating new skills\nInstalled to .claude/skills/' },
+    auditor: { desc: '→ OUT: Structured audit report\nFreq: Pre-launch / design review\nCovers 11 UX dimensions + launch verdict' }
   };
   const tooltip = document.getElementById('int-tooltip');
   document.querySelectorAll('.int-spoke').forEach(spoke => {

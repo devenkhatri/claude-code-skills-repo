@@ -3,1331 +3,1117 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>All Agent Skills — Learn How They Work</title>
+  <title>All Agent Skills — How They Work (Course)</title>
+  <meta name="description" content="An interactive course teaching how the 7 All Agent Skills work under the hood — for vibe coders who want to steer AI better.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400;1,9..40,500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --color-bg: #FAF7F2;
-      --color-bg-warm: #F5F0E8;
-      --color-bg-code: #1E1E2E;
-      --color-text: #2C2A28;
-      --color-text-secondary: #6B6560;
-      --color-text-muted: #9E9790;
-      --color-border: #E5DFD6;
-      --color-border-light: #EEEBE5;
-      --color-surface: #FFFFFF;
-      --color-surface-warm: #FDF9F3;
-      --color-accent: #D94F30;
-      --color-accent-hover: #C4432A;
-      --color-accent-light: #FDEEE9;
-      --color-accent-muted: #E8836C;
-      --color-success: #2D8B55;
-      --color-success-light: #E8F5EE;
-      --color-error: #C93B3B;
-      --color-error-light: #FDE8E8;
-      --color-info: #2A7B9B;
-      --color-info-light: #E4F2F7;
-      --color-actor-1: #D94F30;
-      --color-actor-2: #2A7B9B;
-      --color-actor-3: #7B6DAA;
-      --color-actor-4: #D4A843;
-      --color-actor-5: #2D8B55;
-      --font-display: 'Bricolage Grotesque', Georgia, serif;
-      --font-body: 'DM Sans', -apple-system, sans-serif;
-      --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
-      --text-xs: 0.75rem;
-      --text-sm: 0.875rem;
-      --text-base: 1rem;
-      --text-lg: 1.125rem;
-      --text-xl: 1.25rem;
-      --text-2xl: 1.5rem;
-      --text-3xl: 1.875rem;
-      --text-4xl: 2.25rem;
-      --text-5xl: 3rem;
-      --text-6xl: 3.75rem;
-      --leading-tight: 1.15;
-      --leading-snug: 1.3;
-      --leading-normal: 1.6;
-      --leading-loose: 1.8;
-      --space-1: 0.25rem;
-      --space-2: 0.5rem;
-      --space-3: 0.75rem;
-      --space-4: 1rem;
-      --space-5: 1.25rem;
-      --space-6: 1.5rem;
-      --space-8: 2rem;
-      --space-10: 2.5rem;
-      --space-12: 3rem;
-      --space-16: 4rem;
-      --space-20: 5rem;
-      --space-24: 6rem;
-      --content-width: 800px;
-      --nav-height: 50px;
-      --radius-sm: 8px;
-      --radius-md: 12px;
-      --radius-lg: 16px;
-      --radius-full: 9999px;
-      --shadow-sm: 0 1px 2px rgba(44, 42, 40, 0.05);
-      --shadow-md: 0 4px 12px rgba(44, 42, 40, 0.08);
-      --shadow-lg: 0 8px 24px rgba(44, 42, 40, 0.1);
-      --shadow-xl: 0 16px 48px rgba(44, 42, 40, 0.12);
-      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-      --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
-      --duration-fast: 150ms;
-      --duration-normal: 300ms;
-      --duration-slow: 500ms;
-      --stagger-delay: 120ms;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html {
-      scroll-snap-type: y proximity;
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: var(--font-body);
-      font-size: var(--text-base);
-      line-height: var(--leading-normal);
-      color: var(--color-text);
-      background: var(--color-bg);
-    }
-
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb {
-      background: var(--color-border);
-      border-radius: var(--radius-full);
-    }
-
-    .nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: var(--nav-height);
-      background: var(--color-bg-code);
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      padding: 0 var(--space-6);
-    }
-    .nav-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    .nav-title {
-      color: #CDD6F4;
-      font-family: var(--font-display);
-      font-weight: 700;
-      font-size: var(--text-lg);
-    }
-    .nav-dots {
-      display: flex;
-      gap: var(--space-2);
-    }
-    .nav-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      border: 2px solid var(--color-text-muted);
-      background: transparent;
-      cursor: pointer;
-      transition: all var(--duration-fast) var(--ease-out);
-    }
-    .nav-dot:hover { border-color: var(--color-accent); }
-    .nav-dot.active {
-      border-color: var(--color-accent);
-      background: var(--color-accent);
-      box-shadow: 0 0 8px rgba(217, 79, 48, 0.4);
-    }
-    .progress-bar {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      height: 2px;
-      background: var(--color-accent);
-      width: 0%;
-      transition: width var(--duration-fast) var(--ease-out);
-    }
-
-    .module {
-      min-height: 100dvh;
-      scroll-snap-align: start;
-      padding: var(--space-16) var(--space-6);
-      padding-top: calc(var(--nav-height) + var(--space-12));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .module:nth-child(odd) { background: var(--color-bg); }
-    .module:nth-child(even) { background: var(--color-bg-warm); }
-
-    .module-content {
-      max-width: var(--content-width);
-      width: 100%;
-      margin: 0 auto;
-    }
-
-    .module-header {
-      text-align: center;
-      margin-bottom: var(--space-12);
-    }
-    .module-number {
-      display: block;
-      font-family: var(--font-display);
-      font-size: var(--text-6xl);
-      font-weight: 800;
-      color: var(--color-accent);
-      opacity: 0.15;
-      line-height: 1;
-      margin-bottom: var(--space-4);
-    }
-    .module-title {
-      font-family: var(--font-display);
-      font-size: var(--text-4xl);
-      font-weight: 700;
-      line-height: var(--leading-tight);
-      margin-bottom: var(--space-4);
-    }
-    .module-subtitle {
-      font-size: var(--text-lg);
-      color: var(--color-text-secondary);
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    .animate-in {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity var(--duration-slow) var(--ease-out),
-                  transform var(--duration-slow) var(--ease-out);
-    }
-    .animate-in.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .stagger-children > .animate-in {
-      transition-delay: calc(var(--stagger-index, 0) * var(--stagger-delay));
-    }
-
-    .hero {
-      text-align: center;
-    }
-    .hero h1 {
-      font-family: var(--font-display);
-      font-size: clamp(2.5rem, 6vw, 4rem);
-      font-weight: 800;
-      line-height: 1.1;
-      margin-bottom: var(--space-6);
-    }
-    .hero h1 span {
-      color: var(--color-accent);
-    }
-    .hero p {
-      font-size: var(--text-xl);
-      color: var(--color-text-secondary);
-      max-width: 600px;
-      margin: 0 auto var(--space-8);
-      line-height: var(--leading-loose);
-    }
-
-    .term {
-      border-bottom: 1.5px dashed var(--color-accent-muted);
-      cursor: pointer;
-      position: relative;
-    }
-    .term:hover, .term.active {
-      border-bottom-color: var(--color-accent);
-      color: var(--color-accent);
-    }
-    .term-tooltip {
-      position: fixed;
-      background: var(--color-bg-code);
-      color: #CDD6F4;
-      padding: var(--space-3) var(--space-4);
-      border-radius: var(--radius-sm);
-      font-size: var(--text-sm);
-      font-family: var(--font-body);
-      line-height: var(--leading-normal);
-      width: max(200px, min(320px, 80vw));
-      box-shadow: var(--shadow-lg);
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity var(--duration-fast);
-      z-index: 10000;
-    }
-    .term-tooltip::after {
-      content: '';
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      border: 6px solid transparent;
-      border-top-color: var(--color-bg-code);
-    }
-    .term-tooltip.visible { opacity: 1; }
-    .term-tooltip.flip {
-      bottom: auto;
-      top: calc(100% + 8px);
-    }
-    .term-tooltip.flip::after {
-      top: auto;
-      bottom: 100%;
-      border-top-color: transparent;
-      border-bottom-color: var(--color-bg-code);
-    }
-
-    .translation-block {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0;
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      box-shadow: var(--shadow-md);
-      margin: var(--space-8) 0;
-    }
-    .translation-code {
-      background: var(--color-bg-code);
-      color: #CDD6F4;
-      padding: var(--space-6);
-      font-family: var(--font-mono);
-      font-size: var(--text-sm);
-      line-height: 1.7;
-      position: relative;
-      overflow-x: hidden;
-    }
-    .translation-code pre, .translation-code code {
-      white-space: pre-wrap;
-      word-break: break-word;
-      overflow-x: hidden;
-    }
-    .translation-english {
-      background: var(--color-surface-warm);
-      padding: var(--space-6);
-      font-size: var(--text-sm);
-      line-height: 1.7;
-      border-left: 3px solid var(--color-accent);
-    }
-    .translation-label {
-      position: absolute;
-      top: var(--space-2);
-      right: var(--space-3);
-      font-size: var(--text-xs);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      opacity: 0.5;
-    }
-    .translation-english .translation-label {
-      color: var(--color-text-muted);
-    }
-    .code-keyword { color: #CBA6F7; }
-    .code-string { color: #A6E3A1; }
-    .code-function { color: #89B4FA; }
-    .code-comment { color: #6C7086; }
-    .code-number { color: #FAB387; }
-    .code-property { color: #F9E2AF; }
-    .code-operator { color: #94E2D5; }
-
-    .callout {
-      display: flex;
-      gap: var(--space-4);
-      padding: var(--space-5);
-      border-radius: var(--radius-md);
-      margin: var(--space-8) 0;
-    }
-    .callout-accent {
-      background: var(--color-accent-light);
-      border-left: 4px solid var(--color-accent);
-    }
-    .callout-info {
-      background: var(--color-info-light);
-      border-left: 4px solid var(--color-info);
-    }
-    .callout-icon { font-size: 1.5rem; }
-    .callout-title {
-      font-family: var(--font-display);
-      font-weight: 700;
-      margin-bottom: var(--space-2);
-    }
-
-    .pattern-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: var(--space-4);
-      margin: var(--space-8) 0;
-    }
-    .pattern-card {
-      background: var(--color-surface);
-      border-radius: var(--radius-md);
-      padding: var(--space-6);
-      box-shadow: var(--shadow-sm);
-      transition: transform var(--duration-normal) var(--ease-out);
-    }
-    .pattern-card:hover { transform: translateY(-4px); }
-    .pattern-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: var(--radius-sm);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.25rem;
-      margin-bottom: var(--space-3);
-    }
-    .pattern-title {
-      font-family: var(--font-display);
-      font-weight: 700;
-      margin-bottom: var(--space-2);
-    }
-    .pattern-desc {
-      font-size: var(--text-sm);
-      color: var(--color-text-secondary);
-      line-height: var(--leading-loose);
-    }
-
-    .chat-window {
-      background: var(--color-surface);
-      border-radius: var(--radius-lg);
-      padding: var(--space-6);
-      margin: var(--space-8) 0;
-      box-shadow: var(--shadow-md);
-    }
-    .chat-messages {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-3);
-      min-height: 200px;
-      margin-bottom: var(--space-4);
-    }
-    .chat-message {
-      display: none;
-      align-items: flex-start;
-      gap: var(--space-3);
-    }
-    .chat-message.visible { display: flex; }
-    .chat-avatar {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 700;
-      font-size: var(--text-sm);
-      flex-shrink: 0;
-    }
-    .chat-bubble {
-      background: var(--color-bg-warm);
-      padding: var(--space-3) var(--space-4);
-      border-radius: var(--radius-md);
-      max-width: 80%;
-    }
-    .chat-sender {
-      font-size: var(--text-xs);
-      font-weight: 600;
-      display: block;
-      margin-bottom: var(--space-1);
-    }
-    .chat-bubble p {
-      font-size: var(--text-sm);
-      color: var(--color-text-secondary);
-      margin: 0;
-    }
-    .chat-typing {
-      display: none;
-      align-items: center;
-      gap: var(--space-3);
-      padding: var(--space-3);
-    }
-    .chat-typing-dots {
-      display: flex;
-      gap: 4px;
-    }
-    .typing-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--color-text-muted);
-      animation: typingBounce 1.4s infinite;
-    }
-    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes typingBounce {
-      0%, 60%, 100% { transform: translateY(0); }
-      30% { transform: translateY(-6px); }
-    }
-    .chat-controls {
-      display: flex;
-      gap: var(--space-3);
-      flex-wrap: wrap;
-      align-items: center;
-    }
-    .chat-btn {
-      padding: var(--space-2) var(--space-4);
-      background: var(--color-accent);
-      color: white;
-      border: none;
-      border-radius: var(--radius-sm);
-      font-weight: 600;
-      cursor: pointer;
-      transition: background var(--duration-fast) var(--ease-out);
-    }
-    .chat-btn:hover { background: var(--color-accent-hover); }
-    .chat-progress {
-      margin-left: auto;
-      font-size: var(--text-sm);
-      color: var(--color-text-muted);
-    }
-
-    .flow-animation {
-      background: var(--color-surface);
-      border-radius: var(--radius-lg);
-      padding: var(--space-8);
-      margin: var(--space-8) 0;
-      text-align: center;
-    }
-    .flow-actors {
-      display: flex;
-      justify-content: center;
-      gap: var(--space-8);
-      margin-bottom: var(--space-6);
-      flex-wrap: wrap;
-    }
-    .flow-actor {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: var(--space-2);
-      padding: var(--space-4);
-      border-radius: var(--radius-md);
-      transition: all var(--duration-normal) var(--ease-out);
-    }
-    .flow-actor-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 700;
-    }
-    .flow-actor.active {
-      box-shadow: 0 0 0 3px var(--color-accent), 0 0 20px rgba(217, 79, 48, 0.2);
-      transform: scale(1.05);
-    }
-    .flow-actor span {
-      font-size: var(--text-sm);
-      font-weight: 600;
-    }
-    .flow-arrow {
-      font-size: 2rem;
-      color: var(--color-text-muted);
-      margin: var(--space-4) 0;
-    }
-    .flow-step-label {
-      font-size: var(--text-lg);
-      color: var(--color-text-secondary);
-      margin-bottom: var(--space-4);
-      min-height: 50px;
-    }
-    .flow-controls {
-      display: flex;
-      gap: var(--space-3);
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    .flow-btn {
-      padding: var(--space-2) var(--space-4);
-      background: var(--color-accent);
-      color: white;
-      border: none;
-      border-radius: var(--radius-sm);
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .flow-btn:hover { background: var(--color-accent-hover); }
-    .flow-progress {
-      font-size: var(--text-sm);
-      color: var(--color-text-muted);
-    }
-
-    .file-tree {
-      font-family: var(--font-mono);
-      font-size: var(--text-sm);
-      margin: var(--space-8) 0;
-      background: var(--color-surface);
-      padding: var(--space-6);
-      border-radius: var(--radius-md);
-    }
-    .ft-folder, .ft-file {
-      padding: var(--space-2) var(--space-3);
-      border-left: 2px solid var(--color-border-light);
-      margin-left: var(--space-4);
-    }
-    .ft-folder { margin-bottom: var(--space-2); }
-    .ft-folder > .ft-name { color: var(--color-accent); font-weight: 600; }
-    .ft-folder > .ft-name::before { content: '📁 '; }
-    .ft-file > .ft-name::before { content: '📄 '; }
-    .ft-name { color: var(--color-text); }
-    .ft-desc {
-      color: var(--color-text-secondary);
-      font-family: var(--font-body);
-      margin-left: var(--space-2);
-      font-size: var(--text-xs);
-    }
-    .ft-children { margin-left: var(--space-4); }
-
-    .step-cards {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-3);
-      margin: var(--space-8) 0;
-    }
-    .step-card {
-      display: flex;
-      align-items: flex-start;
-      gap: var(--space-4);
-      padding: var(--space-4) var(--space-5);
-      background: var(--color-surface);
-      border-radius: var(--radius-md);
-      border-left: 3px solid var(--color-accent);
-      box-shadow: var(--shadow-sm);
-    }
-    .step-num {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: var(--color-accent);
-      color: white;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-display);
-      flex-shrink: 0;
-    }
-    .step-body p {
-      margin: var(--space-1) 0 0;
-      color: var(--color-text-secondary);
-      font-size: var(--text-sm);
-    }
-
-    .icon-rows {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-4);
-      margin: var(--space-8) 0;
-    }
-    .icon-row {
-      display: flex;
-      align-items: center;
-      gap: var(--space-4);
-      padding: var(--space-4);
-      background: var(--color-surface);
-      border-radius: var(--radius-md);
-      box-shadow: var(--shadow-sm);
-    }
-    .icon-row p {
-      margin: 0;
-      color: var(--color-text-secondary);
-      font-size: var(--text-sm);
-    }
-    .icon-circle {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.25rem;
-      flex-shrink: 0;
-    }
-
-    @media (max-width: 768px) {
-      .translation-block { grid-template-columns: 1fr; }
-      .translation-english { border-left: none; border-top: 3px solid var(--color-accent); }
-      .module { padding: var(--space-8) var(--space-4); }
-      .module-title { font-size: var(--text-3xl); }
-      .module-number { font-size: var(--text-4xl); }
-      .nav-dots { display: none; }
-    }
-
-    @media print {
-      .nav { display: none; }
-      .module { min-height: auto; page-break-after: always; }
+      --color-bg:#FAF7F2; --color-bg-warm:#F5F0E8; --color-bg-code:#1E1E2E;
+      --color-text:#2C2A28; --color-text-secondary:#6B6560; --color-text-muted:#9E9790;
+      --color-border:#E5DFD6; --color-border-light:#EEEBE5;
+      --color-surface:#FFFFFF; --color-surface-warm:#FDF9F3;
+      --color-accent:#D94F30; --color-accent-hover:#C4432A;
+      --color-accent-light:#FDEEE9; --color-accent-muted:#E8836C;
+      --color-success:#2D8B55; --color-success-light:#E8F5EE;
+      --color-error:#C93B3B; --color-error-light:#FDE8E8;
+      --color-info:#2A7B9B; --color-info-light:#E4F2F7;
+      --color-actor-1:#D94F30; --color-actor-2:#2A7B9B; --color-actor-3:#7B6DAA;
+      --color-actor-4:#D4A843; --color-actor-5:#2D8B55;
+      --font-display:'Bricolage Grotesque',Georgia,serif;
+      --font-body:'DM Sans',-apple-system,sans-serif;
+      --font-mono:'JetBrains Mono','Fira Code','Consolas',monospace;
+      --text-xs:.75rem; --text-sm:.875rem; --text-base:1rem; --text-lg:1.125rem;
+      --text-xl:1.25rem; --text-2xl:1.5rem; --text-3xl:1.875rem; --text-4xl:2.25rem;
+      --text-5xl:3rem; --text-6xl:3.75rem;
+      --leading-tight:1.15; --leading-snug:1.3; --leading-normal:1.6; --leading-loose:1.8;
+      --space-1:.25rem; --space-2:.5rem; --space-3:.75rem; --space-4:1rem;
+      --space-5:1.25rem; --space-6:1.5rem; --space-8:2rem; --space-10:2.5rem;
+      --space-12:3rem; --space-16:4rem; --space-20:5rem; --space-24:6rem;
+      --content-width:800px; --content-width-wide:1000px; --nav-height:50px;
+      --radius-sm:8px; --radius-md:12px; --radius-lg:16px; --radius-full:9999px;
+      --shadow-sm:0 1px 2px rgba(44,42,40,.05); --shadow-md:0 4px 12px rgba(44,42,40,.08);
+      --shadow-lg:0 8px 24px rgba(44,42,40,.1); --shadow-xl:0 16px 48px rgba(44,42,40,.12);
+      --ease-out:cubic-bezier(.16,1,.3,1); --ease-in-out:cubic-bezier(.65,0,.35,1);
+      --duration-fast:150ms; --duration-normal:300ms; --duration-slow:500ms; --stagger-delay:120ms;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-snap-type:y proximity;scroll-behavior:smooth}
+    body{font-family:var(--font-body);font-size:var(--text-base);line-height:var(--leading-normal);color:var(--color-text);background:var(--color-bg);background-image:radial-gradient(ellipse at 20% 50%,rgba(217,79,48,.03) 0%,transparent 50%)}
+    ::-webkit-scrollbar{width:6px} ::-webkit-scrollbar-track{background:transparent}
+    ::-webkit-scrollbar-thumb{background:var(--color-border);border-radius:var(--radius-full)}
+    pre,code{white-space:pre-wrap;word-break:break-word;overflow-x:hidden}
+    .nav{position:fixed;top:0;left:0;right:0;height:var(--nav-height);background:var(--color-bg-code);z-index:1000;display:flex;align-items:center;padding:0 var(--space-6)}
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:1200px;margin:0 auto}
+    .nav-title{color:#CDD6F4;font-family:var(--font-display);font-weight:700;font-size:var(--text-base)}
+    .nav-dots{display:flex;gap:var(--space-2);flex-wrap:wrap}
+    .nav-dot{width:10px;height:10px;border-radius:50%;border:2px solid var(--color-text-muted);background:transparent;cursor:pointer;transition:all var(--duration-fast) var(--ease-out);position:relative}
+    .nav-dot[data-tooltip]:hover::after{content:attr(data-tooltip);position:absolute;top:calc(100% + 6px);left:50%;transform:translateX(-50%);white-space:nowrap;background:var(--color-bg-code);color:#CDD6F4;font-size:var(--text-xs);font-family:var(--font-body);padding:4px 8px;border-radius:var(--radius-sm);pointer-events:none;z-index:9999}
+    .nav-dot:hover{border-color:var(--color-accent)}
+    .nav-dot.active{border-color:var(--color-accent);background:var(--color-accent);box-shadow:0 0 8px rgba(217,79,48,.4)}
+    .progress-bar{position:absolute;bottom:0;left:0;height:2px;background:var(--color-accent);width:0%;transition:width var(--duration-fast) var(--ease-out)}
+    .module{min-height:100dvh;min-height:100vh;scroll-snap-align:start;padding:var(--space-16) var(--space-6);padding-top:calc(var(--nav-height) + var(--space-12))}
+    .module:nth-child(odd){background:var(--color-bg)} .module:nth-child(even){background:var(--color-bg-warm)}
+    .module-content{max-width:var(--content-width);width:100%;margin:0 auto}
+    .module-header{text-align:center;margin-bottom:var(--space-12)}
+    .module-number{display:block;font-family:var(--font-display);font-size:var(--text-6xl);font-weight:800;color:var(--color-accent);opacity:.15;line-height:1;margin-bottom:var(--space-4)}
+    .module-title{font-family:var(--font-display);font-size:var(--text-4xl);font-weight:700;line-height:var(--leading-tight);margin-bottom:var(--space-4)}
+    .module-subtitle{font-size:var(--text-lg);color:var(--color-text-secondary);max-width:600px;margin:0 auto}
+    .screen{margin-bottom:var(--space-12)}
+    .screen-heading{font-family:var(--font-display);font-size:var(--text-2xl);font-weight:600;margin-bottom:var(--space-6)}
+    .animate-in{opacity:0;transform:translateY(20px);transition:opacity var(--duration-slow) var(--ease-out),transform var(--duration-slow) var(--ease-out)}
+    .animate-in.visible{opacity:1;transform:translateY(0)}
+    .stagger-children>.animate-in{transition-delay:calc(var(--stagger-index,0)*var(--stagger-delay))}
+    .term{border-bottom:1.5px dashed var(--color-accent-muted);cursor:pointer}
+    .term:hover,.term.active{border-bottom-color:var(--color-accent);color:var(--color-accent)}
+    .term-tooltip{position:fixed;background:var(--color-bg-code);color:#CDD6F4;padding:var(--space-3) var(--space-4);border-radius:var(--radius-sm);font-size:var(--text-sm);font-family:var(--font-body);line-height:var(--leading-normal);width:max(200px,min(320px,80vw));box-shadow:var(--shadow-lg);pointer-events:none;opacity:0;transition:opacity var(--duration-fast);z-index:10000}
+    .term-tooltip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:var(--color-bg-code)}
+    .term-tooltip.visible{opacity:1}
+    .term-tooltip.flip{top:calc(100% + 8px)} .term-tooltip.flip::after{top:auto;bottom:100%;border-top-color:transparent;border-bottom-color:var(--color-bg-code)}
+    .translation-block{display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:var(--radius-md);overflow:hidden;box-shadow:var(--shadow-md);margin:var(--space-8) 0}
+    .translation-code{background:var(--color-bg-code);color:#CDD6F4;padding:var(--space-6);font-family:var(--font-mono);font-size:var(--text-sm);line-height:1.7;position:relative;overflow-x:hidden}
+    .translation-code pre,.translation-code code{white-space:pre-wrap;word-break:break-word;overflow-x:hidden}
+    .translation-english{background:var(--color-surface-warm);padding:var(--space-6);font-size:var(--text-sm);line-height:1.7;border-left:3px solid var(--color-accent)}
+    .translation-label{position:absolute;top:var(--space-2);right:var(--space-3);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.1em;opacity:.5}
+    .translation-english .translation-label{color:var(--color-text-muted);position:static;opacity:.6;display:block;margin-bottom:var(--space-3)}
+    .tl{margin-bottom:var(--space-3);color:var(--color-text-secondary)} .tl:last-child{margin-bottom:0}
+    .code-keyword{color:#CBA6F7} .code-string{color:#A6E3A1} .code-function{color:#89B4FA}
+    .code-comment{color:#6C7086} .code-number{color:#FAB387} .code-property{color:#F9E2AF}
+    .code-operator{color:#94E2D5} .code-tag{color:#F38BA8}
+    .callout{display:flex;gap:var(--space-4);padding:var(--space-5);border-radius:var(--radius-md);margin:var(--space-8) 0}
+    .callout-accent{background:var(--color-accent-light);border-left:4px solid var(--color-accent)}
+    .callout-info{background:var(--color-info-light);border-left:4px solid var(--color-info)}
+    .callout-success{background:var(--color-success-light);border-left:4px solid var(--color-success)}
+    .callout-icon{font-size:1.5rem;flex-shrink:0} .callout-title{font-family:var(--font-display);font-weight:700;margin-bottom:var(--space-2);display:block}
+    .pattern-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:var(--space-4);margin:var(--space-8) 0}
+    .pattern-card{background:var(--color-surface);border-radius:var(--radius-md);padding:var(--space-6);box-shadow:var(--shadow-sm);transition:transform var(--duration-normal) var(--ease-out),box-shadow var(--duration-normal)}
+    .pattern-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
+    .pattern-icon{width:40px;height:40px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:1.25rem;margin-bottom:var(--space-3)}
+    .pattern-title{font-family:var(--font-display);font-weight:700;margin-bottom:var(--space-2)} .pattern-desc{font-size:var(--text-sm);color:var(--color-text-secondary);line-height:var(--leading-loose)}
+    .icon-rows{display:flex;flex-direction:column;gap:var(--space-4);margin:var(--space-8) 0}
+    .icon-row{display:flex;align-items:center;gap:var(--space-4);padding:var(--space-4);background:var(--color-surface);border-radius:var(--radius-md);box-shadow:var(--shadow-sm)}
+    .icon-row p{margin:0;color:var(--color-text-secondary);font-size:var(--text-sm)} .icon-row strong{font-family:var(--font-display)}
+    .icon-circle{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0}
+    .step-cards{display:flex;flex-direction:column;gap:var(--space-3);margin:var(--space-8) 0}
+    .step-card{display:flex;align-items:flex-start;gap:var(--space-4);padding:var(--space-4) var(--space-5);background:var(--color-surface);border-radius:var(--radius-md);border-left:3px solid var(--color-accent);box-shadow:var(--shadow-sm)}
+    .step-num{width:32px;height:32px;border-radius:50%;background:var(--color-accent);color:white;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);flex-shrink:0}
+    .step-body p{margin:var(--space-1) 0 0;color:var(--color-text-secondary);font-size:var(--text-sm)}
+    .chat-window{background:var(--color-surface);border-radius:var(--radius-lg);padding:var(--space-6);margin:var(--space-8) 0;box-shadow:var(--shadow-md)}
+    .chat-messages{display:flex;flex-direction:column;gap:var(--space-3);min-height:180px;margin-bottom:var(--space-4)}
+    .chat-message{display:none;align-items:flex-start;gap:var(--space-3)}
+    .chat-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:var(--text-xs);flex-shrink:0}
+    .chat-bubble{background:var(--color-bg-warm);padding:var(--space-3) var(--space-4);border-radius:var(--radius-md);max-width:80%}
+    .chat-sender{font-size:var(--text-xs);font-weight:600;display:block;margin-bottom:var(--space-1)}
+    .chat-bubble p{font-size:var(--text-sm);color:var(--color-text-secondary);margin:0}
+    .chat-typing{display:none;align-items:center;gap:var(--space-3);padding:var(--space-3)}
+    .chat-typing-dots{display:flex;gap:4px}
+    .typing-dot{width:8px;height:8px;border-radius:50%;background:var(--color-text-muted);animation:typingBounce 1.4s infinite}
+    .typing-dot:nth-child(2){animation-delay:.2s} .typing-dot:nth-child(3){animation-delay:.4s}
+    @keyframes typingBounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
+    .chat-controls{display:flex;gap:var(--space-3);flex-wrap:wrap;align-items:center}
+    .chat-btn{padding:var(--space-2) var(--space-4);background:var(--color-accent);color:white;border:none;border-radius:var(--radius-sm);font-weight:600;cursor:pointer;font-family:var(--font-body);font-size:var(--text-sm);transition:background var(--duration-fast)}
+    .chat-btn:hover{background:var(--color-accent-hover)} .chat-progress{margin-left:auto;font-size:var(--text-sm);color:var(--color-text-muted)}
+    .flow-animation{background:var(--color-surface);border-radius:var(--radius-lg);padding:var(--space-8);margin:var(--space-8) 0;text-align:center;box-shadow:var(--shadow-md)}
+    .flow-actors{display:flex;justify-content:center;gap:var(--space-6);margin-bottom:var(--space-6);flex-wrap:wrap}
+    .flow-actor{display:flex;flex-direction:column;align-items:center;gap:var(--space-2);padding:var(--space-4);border-radius:var(--radius-md);transition:all var(--duration-normal) var(--ease-out)}
+    .flow-actor-icon{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:1.25rem}
+    .flow-actor.active{box-shadow:0 0 0 3px var(--color-accent),0 0 20px rgba(217,79,48,.2);transform:scale(1.05)}
+    .flow-actor span{font-size:var(--text-sm);font-weight:600}
+    .flow-step-label{font-size:var(--text-base);color:var(--color-text-secondary);margin-bottom:var(--space-4);min-height:50px;padding:0 var(--space-4)}
+    .flow-controls{display:flex;gap:var(--space-3);justify-content:center;flex-wrap:wrap;align-items:center}
+    .flow-btn{padding:var(--space-2) var(--space-4);background:var(--color-accent);color:white;border:none;border-radius:var(--radius-sm);font-weight:600;cursor:pointer;font-family:var(--font-body);font-size:var(--text-sm);transition:background var(--duration-fast)}
+    .flow-btn:hover{background:var(--color-accent-hover)} .flow-progress{font-size:var(--text-sm);color:var(--color-text-muted)}
+    .file-tree{font-family:var(--font-mono);font-size:var(--text-sm);margin:var(--space-8) 0;background:var(--color-surface);padding:var(--space-6);border-radius:var(--radius-md);box-shadow:var(--shadow-sm)}
+    .ft-root{padding:var(--space-2)} .ft-folder,.ft-file{padding:var(--space-2) var(--space-3);border-left:2px solid var(--color-border-light);margin-left:var(--space-4)}
+    .ft-folder{margin-bottom:var(--space-1)} .ft-folder>.ft-name{color:var(--color-accent);font-weight:600}
+    .ft-folder>.ft-name::before{content:'📁 '} .ft-file>.ft-name::before{content:'📄 '}
+    .ft-desc{color:var(--color-text-secondary);font-family:var(--font-body);margin-left:var(--space-2);font-size:var(--text-xs)} .ft-children{margin-left:var(--space-4)}
+    .badge-list{display:flex;flex-direction:column;gap:var(--space-2);margin:var(--space-6) 0}
+    .badge-item{display:flex;align-items:flex-start;gap:var(--space-4);padding:var(--space-3) var(--space-4);border:1px solid var(--color-border-light);border-radius:var(--radius-sm);background:var(--color-surface);transition:border-color var(--duration-fast)}
+    .badge-item:hover{border-color:var(--color-accent-muted)} .badge-code{font-family:var(--font-mono);font-size:var(--text-sm);background:var(--color-bg-code);color:#CBA6F7;padding:2px 8px;border-radius:var(--radius-sm);white-space:nowrap;flex-shrink:0}
+    .badge-desc{font-size:var(--text-sm);color:var(--color-text-secondary);line-height:var(--leading-normal)}
+    .flow-steps{display:flex;align-items:center;gap:var(--space-3);flex-wrap:wrap;margin:var(--space-8) 0;justify-content:center}
+    .flow-step{background:var(--color-surface);border-radius:var(--radius-md);padding:var(--space-4) var(--space-5);box-shadow:var(--shadow-sm);text-align:center;flex:1;min-width:120px;max-width:180px}
+    .flow-step-num{width:28px;height:28px;border-radius:50%;background:var(--color-accent);color:white;font-weight:700;font-size:var(--text-sm);display:flex;align-items:center;justify-content:center;margin:0 auto var(--space-2)}
+    .flow-step p{font-size:var(--text-sm);color:var(--color-text-secondary);margin:0}
+    .flow-arrow{color:var(--color-text-muted);font-size:1.5rem;flex-shrink:0}
+    .hero-module{min-height:100dvh;min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;background:var(--color-bg-code);scroll-snap-align:start;padding:calc(var(--nav-height) + var(--space-8)) var(--space-6) var(--space-12)}
+    .hero-content{max-width:700px}
+    .hero-eyebrow{display:inline-block;font-family:var(--font-mono);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.15em;color:var(--color-accent-muted);margin-bottom:var(--space-6);padding:var(--space-2) var(--space-4);border:1px solid rgba(217,79,48,.3);border-radius:var(--radius-full)}
+    .hero-title{font-family:var(--font-display);font-size:clamp(2.2rem,6vw,4rem);font-weight:800;line-height:1.1;margin-bottom:var(--space-6);color:#CDD6F4}
+    .hero-title span{color:var(--color-accent)}
+    .hero-sub{font-size:var(--text-xl);color:#6C7086;line-height:var(--leading-loose);margin-bottom:var(--space-8);max-width:560px;margin-left:auto;margin-right:auto}
+    .hero-chips{display:flex;flex-wrap:wrap;gap:var(--space-2);justify-content:center}
+    .hero-chip{font-family:var(--font-mono);font-size:var(--text-xs);padding:var(--space-1) var(--space-3);background:rgba(217,79,48,.15);color:var(--color-accent-muted);border-radius:var(--radius-full);border:1px solid rgba(217,79,48,.2)}
+    .score-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:var(--space-4);margin:var(--space-8) 0}
+    .score-card{background:var(--color-surface);border-radius:var(--radius-md);padding:var(--space-6);text-align:center;box-shadow:var(--shadow-sm);border-top:3px solid var(--color-accent)}
+    .score-num{font-family:var(--font-display);font-size:var(--text-5xl);font-weight:800;color:var(--color-accent);line-height:1}
+    .score-label{font-size:var(--text-sm);color:var(--color-text-secondary);margin-top:var(--space-2)}
+    .audit-dims{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:var(--space-3);margin:var(--space-6) 0}
+    .audit-dim{background:var(--color-surface);border-radius:var(--radius-sm);padding:var(--space-3) var(--space-4);border-left:3px solid var(--color-actor-3);font-size:var(--text-sm)}
+    .audit-dim strong{color:var(--color-actor-3);display:block;font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+    @media(max-width:768px){
+      .translation-block{grid-template-columns:1fr} .translation-english{border-left:none;border-top:3px solid var(--color-accent)}
+      .module{padding:var(--space-8) var(--space-4);padding-top:calc(var(--nav-height) + var(--space-8))}
+      .module-title{font-size:var(--text-3xl)} .module-number{font-size:var(--text-4xl)}
+      .nav-dots{display:none} .flow-steps{flex-direction:column} .flow-arrow{transform:rotate(90deg)}
     }
   </style>
 </head>
 <body>
-  <nav class="nav">
-    <div class="nav-inner">
-      <span class="nav-title">All Agent Skills Course</span>
-      <div class="nav-dots">
-        <button class="nav-dot active" data-target="module-1"></button>
-        <button class="nav-dot" data-target="module-2"></button>
-        <button class="nav-dot" data-target="module-3"></button>
-        <button class="nav-dot" data-target="module-4"></button>
-        <button class="nav-dot" data-target="module-5"></button>
-        <button class="nav-dot" data-target="module-6"></button>
-        <button class="nav-dot" data-target="module-7"></button>
-      </div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <span class="nav-title">All Agent Skills — Course</span>
+    <div class="nav-dots" id="nav-dots">
+      <button class="nav-dot active" data-target="module-0" data-tooltip="Welcome"></button>
+      <button class="nav-dot" data-target="module-1" data-tooltip="What It Does"></button>
+      <button class="nav-dot" data-target="module-2" data-tooltip="Meet the Skills"></button>
+      <button class="nav-dot" data-target="module-3" data-tooltip="How Skills Work"></button>
+      <button class="nav-dot" data-target="module-4" data-tooltip="The Skill File"></button>
+      <button class="nav-dot" data-target="module-5" data-tooltip="Data Flow"></button>
+      <button class="nav-dot" data-target="module-6" data-tooltip="Smart Patterns"></button>
+      <button class="nav-dot" data-target="module-7" data-tooltip="Build Your Own"></button>
     </div>
-    <div class="progress-bar" id="progress-bar"></div>
-  </nav>
+  </div>
+  <div class="progress-bar" id="progress-bar"></div>
+</nav>
 
-  <!-- Module 1: What This App Does -->
-  <section class="module" id="module-1">
-    <div class="module-content">
-      <header class="module-header animate-in">
-        <span class="module-number">01</span>
-        <h1 class="module-title">What This Project Does</h1>
-        <p class="module-subtitle">A collection of skills that make your AI coding assistant do more — with less effort from you.</p>
-      </header>
-
-      <div class="animate-in">
-        <p>Imagine you have a super-smart assistant that can write code for you. But every time you need something specific — like turning code into a tutorial, or creating a client presentation — you have to explain the whole process from scratch.</p>
-        
-        <p style="margin-top: var(--space-4);">That's exhausting. This project solves that by giving your AI assistant <span class="term" data-definition="Skills are like presets or shortcuts — reusable sets of instructions that tell the AI exactly how to handle a specific task, so you don't have to explain it every time.">skills</span>.</p>
-      </div>
-
-      <div class="callout callout-accent animate-in">
-        <div class="callout-icon">💡</div>
-        <div class="callout-content">
-          <strong class="callout-title">Why This Matters for You</strong>
-          <p>When you use AI to code, you give it instructions in plain English. But complex tasks need many instructions. Skills package those instructions into one command — like a macro for your AI assistant.</p>
-        </div>
-      </div>
-
-      <div class="pattern-cards stagger-children">
-        <div class="pattern-card animate-in">
-          <div class="pattern-icon" style="background: var(--color-actor-1)">📚</div>
-          <h4 class="pattern-title">Codebase to Course</h4>
-          <p class="pattern-desc">Turn any codebase into an interactive HTML course that teaches how it works.</p>
-        </div>
-        <div class="pattern-card animate-in">
-          <div class="pattern-icon" style="background: var(--color-actor-2)">🎯</div>
-          <h4 class="pattern-title">Codebase to Demo</h4>
-          <p class="pattern-desc">Create client-ready demo decks with architecture diagrams and animations.</p>
-        </div>
-        <div class="pattern-card animate-in">
-          <div class="pattern-icon" style="background: var(--color-actor-3)">📊</div>
-          <h4 class="pattern-title">Excalidraw Diagram</h4>
-          <p class="pattern-desc">Generate beautiful diagrams from simple descriptions.</p>
-        </div>
-        <div class="pattern-card animate-in">
-          <div class="pattern-icon" style="background: var(--color-actor-4)">🛠️</div>
-          <h4 class="pattern-title">Skill Builder</h4>
-          <p class="pattern-desc">Create your own skills to automate recurring tasks.</p>
-        </div>
-      </div>
+<!-- MODULE 0: HERO -->
+<section class="hero-module" id="module-0">
+  <div class="hero-content animate-in">
+    <span class="hero-eyebrow">Interactive Course · 7 Skills · Self-contained</span>
+    <h1 class="hero-title">You built with AI.<br><span>Now understand</span> what it built.</h1>
+    <p class="hero-sub">A plain-English walkthrough of how the All Agent Skills project works — so you can steer it better, debug it faster, and extend it with confidence.</p>
+    <div class="hero-chips">
+      <span class="hero-chip">/carousel-creator</span>
+      <span class="hero-chip">/codebase-to-demo</span>
+      <span class="hero-chip">/codebase-to-course</span>
+      <span class="hero-chip">/frontend-slides</span>
+      <span class="hero-chip">/excalidraw-diagram</span>
+      <span class="hero-chip">/skill-builder</span>
+      <span class="hero-chip">/ui-ux-auditor</span>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Module 2: Meet the Actors -->
-  <section class="module" id="module-2">
-    <div class="module-content">
-      <header class="module-header animate-in">
-        <span class="module-number">02</span>
-        <h1 class="module-title">Meet the Skills</h1>
-        <p class="module-subtitle">Each skill has a specific job — here's what they bring to the table.</p>
-      </header>
+<!-- MODULE 1: WHAT THIS PROJECT DOES -->
+<section class="module" id="module-1">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">01</span>
+      <h1 class="module-title">What This Project Does</h1>
+      <p class="module-subtitle">Imagine you have a super-smart assistant, but every time you need it to do something specific, you have to re-explain the whole process from scratch. This project fixes that.</p>
+    </header>
 
-      <div class="icon-rows stagger-children">
-        <div class="icon-row animate-in">
-          <div class="icon-circle" style="background: var(--color-actor-1)">📚</div>
-          <div>
-            <strong>Codebase-to-Course</strong>
-            <p>Takes any folder of code and transforms it into a beautiful, interactive HTML course. Uses scroll-based navigation, animated diagrams, and plain-English explanations.</p>
+    <section class="screen animate-in">
+      <h2 class="screen-heading">The problem it solves</h2>
+      <p>AI coding assistants like Claude are brilliant generalists — but they have no <span class="term" data-definition="Memory here means persistent knowledge about how to handle a specific task. Like a colleague who remembers your process, vs. one who needs full briefing every single meeting.">persistent memory</span> of your workflows. Every session starts fresh.</p>
+
+      <div class="step-cards" style="margin-top:var(--space-6)">
+        <div class="step-card">
+          <div class="step-num">😫</div>
+          <div class="step-body">
+            <strong>Without skills:</strong>
+            <p>"Please create a LinkedIn carousel. Make it premium, 8 slides, 4:5 ratio, SVG format, dark background, accent color #D94F30, content arc starting with a hook and ending with a CTA, each slide with a title and 3 bullet points, font Bricolage Grotesque…"</p>
           </div>
         </div>
-        <div class="icon-row animate-in">
-          <div class="icon-circle" style="background: var(--color-actor-2)">🎯</div>
-          <div>
-            <strong>Codebase-to-Demo</strong>
-            <p>Transforms code into a sales demo for clients. Includes before/after comparisons, architecture maps, and sequence diagrams — everything you need to pitch your work.</p>
-          </div>
-        </div>
-        <div class="icon-row animate-in">
-          <div class="icon-circle" style="background: var(--color-actor-3)">📊</div>
-          <div>
-            <strong>Excalidraw Diagram</strong>
-            <p>Creates diagrams from natural language descriptions. Architecture, flows, mind maps — describe what you want, get a diagram.</p>
-          </div>
-        </div>
-        <div class="icon-row animate-in">
-          <div class="icon-circle" style="background: var(--color-actor-4)">🛠️</div>
-          <div>
-            <strong>Skill Builder</strong>
-            <p>A meta-skill that helps you create new skills. Contains best practices, templates, and guidance for building reusable AI workflows.</p>
+        <div class="step-card">
+          <div class="step-num">✨</div>
+          <div class="step-body">
+            <strong>With the carousel-creator skill:</strong>
+            <p>"Create a carousel about building habits." — Done. All those instructions are already baked into the skill.</p>
           </div>
         </div>
       </div>
+    </section>
 
-      <div class="callout callout-info animate-in">
-        <div class="callout-icon">🤔</div>
-        <div class="callout-content">
-          <strong class="callout-title">Why Four Separate Skills?</strong>
-          <p>Each skill does one thing really well. This follows a key software principle: <span class="term" data-definition="Separation of concerns means each part of a system handles one specific job. Like a restaurant: the chef cooks, the waiter serves, the cashier handles payments. Nobody does everything.">separation of concerns</span>. When you need a course, you use the course skill. When you need a diagram, you use the diagram skill. No mixing, no confusion.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+    <section class="screen animate-in">
+      <h2 class="screen-heading">What a skill actually is</h2>
+      <p>A skill is a <span class="term" data-definition="A Markdown file is a plain text file with simple formatting — headings with #, bullet points with -, bold with **. It's human-readable and easy to write. Claude Code reads SKILL.md files directly.">Markdown file</span> that lives in a folder inside your project. When you invoke it with a <span class="term" data-definition="A slash command is a shortcut you type starting with /. Like /carousel-creator — Claude Code sees this and knows to load the matching SKILL.md file and follow its instructions.">slash command</span>, Claude Code reads it and follows its instructions exactly.</p>
 
-  <!-- Module 3: How They Talk -->
-  <section class="module" id="module-3">
-    <div class="module-content">
-      <header class="module-header animate-in">
-        <span class="module-number">03</span>
-        <h1 class="module-title">How the Pieces Talk</h1>
-        <p class="module-subtitle">When you invoke a skill, here's what happens behind the scenes.</p>
-      </header>
-
-      <div class="chat-window animate-in">
-        <div class="chat-messages" id="chat-messages">
-          <div class="chat-message" data-msg="0" data-sender="user" style="display: flex;">
-            <div class="chat-avatar" style="background: var(--color-actor-4)">You</div>
-            <div class="chat-bubble">
-              <span class="chat-sender" style="color: var(--color-actor-4)">You</span>
-              <p>Hey, turn this codebase into a course!</p>
-            </div>
-          </div>
-          <div class="chat-message" data-msg="1" data-sender="claude">
-            <div class="chat-avatar" style="background: var(--color-actor-1)">AI</div>
-            <div class="chat-bubble">
-              <span class="chat-sender" style="color: var(--color-actor-1)">Claude Code</span>
-              <p>Got it! Let me load the codebase-to-course skill first...</p>
-            </div>
-          </div>
-          <div class="chat-message" data-msg="2" data-sender="skill">
-            <div class="chat-avatar" style="background: var(--color-actor-2)">📚</div>
-            <div class="chat-bubble">
-              <span class="chat-sender" style="color: var(--color-actor-2)">Skill Loader</span>
-              <p>Loading skill instructions... Now I know exactly how to build a course!</p>
-            </div>
-          </div>
-          <div class="chat-message" data-msg="3" data-sender="analyzer">
-            <div class="chat-avatar" style="background: var(--color-actor-3)">🔍</div>
-            <div class="chat-bubble">
-              <span class="chat-sender" style="color: var(--color-actor-3)">Code Analyzer</span>
-              <p>Reading your project files... Found 12 key components, 3 data flows, and the main entry point!</p>
-            </div>
-          </div>
-          <div class="chat-message" data-msg="4" data-sender="generator">
-            <div class="chat-avatar" style="background: var(--color-actor-5)">⚡</div>
-            <div class="chat-bubble">
-              <span class="chat-sender" style="color: var(--color-actor-5)">HTML Generator</span>
-              <p>Building your course... Adding animations, translations, and diagrams!</p>
-            </div>
-          </div>
-          <div class="chat-message" data-msg="5" data-sender="claude">
-            <div class="chat-avatar" style="background: var(--color-actor-1)">AI</div>
-            <div class="chat-bubble">
-              <span class="chat-sender" style="color: var(--color-actor-1)">Claude Code</span>
-              <p>Done! Your course is ready — open the HTML file to see it in action.</p>
-            </div>
-          </div>
-        </div>
-        <div class="chat-typing" id="chat-typing">
-          <div class="chat-avatar" id="typing-avatar">?</div>
-          <div class="chat-typing-dots">
-            <span class="typing-dot"></span>
-            <span class="typing-dot"></span>
-            <span class="typing-dot"></span>
-          </div>
-        </div>
-        <div class="chat-controls">
-          <button class="chat-btn" onclick="playChatNext()">Next Message</button>
-          <button class="chat-btn" onclick="playChatAll()">Play All</button>
-          <button class="chat-btn" onclick="resetChat()">Replay</button>
-          <span class="chat-progress" id="chat-progress">1 / 6 messages</span>
-        </div>
-      </div>
-
-      <div class="callout callout-accent animate-in">
+      <div class="callout callout-accent" style="margin-top:var(--space-6)">
         <div class="callout-icon">💡</div>
         <div class="callout-content">
           <strong class="callout-title">The Key Insight</strong>
-          <p>Skills work because they give the AI a <span class="term" data-definition="A template is a ready-made structure with placeholders. You fill in the blanks, and the template does the rest — like a form with fields to complete.">template</span> for complex tasks. Instead of improvising every step, the AI follows a proven recipe. That's why the output is consistent and high-quality.</p>
+          <p>Skills are like <em>macros for your brain</em>. Instead of re-thinking the same process, you capture it once in a SKILL.md and invoke it with one command. The AI reads the file and delivers the output — no re-explanation needed.</p>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Module 4: The Code Structure -->
-  <section class="module" id="module-4">
-    <div class="module-content">
-      <header class="module-header animate-in">
-        <span class="module-number">04</span>
-        <h1 class="module-title">What the Code Looks Like</h1>
-        <p class="module-subtitle">Let's peek at the actual skill definition — this is what makes skills work.</p>
-      </header>
+    <section class="screen animate-in">
+      <h2 class="screen-heading">The 7 skills at a glance</h2>
+      <div class="pattern-cards stagger-children">
+        <div class="pattern-card animate-in" style="border-top:3px solid var(--color-actor-1)">
+          <div class="pattern-icon" style="background:var(--color-actor-1)">🎨</div>
+          <h4 class="pattern-title">carousel-creator</h4>
+          <p class="pattern-desc">SVG carousel slides for Instagram & LinkedIn — premium, on-brand, every time.</p>
+        </div>
+        <div class="pattern-card animate-in" style="border-top:3px solid var(--color-actor-2)">
+          <div class="pattern-icon" style="background:var(--color-actor-2)">🚀</div>
+          <h4 class="pattern-title">codebase-to-demo</h4>
+          <p class="pattern-desc">Turns any codebase into an interactive HTML demo deck for clients.</p>
+        </div>
+        <div class="pattern-card animate-in" style="border-top:3px solid var(--color-actor-3)">
+          <div class="pattern-icon" style="background:var(--color-actor-3)">📚</div>
+          <h4 class="pattern-title">codebase-to-course</h4>
+          <p class="pattern-desc">Transforms code into an educational HTML course for non-technical learners.</p>
+        </div>
+        <div class="pattern-card animate-in" style="border-top:3px solid var(--color-actor-4)">
+          <div class="pattern-icon" style="background:var(--color-actor-4)">🖥️</div>
+          <h4 class="pattern-title">frontend-slides</h4>
+          <p class="pattern-desc">Animation-rich HTML presentations — zero dependencies, runs offline.</p>
+        </div>
+        <div class="pattern-card animate-in" style="border-top:3px solid var(--color-actor-5)">
+          <div class="pattern-icon" style="background:var(--color-actor-5)">📐</div>
+          <h4 class="pattern-title">excalidraw-diagram</h4>
+          <p class="pattern-desc">Fully editable Excalidraw diagrams from plain English descriptions.</p>
+        </div>
+        <div class="pattern-card animate-in" style="border-top:3px solid #9E9790">
+          <div class="pattern-icon" style="background:#9E9790">🔧</div>
+          <h4 class="pattern-title">skill-builder</h4>
+          <p class="pattern-desc">Guided 6-round interview to create new skills — build your own.</p>
+        </div>
+        <div class="pattern-card animate-in" style="border-top:3px solid var(--color-accent)">
+          <div class="pattern-icon" style="background:var(--color-accent)">🔍</div>
+          <h4 class="pattern-title">ui-ux-auditor</h4>
+          <p class="pattern-desc">Structured pre-launch UI/UX audit — from video, URL, or screenshots.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
 
-      <div class="translation-block animate-in">
+<!-- MODULE 2: MEET THE SKILLS (Group Chat Animation) -->
+<section class="module" id="module-2">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">02</span>
+      <h1 class="module-title">Meet the Skills</h1>
+      <p class="module-subtitle">Each skill has one job — and it does it brilliantly. Think of them like specialists in a production studio.</p>
+    </header>
+
+    <section class="screen animate-in">
+      <h2 class="screen-heading">A day in the studio</h2>
+      <p>Imagine a content studio where you're the creative director. You don't do everything yourself — you brief the right specialist for each job. That's exactly what happens when you use these skills.</p>
+
+      <div class="chat-window" style="margin-top:var(--space-6)">
+        <div class="chat-messages" id="chat-m2">
+          <div class="chat-message" data-sender="you">
+            <div class="chat-avatar" style="background:var(--color-actor-4)">You</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color:var(--color-actor-4)">You</span>
+              <p>I need a carousel about AI productivity for LinkedIn, a diagram of our app architecture, and a pre-launch audit of the new dashboard.</p>
+            </div>
+          </div>
+          <div class="chat-message" data-sender="carousel">
+            <div class="chat-avatar" style="background:var(--color-actor-1)">🎨</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color:var(--color-actor-1)">carousel-creator</span>
+              <p>On it. I'll create 8 premium SVG slides — hook, 3 value frames, proof, and a strong CTA. Dropping them in a timestamped folder.</p>
+            </div>
+          </div>
+          <div class="chat-message" data-sender="excalidraw">
+            <div class="chat-avatar" style="background:var(--color-actor-5)">📐</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color:var(--color-actor-5)">excalidraw-diagram</span>
+              <p>I'll read the codebase structure, map the components and data flows, and generate a fully editable .excalidraw file you can drop into excalidraw.com.</p>
+            </div>
+          </div>
+          <div class="chat-message" data-sender="auditor">
+            <div class="chat-avatar" style="background:var(--color-accent)">🔍</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color:var(--color-accent)">ui-ux-auditor</span>
+              <p>Give me the URL or a screen recording. I'll audit across 11 dimensions — first impression, flows, accessibility, heuristics — and give you a scored launch-readiness report.</p>
+            </div>
+          </div>
+          <div class="chat-message" data-sender="you">
+            <div class="chat-avatar" style="background:var(--color-actor-4)">You</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color:var(--color-actor-4)">You</span>
+              <p>Perfect. Each of you knows exactly what to do without me explaining the process.</p>
+            </div>
+          </div>
+        </div>
+        <div class="chat-typing" id="chat-typing-m2">
+          <div class="chat-avatar" id="typing-avatar-m2" style="background:var(--color-actor-1)">?</div>
+          <div class="chat-typing-dots"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>
+        </div>
+        <div class="chat-controls">
+          <button class="chat-btn" onclick="chatM2Next()">Next Message</button>
+          <button class="chat-btn" onclick="chatM2PlayAll()">Play All</button>
+          <button class="chat-btn" style="background:transparent;color:var(--color-text-muted);border:1px solid var(--color-border)" onclick="chatM2Reset()">Replay</button>
+          <span class="chat-progress" id="chat-prog-m2">0 / 5 messages</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen animate-in">
+      <h2 class="screen-heading">Each skill's specialty</h2>
+      <div class="icon-rows stagger-children">
+        <div class="icon-row animate-in">
+          <div class="icon-circle" style="background:var(--color-actor-1)">🎨</div>
+          <div>
+            <strong>carousel-creator</strong>
+            <p>Strategic content arc (Hook→Context→Value→CTA) as pixel-perfect SVG slides. Never just pretty — always purposeful.</p>
+          </div>
+        </div>
+        <div class="icon-row animate-in">
+          <div class="icon-circle" style="background:var(--color-actor-2)">🚀</div>
+          <div>
+            <strong>codebase-to-demo</strong>
+            <p>Reads the code, extracts the business story, takes real screenshots with Playwright, and compiles a polished HTML demo deck — no designer needed.</p>
+          </div>
+        </div>
+        <div class="icon-row animate-in">
+          <div class="icon-circle" style="background:var(--color-actor-3)">📚</div>
+          <div>
+            <strong>codebase-to-course</strong>
+            <p>Turns complex code into scroll-based courses with plain-English translations, animated diagrams, and glossary tooltips for non-technical learners.</p>
+          </div>
+        </div>
+        <div class="icon-row animate-in">
+          <div class="icon-circle" style="background:var(--color-actor-4)">🖥️</div>
+          <div>
+            <strong>frontend-slides</strong>
+            <p>Animation-rich HTML presentations that work in any browser, offline, with no dependencies. Each slide is exactly 100vh — no overflow, ever.</p>
+          </div>
+        </div>
+        <div class="icon-row animate-in">
+          <div class="icon-circle" style="background:var(--color-actor-5)">📐</div>
+          <div>
+            <strong>excalidraw-diagram</strong>
+            <p>Natural language → fully editable .excalidraw JSON. Drop it into excalidraw.com and drag nodes around yourself.</p>
+          </div>
+        </div>
+        <div class="icon-row animate-in">
+          <div class="icon-circle" style="background:#9E9790">🔧</div>
+          <div>
+            <strong>skill-builder</strong>
+            <p>6-round Discovery Interview that guides you through building a new skill. Produces production-ready SKILL.md files following Claude Code best practices.</p>
+          </div>
+        </div>
+        <div class="icon-row animate-in">
+          <div class="icon-circle" style="background:var(--color-accent)">🔍</div>
+          <div>
+            <strong>ui-ux-auditor</strong>
+            <p>Senior-level UI/UX audit across 11 dimensions. Accepts video, YouTube URL, live URL, or screenshots. Outputs a scored launch-readiness report with a "Must Fix" checklist.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout-info" style="margin-top:var(--space-8)">
+        <div class="callout-icon">🎯</div>
+        <div class="callout-content">
+          <strong class="callout-title">Why Separate Skills?</strong>
+          <p>This is <span class="term" data-definition="Separation of concerns is a design principle where each part of a system handles exactly one job. Like a hospital: surgeons operate, nurses care for patients, admins handle scheduling. Each role has clear boundaries.">separation of concerns</span> in practice. When you know which skill handles which job, you can tell the AI exactly what you need — and fix problems faster when something goes wrong.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
+
+<!-- MODULE 3: HOW SKILLS WORK (Data Flow Animation) -->
+<section class="module" id="module-3">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">03</span>
+      <h1 class="module-title">How Skills Work Under the Hood</h1>
+      <p class="module-subtitle">You type one command. A lot happens in the next few seconds. Let's trace it step by step.</p>
+    </header>
+
+    <section class="screen animate-in">
+      <h2 class="screen-heading">The journey of a slash command</h2>
+      <p>When you type <code style="background:var(--color-bg-code);color:#CBA6F7;padding:2px 6px;border-radius:4px">/carousel-creator make a carousel about AI productivity</code>, here's what actually happens:</p>
+
+      <div class="flow-animation" style="margin-top:var(--space-6)">
+        <div class="flow-actors">
+          <div class="flow-actor" id="fa-you">
+            <div class="flow-actor-icon" style="background:var(--color-actor-4)">You</div>
+            <span>You</span>
+          </div>
+          <div class="flow-actor" id="fa-claude">
+            <div class="flow-actor-icon" style="background:var(--color-actor-2)">🤖</div>
+            <span>Claude Code</span>
+          </div>
+          <div class="flow-actor" id="fa-skill">
+            <div class="flow-actor-icon" style="background:var(--color-actor-1)">📄</div>
+            <span>SKILL.md</span>
+          </div>
+          <div class="flow-actor" id="fa-output">
+            <div class="flow-actor-icon" style="background:var(--color-actor-5)">📁</div>
+            <span>Output Files</span>
+          </div>
+        </div>
+        <div class="flow-step-label" id="flow-label-m3">Click "Next Step" to begin the journey</div>
+        <div class="flow-controls">
+          <button class="flow-btn" onclick="flowM3Next()">Next Step ›</button>
+          <button class="flow-btn" onclick="flowM3PlayAll()">Play All</button>
+          <button class="flow-btn" style="background:transparent;color:var(--color-text-muted);border:1px solid var(--color-border)" onclick="flowM3Reset()">Restart</button>
+          <span class="flow-progress" id="flow-prog-m3">Step 0 / 6</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen animate-in">
+      <h2 class="screen-heading">The slash command is just a shortcut</h2>
+      <p>A <span class="term" data-definition="A slash command is a shortcut you type starting with /. Claude Code's project settings map each slash command to a SKILL.md file — so /carousel-creator loads carousel-creator/SKILL.md automatically.">slash command</span> is mapped in Claude Code's project settings. It's like a speed-dial button — it instantly routes you to the right SKILL.md file without you having to navigate there manually.</p>
+
+      <div class="translation-block" style="margin-top:var(--space-6)">
         <div class="translation-code">
           <span class="translation-label">CODE</span>
-          <pre><code><span class="code-line"><span class="code-keyword">name</span>: codebase-to-course</span>
-<span class="code-line"><span class="code-keyword">description</span>: <span class="code-string">"Turn any codebase into a...</span></span>
-<span class="code-line"></span>
-<span class="code-line"><span class="code-comment"># The process section</span></span>
-<span class="code-line"><span class="code-keyword">1.</span> Analyze the codebase</span>
-<span class="code-line"><span class="code-keyword">2.</span> Design curriculum</span>
-<span class="code-line"><span class="code-keyword">3.</span> Build HTML course</span></code></pre>
+          <pre><code><span style="color:#F9E2AF"># .claude/settings.json</span>
+<span class="code-operator">{</span>
+  <span class="code-property">"skills"</span><span class="code-operator">:</span> <span class="code-operator">{</span>
+    <span class="code-string">"/carousel-creator"</span><span class="code-operator">:</span>
+      <span class="code-string">"carousel-creator/SKILL.md"</span><span class="code-operator">,</span>
+    <span class="code-string">"/ui-ux-auditor"</span><span class="code-operator">:</span>
+      <span class="code-string">"ui-ux-auditor/SKILL.md"</span>
+  <span class="code-operator">}</span>
+<span class="code-operator">}</span></code></pre>
         </div>
         <div class="translation-english">
           <span class="translation-label">PLAIN ENGLISH</span>
-          <div class="translation-lines">
-            <p class="tl"><strong>Line 1:</strong> The skill's short name — this is what you type after the slash command.</p>
-            <p class="tl"><strong>Line 2:</strong> A description that tells the AI when to use this skill. It's like a keyword match.</p>
-            <p class="tl"><strong>Blank line:</strong> Just separating sections for readability.</p>
-            <p class="tl"><strong>Lines 5-7:</strong> The step-by-step process the AI follows. Each numbered item is a concrete action.</p>
-          </div>
+          <p class="tl">This is the project config file that maps slash commands to their skill files.</p>
+          <p class="tl">When you type /carousel-creator, Claude Code looks up this file and finds the path to the carousel skill.</p>
+          <p class="tl">Same for /ui-ux-auditor — each command has its own dedicated instruction file.</p>
+          <p class="tl">You could add your own skills here by adding new entries.</p>
         </div>
       </div>
 
-      <div class="file-tree animate-in">
-        <div class="ft-folder open">
-          <span class="ft-name">all-agent-skills-repo/</span>
-          <span class="ft-desc">The main folder containing all skills</span>
-          <div class="ft-children">
-            <div class="ft-folder">
-              <span class="ft-name">codebase-to-course/</span>
-              <span class="ft-desc">The course-building skill</span>
-              <div class="ft-children">
-                <div class="ft-file">
-                  <span class="ft-name">SKILL.md</span>
-                  <span class="ft-desc">The skill definition</span>
-                </div>
-                <div class="ft-file">
-                  <span class="ft-name">README.md</span>
-                  <span class="ft-desc">Documentation</span>
-                </div>
-                <div class="ft-folder">
-                  <span class="ft-name">references/</span>
-                  <span class="ft-desc">Design & implementation guides</span>
+      <div class="callout callout-accent">
+        <div class="callout-icon">💡</div>
+        <div class="callout-content">
+          <strong class="callout-title">Why This Matters for Steering AI</strong>
+          <p>When something goes wrong, you now know exactly where to look — the SKILL.md file for that command. You can open it, read the instructions Claude is following, and either edit them or override them in your message.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
+
+<!-- MODULE 4: THE SKILL FILE -->
+<section class="module" id="module-4">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">04</span>
+      <h1 class="module-title">Inside a SKILL.md File</h1>
+      <p class="module-subtitle">Every skill is just a plain text file. Let's crack one open and see what makes it tick.</p>
+    </header>
+
+    <section class="screen animate-in">
+      <h2 class="screen-heading">The anatomy of a skill</h2>
+      <p>A SKILL.md file has a predictable structure — like a blueprint a contractor follows. Claude reads it top to bottom before doing anything.</p>
+
+      <div class="file-tree">
+        <div class="ft-root">
+          <div class="ft-folder">
+            <span class="ft-name">carousel-creator/</span>
+            <div class="ft-children">
+              <div class="ft-file"><span class="ft-name">SKILL.md</span><span class="ft-desc">The brain — all instructions live here</span></div>
+              <div class="ft-file"><span class="ft-name">README.md</span><span class="ft-desc">Human-readable summary for developers</span></div>
+              <div class="ft-folder">
+                <span class="ft-name">references/</span>
+                <div class="ft-children">
+                  <div class="ft-file"><span class="ft-name">design-patterns.md</span><span class="ft-desc">Visual design rules the skill follows</span></div>
                 </div>
               </div>
             </div>
-            <div class="ft-folder">
-              <span class="ft-name">codebase-to-demo/</span>
-              <span class="ft-desc">The demo-building skill</span>
-            </div>
-            <div class="ft-folder">
-              <span class="ft-name">excalidraw-diagram/</span>
-              <span class="ft-desc">The diagram skill</span>
-            </div>
-            <div class="ft-folder">
-              <span class="ft-name">skill-builder/</span>
-              <span class="ft-desc">The meta-skill for building skills</span>
-            </div>
           </div>
         </div>
       </div>
+    </section>
 
-      <div class="callout callout-info animate-in">
-        <div class="callout-icon">📝</div>
-        <div class="callout-content">
-          <strong class="callout-title">The .md Files</strong>
-          <p>Each skill is defined in a <code>.md</code> file (Markdown). Markdown is just plain text with simple formatting — bold, lists, headers. Easy to read, easy to edit. That's why skills are so approachable: they're just documents.</p>
+    <section class="screen animate-in">
+      <h2 class="screen-heading">What's inside the SKILL.md</h2>
+      <p>Let's look at a real snippet from <code style="background:var(--color-bg-code);color:#CBA6F7;padding:2px 6px;border-radius:4px">carousel-creator/SKILL.md</code> and translate each part:</p>
+
+      <div class="translation-block">
+        <div class="translation-code">
+          <span class="translation-label">CODE</span>
+          <pre><code><span class="code-operator">---</span>
+<span class="code-property">name</span><span class="code-operator">:</span> <span class="code-string">carousel-creator</span>
+<span class="code-property">description</span><span class="code-operator">:</span> <span class="code-string">"Create premium SVG
+carousel posts for Instagram
+and LinkedIn."</span>
+<span class="code-operator">---</span>
+
+<span class="code-keyword"># Carousel Creator</span>
+
+<span class="code-comment">## Primary Role</span>
+
+You are an SVG-based Instagram
+Carousel Creator. Generate actual
+carousel slides as SVG files only.
+
+<span class="code-comment">## Format Requirements</span>
+
+- Aspect Ratio: 4:5
+- Canvas: 1080 × 1350 px
+- viewBox: 0 0 1080 1350</code></pre>
+        </div>
+        <div class="translation-english">
+          <span class="translation-label">PLAIN ENGLISH</span>
+          <p class="tl">The front matter (between the dashes) is metadata Claude uses to identify and describe the skill.</p>
+          <p class="tl">The "name" is the skill's ID — must match the folder name exactly.</p>
+          <p class="tl">The "description" tells Claude when to activate this skill automatically.</p>
+          <p class="tl">Below the dashes is the actual instruction set — written in plain English for Claude to follow.</p>
+          <p class="tl">These lines tell Claude the exact pixel dimensions for every slide. No guessing.</p>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Module 5: Data Flow -->
-  <section class="module" id="module-5">
-    <div class="module-content">
-      <header class="module-header animate-in">
-        <span class="module-number">05</span>
-        <h1 class="module-title">The Data Flow</h1>
-        <p class="module-subtitle">Watch how information moves from your request to the finished product.</p>
-      </header>
+    <section class="screen animate-in">
+      <h2 class="screen-heading">The ui-ux-auditor's structure</h2>
+      <p>The newest skill — <code style="background:var(--color-bg-code);color:#CBA6F7;padding:2px 6px;border-radius:4px">ui-ux-auditor</code> — shows how skills can handle complex, multi-format inputs:</p>
 
-      <div class="flow-animation animate-in">
-        <div class="flow-actors">
-          <div class="flow-actor" id="flow-actor-user">
-            <div class="flow-actor-icon" style="background: var(--color-actor-4)">You</div>
-            <span>You</span>
-          </div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-actor" id="flow-actor-cli">
-            <div class="flow-actor-icon" style="background: var(--color-actor-1)">⌘</div>
-            <span>Claude Code</span>
-          </div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-actor" id="flow-actor-skill">
-            <div class="flow-actor-icon" style="background: var(--color-actor-2)">📚</div>
-            <span>Skill</span>
-          </div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-actor" id="flow-actor-out">
-            <div class="flow-actor-icon" style="background: var(--color-actor-5)">📄</div>
-            <span>Output</span>
-          </div>
+      <div class="badge-list">
+        <div class="badge-item">
+          <code class="badge-code">Video file</code>
+          <span class="badge-desc">Screen recordings of the app — Claude analyzes frame by frame to identify UX issues</span>
         </div>
-        <div class="flow-step-label" id="flow-label">Click "Next Step" to trace a request</div>
-        <div class="flow-controls">
-          <button class="flow-btn" onclick="flowNext()">Next Step</button>
-          <button class="flow-btn" onclick="flowReset()">Restart</button>
-          <span class="flow-progress" id="flow-progress">Step 0 / 4</span>
+        <div class="badge-item">
+          <code class="badge-code">YouTube URL</code>
+          <span class="badge-desc">Links to recorded demos — the skill fetches and processes the video content</span>
+        </div>
+        <div class="badge-item">
+          <code class="badge-code">Live web URL</code>
+          <span class="badge-desc">Opens the app in a browser and evaluates the live interface</span>
+        </div>
+        <div class="badge-item">
+          <code class="badge-code">Screenshots zip</code>
+          <span class="badge-desc">A collection of screen captures — the skill processes them as a set</span>
         </div>
       </div>
 
-      <div class="step-cards animate-in">
+      <p style="margin-top:var(--space-4)">The skill file defines how to handle each input type, what <span class="term" data-definition="Dimensions in an audit means the specific areas being evaluated. Like a building inspection that checks the foundation, roof, plumbing, and electrical — each separately with its own score.">audit dimensions</span> to score, and exactly how to format the output report.</p>
+
+      <div class="audit-dims" style="margin-top:var(--space-6)">
+        <div class="audit-dim"><strong>01</strong>First Impression</div>
+        <div class="audit-dim"><strong>02</strong>Navigation</div>
+        <div class="audit-dim"><strong>03</strong>User Flows</div>
+        <div class="audit-dim"><strong>04</strong>Visual Design</div>
+        <div class="audit-dim"><strong>05</strong>Heuristics</div>
+        <div class="audit-dim"><strong>06</strong>Accessibility</div>
+        <div class="audit-dim"><strong>07</strong>Performance</div>
+        <div class="audit-dim"><strong>08</strong>Content Quality</div>
+        <div class="audit-dim"><strong>09</strong>Mobile/Responsive</div>
+        <div class="audit-dim"><strong>10</strong>Trust & Credibility</div>
+        <div class="audit-dim"><strong>11</strong>Launch Readiness</div>
+      </div>
+    </section>
+  </div>
+</section>
+
+<!-- MODULE 5: DATA FLOW — carousel-creator deep dive -->
+<section class="module" id="module-5">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">05</span>
+      <h1 class="module-title">Tracing Data Through a Skill</h1>
+      <p class="module-subtitle">Let's follow one real request end-to-end — from your words to the final SVG files on disk.</p>
+    </header>
+
+    <section class="screen animate-in">
+      <h2 class="screen-heading">The carousel-creator in action</h2>
+      <p>You say: <em>"Create a carousel about building habits."</em> Eight things happen in sequence — like a relay race where each runner hands the baton perfectly.</p>
+
+      <div class="step-cards" style="margin-top:var(--space-6)">
         <div class="step-card">
           <div class="step-num">1</div>
           <div class="step-body">
-            <strong>You make a request</strong>
-            <p>You type a command like "/codebase-to-course" or describe what you want in plain English.</p>
+            <strong>Command matched → SKILL.md loaded</strong>
+            <p>Claude Code sees /carousel-creator and loads carousel-creator/SKILL.md into its context window before doing anything else.</p>
           </div>
         </div>
         <div class="step-card">
           <div class="step-num">2</div>
           <div class="step-body">
-            <strong>Claude Code receives it</strong>
-            <p>The AI assistant reads your request and checks if any loaded skills match what you need.</p>
+            <strong>Topic analyzed → content arc planned</strong>
+            <p>The skill instructs Claude to think about the audience, create a Hook → Context → Value → CTA narrative arc, and decide on 6-8 slide titles before writing any SVG.</p>
           </div>
         </div>
         <div class="step-card">
           <div class="step-num">3</div>
           <div class="step-body">
-            <strong>Skill executes</strong>
-            <p>The skill provides step-by-step instructions that the AI follows to complete your task.</p>
+            <strong>Design palette selected</strong>
+            <p>No brand colors specified? The skill tells Claude to choose a professional palette appropriate to the topic — avoiding clichéd purple AI gradients.</p>
           </div>
         </div>
         <div class="step-card">
           <div class="step-num">4</div>
           <div class="step-body">
-            <strong>Output delivered</strong>
-            <p>The AI produces the final result — a course, demo, diagram, or whatever the skill is designed to create.</p>
+            <strong>SVG generated for each slide</strong>
+            <p>Claude writes complete SVG code for each slide at 1080×1350px with embedded fonts, proper viewBox, and all content — one file per slide.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <strong>Validation checklist run</strong>
+            <p>The skill includes a built-in QA step: check every SVG for unclosed tags, missing width/height/viewBox, invalid CSS. Self-corrects if found.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">6</div>
+          <div class="step-body">
+            <strong>Files saved to timestamped folder</strong>
+            <p>Output goes to YYYYMMDD-HHMM/slides/ — a new folder for each session, so previous carousels are never overwritten.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">7</div>
+          <div class="step-body">
+            <strong>caption.md written</strong>
+            <p>A ready-to-paste caption with hashtags is saved alongside the slides — so you have the full post package in one folder.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">8</div>
+          <div class="step-body">
+            <strong>Summary reported back</strong>
+            <p>Claude tells you what was created, where it was saved, and any design choices it made (palette, slide count, content arc used).</p>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Module 6: External Connections -->
-  <section class="module" id="module-6">
-    <div class="module-content">
-      <header class="module-header animate-in">
-        <span class="module-number">06</span>
-        <h1 class="module-title">The Outside World</h1>
-        <p class="module-subtitle">These skills don't exist in a vacuum — they connect to tools you already use.</p>
-      </header>
+    <section class="screen animate-in">
+      <h2 class="screen-heading">Why the output folder is timestamped</h2>
+      <p>The folder naming convention — <code style="background:var(--color-bg-code);color:#A6E3A1;padding:2px 6px;border-radius:4px">20250506-1430/slides/</code> — is an intentional design decision in the skill. It's not random.</p>
+
+      <div class="translation-block">
+        <div class="translation-code">
+          <span class="translation-label">CODE (from SKILL.md)</span>
+          <pre><code><span class="code-comment">## Output Structure</span>
+
+Save all files to:
+<span class="code-string">YYYYMMDD-HHMM/slides/</span>
+
+- slide-01.svg
+- slide-02.svg
+- ...
+- caption.md
+
+<span class="code-comment"># Never overwrite existing output.
+# Each run = new timestamped folder.</span></code></pre>
+        </div>
+        <div class="translation-english">
+          <span class="translation-label">PLAIN ENGLISH</span>
+          <p class="tl">Every carousel run creates its own folder named with the date and time.</p>
+          <p class="tl">This means you can run the skill 10 times in a day and keep all versions — nothing gets accidentally overwritten.</p>
+          <p class="tl">It also makes it easy to find yesterday's carousel vs today's — just look at the folder timestamp.</p>
+          <p class="tl">The comment (lines starting with #) are notes for the AI, not code to execute.</p>
+        </div>
+      </div>
+
+      <div class="callout callout-info">
+        <div class="callout-icon">🗂️</div>
+        <div class="callout-content">
+          <strong class="callout-title">The "Version Control by Timestamp" Pattern</strong>
+          <p>This is a classic technique when you can't or don't want to use proper <span class="term" data-definition="Version control (like Git) is a system that tracks every change you make to files — like an unlimited undo history for your entire project, with the ability to see who changed what and when.">version control</span> for generated assets. Each run is self-contained and can be safely deleted without touching others.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
+
+<!-- MODULE 6: SMART PATTERNS -->
+<section class="module" id="module-6">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">06</span>
+      <h1 class="module-title">The Clever Tricks</h1>
+      <p class="module-subtitle">Skilled engineers don't just solve problems — they solve them in ways that prevent future problems. Here's what's clever about how these skills are built.</p>
+    </header>
+
+    <section class="screen animate-in">
+      <h2 class="screen-heading">Self-healing output</h2>
+      <p>The carousel-creator doesn't just generate SVG and hope for the best. It has a <span class="term" data-definition="A validation step is a check that runs after an output is generated to verify it meets certain requirements. Like a spell-checker that runs automatically — it finds errors so you don't have to.">validation step</span> baked in:</p>
 
       <div class="pattern-cards stagger-children">
-        <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-1)">
-          <div class="pattern-icon" style="background: var(--color-actor-1)">🐙</div>
-          <h4 class="pattern-title">GitHub</h4>
-          <p class="pattern-desc">Skills can clone repos, read files, and push changes. Your AI assistant has full <span class="term" data-definition="Git is a version control system — it tracks every change you make to code, so you can go back in time if something breaks. Think of it as an unlimited undo button for your projects.">Git</span> superpowers.</p>
+        <div class="pattern-card animate-in" style="border-top:3px solid var(--color-success)">
+          <div class="pattern-icon" style="background:var(--color-success)">✅</div>
+          <h4 class="pattern-title">Structural checks</h4>
+          <p class="pattern-desc">Scans every SVG for unclosed tags, missing viewBox attributes, and invalid nesting — common AI mistakes.</p>
         </div>
-        <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-2)">
-          <div class="pattern-icon" style="background: var(--color-actor-2)">📁</div>
-          <h4 class="pattern-title">Local Files</h4>
-          <p class="pattern-desc">Read and write files on your computer. The skills analyze your actual project files to understand what you're building.</p>
+        <div class="pattern-card animate-in" style="border-top:3px solid var(--color-info)">
+          <div class="pattern-icon" style="background:var(--color-info)">🔄</div>
+          <h4 class="pattern-title">Auto-correction</h4>
+          <p class="pattern-desc">If a check fails, the skill fixes the specific issue and re-saves. No broken files reach your output folder.</p>
         </div>
-        <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-3)">
-          <div class="pattern-icon" style="background: var(--color-actor-3)">🌐</div>
-          <h4 class="pattern-title">Web Fetch</h4>
-          <p class="pattern-desc">Fetch content from any URL. Great for reading documentation, fetching APIs, or grabbing data from the internet.</p>
+        <div class="pattern-card animate-in" style="border-top:3px solid var(--color-actor-4)">
+          <div class="pattern-icon" style="background:var(--color-actor-4)">⚡</div>
+          <h4 class="pattern-title">Immediate recovery</h4>
+          <p class="pattern-desc">Recovery happens within the same generation pass — you never see the broken intermediate state.</p>
         </div>
-        <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-4)">
-          <div class="pattern-icon" style="background: var(--color-actor-4)">🎨</div>
-          <h4 class="pattern-title">Excalidraw</h4>
-          <p class="pattern-desc">Generate diagram files that open directly in Excalidraw — the hand-drawn style diagram tool loved by developers.</p>
+      </div>
+    </section>
+
+    <section class="screen animate-in">
+      <h2 class="screen-heading">Reference file architecture</h2>
+      <p>Complex skills like codebase-to-course don't put all instructions in one giant file. They use a <code style="background:var(--color-bg-code);color:#A6E3A1;padding:2px 6px;border-radius:4px">references/</code> folder — like a binder with tabbed sections:</p>
+
+      <div class="file-tree">
+        <div class="ft-root">
+          <div class="ft-folder">
+            <span class="ft-name">codebase-to-course/</span>
+            <div class="ft-children">
+              <div class="ft-file"><span class="ft-name">SKILL.md</span><span class="ft-desc">Main instructions — tells Claude to read reference files at the right phase</span></div>
+              <div class="ft-folder">
+                <span class="ft-name">references/</span>
+                <div class="ft-children">
+                  <div class="ft-file"><span class="ft-name">design-system.md</span><span class="ft-desc">All CSS tokens, typography, colors — read before writing any CSS</span></div>
+                  <div class="ft-file"><span class="ft-name">interactive-elements.md</span><span class="ft-desc">Chat animations, flow diagrams, code blocks — read before building interactives</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="callout callout-accent animate-in">
-        <div class="callout-icon">🔗</div>
+      <div class="callout callout-accent" style="margin-top:var(--space-6)">
+        <div class="callout-icon">💡</div>
         <div class="callout-content">
-          <strong class="callout-title">Why This Matters</strong>
-          <p>Skills don't just think — they act. They can read your files, call <span class="term" data-definition="An API (Application Programming Interface) is a connection between two software systems. It's like a waiter in a restaurant: you (one system) tell the waiter what you want, the waiter relays it to the kitchen (another system), and brings back what you asked for.">APIs</span>, and create files. That's what makes them powerful: they're not just advisors, they're do-ers.</p>
+          <strong class="callout-title">Just-in-Time Loading</strong>
+          <p>The SKILL.md tells Claude: "Read design-system.md before writing CSS, read interactive-elements.md before building animations." This is <span class="term" data-definition="Just-in-time loading means loading resources only when they're needed, not all at once upfront. Like a chef who doesn't prep every ingredient the moment they arrive — they prep what's needed for the dish they're currently cooking.">just-in-time loading</span> — it keeps Claude's focus sharp at each phase instead of trying to hold everything in mind simultaneously.</p>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Module 7: The Big Picture -->
-  <section class="module" id="module-7">
-    <div class="module-content">
-      <header class="module-header animate-in">
-        <span class="module-number">07</span>
-        <h1 class="module-title">The Big Picture</h1>
-        <p class="module-subtitle">Why this approach works — and why it matters for you.</p>
-      </header>
+    <section class="screen animate-in">
+      <h2 class="screen-heading">The 4-phase build pattern</h2>
+      <p>The codebase-to-demo and codebase-to-course skills both use the same disciplined 4-phase approach — like a construction project that follows a strict order:</p>
 
-      <div class="animate-in">
-        <p>Think of skills as <span class="term" data-definition="A recipe is a set of precise instructions that always produce the same result. Follow the steps, and you get the dish — every time.">recipes</span> for your AI assistant. When you need something specific done repeatedly, you could:</p>
-        
-        <div class="step-cards">
-          <div class="step-card">
-            <div class="step-num" style="background: var(--color-error);">✗</div>
-            <div class="step-body">
-              <strong>Explain everything every time</strong>
-              <p>Waste time re-explaining the same process to your AI. Tedious and error-prone.</p>
-            </div>
-          </div>
-          <div class="step-card">
-            <div class="step-num" style="background: var(--color-success);">✓</div>
-            <div class="step-body">
-              <strong>Use a skill</strong>
-              <p>One command, consistent results. The skill handles the complexity so you don't have to.</p>
-            </div>
-          </div>
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="flow-step-num">1</div>
+          <p>Deep-read the codebase</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-num">2</div>
+          <p>Design the structure</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-num">3</div>
+          <p>Build one section at a time</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-num">4</div>
+          <p>Polish and open in browser</p>
         </div>
       </div>
 
-      <div class="callout callout-info animate-in">
+      <p style="margin-top:var(--space-4)">The skill explicitly tells Claude: <em>"Don't try to write all 8 modules in one pass — quality drops. Build Module 1, verify it works, then Module 2."</em> This prevents the <span class="term" data-definition="Quality degradation at scale is when AI output quality decreases as the task gets longer. The first section is great, the last section is rushed. By forcing one-at-a-time building, skills prevent this.">quality degradation</span> that happens when AI tries to do too much at once.</p>
+    </section>
+  </div>
+</section>
+
+<!-- MODULE 7: BUILD YOUR OWN + BIG PICTURE -->
+<section class="module" id="module-7">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">07</span>
+      <h1 class="module-title">Build Your Own Skill</h1>
+      <p class="module-subtitle">The skill-builder skill is a meta-skill — it uses the same framework to help you create new skills for any workflow you repeat.</p>
+    </header>
+
+    <section class="screen animate-in">
+      <h2 class="screen-heading">The 6-round Discovery Interview</h2>
+      <p>When you invoke <code style="background:var(--color-bg-code);color:#CBA6F7;padding:2px 6px;border-radius:4px">/skill-builder</code>, Claude Code doesn't immediately ask you to describe your skill. It runs a structured interview — like a consultant onboarding a new client:</p>
+
+      <div class="step-cards">
+        <div class="step-card">
+          <div class="step-num">R1</div>
+          <div class="step-body">
+            <strong>Trigger &amp; Context</strong>
+            <p>What makes you reach for this skill? What do you have as input when you start?</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">R2</div>
+          <div class="step-body">
+            <strong>Output &amp; Success</strong>
+            <p>What does "done" look like? What file, output, or result do you need?</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">R3</div>
+          <div class="step-body">
+            <strong>The Process</strong>
+            <p>Walk through the steps you currently follow manually — in order.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">R4</div>
+          <div class="step-body">
+            <strong>Quality Standards</strong>
+            <p>What makes a great output vs. a mediocre one? What are your non-negotiables?</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">R5</div>
+          <div class="step-body">
+            <strong>Edge Cases</strong>
+            <p>What goes wrong? What inputs are tricky? What should the skill do if something fails?</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">R6</div>
+          <div class="step-body">
+            <strong>Examples &amp; References</strong>
+            <p>Do you have examples of great outputs? Any reference files the skill should use?</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen animate-in">
+      <h2 class="screen-heading">What you get</h2>
+      <p>After the 6 rounds, the skill-builder produces a complete, production-ready SKILL.md file and installs it in <code style="background:var(--color-bg-code);color:#A6E3A1;padding:2px 6px;border-radius:4px">.claude/skills/</code> automatically.</p>
+
+      <div class="pattern-cards stagger-children">
+        <div class="pattern-card animate-in">
+          <div class="pattern-icon" style="background:var(--color-actor-2)">📋</div>
+          <h4 class="pattern-title">Structured SKILL.md</h4>
+          <p class="pattern-desc">Following the same proven format used by all 7 skills in this repo — <span class="term" data-definition="YAML frontmatter is a block of metadata at the top of a file, between two --- lines. It's read by tools (not humans) to get structured info like name and description. Common in blog posts, documentation, and skill files.">YAML frontmatter</span>, clear sections, explicit instructions.</p>
+        </div>
+        <div class="pattern-card animate-in">
+          <div class="pattern-icon" style="background:var(--color-actor-5)">⚡</div>
+          <h4 class="pattern-title">Ready Immediately</h4>
+          <p class="pattern-desc">The skill is installed and usable the moment it's generated. No extra setup, no config file editing.</p>
+        </div>
+        <div class="pattern-card animate-in">
+          <div class="pattern-icon" style="background:var(--color-actor-3)">♻️</div>
+          <h4 class="pattern-title">Reusable Forever</h4>
+          <p class="pattern-desc">Once built, your skill works identically every time — 10 or 1,000 invocations later. The process is permanently captured.</p>
+        </div>
+      </div>
+
+      <div class="callout callout-success" style="margin-top:var(--space-6)">
+        <div class="callout-icon">🕐</div>
+        <div class="callout-content">
+          <strong class="callout-title">Time to Build</strong>
+          <p>A typical new skill takes 20–30 minutes from idea to working implementation. The interview is thorough but fast — and the time you invest pays back on every future use of the skill.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen animate-in">
+      <h2 class="screen-heading">The full picture</h2>
+      <p>Step back and see the whole system. Claude Code sits at the center — it's the engine that reads skills and executes them. The 7 skills are permanent modules you can invoke anytime:</p>
+
+      <div class="score-grid" style="margin-top:var(--space-6)">
+        <div class="score-card">
+          <div class="score-num">7</div>
+          <div class="score-label">Production-ready skills</div>
+        </div>
+        <div class="score-card">
+          <div class="score-num">1</div>
+          <div class="score-label">Install (git clone)</div>
+        </div>
+        <div class="score-card">
+          <div class="score-num">0</div>
+          <div class="score-label">Extra API costs</div>
+        </div>
+        <div class="score-card">
+          <div class="score-num">∞</div>
+          <div class="score-label">Times you can use them</div>
+        </div>
+      </div>
+
+      <div class="callout callout-accent" style="margin-top:var(--space-8)">
         <div class="callout-icon">🚀</div>
         <div class="callout-content">
-          <strong class="callout-title">Your Next Step</strong>
-          <p>Now that you understand how skills work, try using one! Install Claude Code, add these skills, and type "/codebase-to-course" on any folder of code. Watch the magic happen.</p>
+          <strong class="callout-title">Your next move</strong>
+          <p>Pick one skill and use it on a real task today. The best way to understand this system is to experience it — not just read about it. Try <code style="background:rgba(0,0,0,.1);padding:1px 4px;border-radius:3px">/carousel-creator</code> with a topic you care about, or point <code style="background:rgba(0,0,0,.1);padding:1px 4px;border-radius:3px">/ui-ux-auditor</code> at something you've been wanting to audit.</p>
         </div>
       </div>
+    </section>
+  </div>
+</section>
 
-      <div class="hero animate-in" style="margin-top: var(--space-12);">
-        <h1>Ready to <span>Learn More</span>?</h1>
-        <p>The best way to understand skills is to use them. Pick a skill, try it out, and see how much faster your AI workflow becomes.</p>
-      </div>
-    </div>
-  </section>
+<script>
+(function() {
+  'use strict';
 
-  <script>
-    (function() {
-      // Progress bar
-      const progressBar = document.getElementById('progress-bar');
-      const navDots = document.querySelectorAll('.nav-dot');
-      
-      function updateProgress() {
-        const scrollTop = window.scrollY;
-        const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const progress = (scrollTop / scrollHeight) * 100;
-        progressBar.style.width = progress + '%';
-        
-        // Update active dot
-        let current = 0;
-        const modules = document.querySelectorAll('.module');
-        modules.forEach((module, i) => {
-          const rect = module.getBoundingClientRect();
-          if (rect.top <= window.innerHeight / 2) {
-            current = i;
-          }
-        });
-        navDots.forEach((dot, i) => {
-          dot.classList.toggle('active', i === current);
-        });
-      }
-      
-      window.addEventListener('scroll', () => {
-        requestAnimationFrame(updateProgress);
-      }, { passive: true });
-      
-      // Nav dot clicks
-      navDots.forEach(dot => {
-        dot.addEventListener('click', () => {
-          const target = document.getElementById('module-' + (parseInt(dot.dataset.target.split('-')[1]) + 1));
-          if (target) {
-            target.scrollIntoView({ behavior: 'smooth' });
-          }
-        });
-      });
-      
-      // Animation observer
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { rootMargin: '0px 0px -10% 0px', threshold: 0.1 });
-      
-      document.querySelectorAll('.animate-in').forEach(el => observer.observe(el));
-      
-      // Stagger children
-      document.querySelectorAll('.stagger-children').forEach(parent => {
-        Array.from(parent.children).forEach((child, i) => {
-          child.style.setProperty('--stagger-index', i);
-        });
-      });
-      
-      // Chat animation
-      let chatIndex = 0;
-      const chatMessages = document.querySelectorAll('#chat-messages .chat-message');
-      const chatActors = {
-        'user': { initials: 'You', color: 'var(--color-actor-4)' },
-        'claude': { initials: 'AI', color: 'var(--color-actor-1)' },
-        'skill': { initials: '📚', color: 'var(--color-actor-2)' },
-        'analyzer': { initials: '🔍', color: 'var(--color-actor-3)' },
-        'generator': { initials: '⚡', color: 'var(--color-actor-5)' }
-      };
-      
-      window.playChatNext = function() {
-        if (chatIndex >= chatMessages.length) return;
-        const msg = chatMessages[chatIndex];
-        const sender = msg.dataset.sender;
-        
-        const typing = document.getElementById('chat-typing');
-        const avatar = document.getElementById('typing-avatar');
-        avatar.textContent = chatActors[sender].initials;
-        avatar.style.background = chatActors[sender].color;
-        typing.style.display = 'flex';
-        
-        setTimeout(() => {
-          typing.style.display = 'none';
-          msg.style.display = 'flex';
-          msg.style.animation = 'fadeSlideUp 0.3s var(--ease-out)';
-          chatIndex++;
-          document.getElementById('chat-progress').textContent = chatIndex + ' / ' + chatMessages.length + ' messages';
-        }, 600);
-      };
-      
-      window.playChatAll = function() {
-        chatIndex = 0;
-        chatMessages.forEach(m => m.style.display = 'none');
-        const interval = setInterval(() => {
-          if (chatIndex >= chatMessages.length) { clearInterval(interval); return; }
-          playChatNext();
-        }, 1200);
-      };
-      
-      window.resetChat = function() {
-        chatIndex = 0;
-        chatMessages.forEach(m => m.style.display = 'none');
-        document.getElementById('chat-progress').textContent = '1 / ' + chatMessages.length + ' messages';
-      };
-      
-      // Flow animation
-      const flowSteps = [
-        { highlight: 'user', label: 'You make a request: "/codebase-to-course"' },
-        { highlight: 'cli', label: 'Claude Code receives your request' },
-        { highlight: 'skill', label: 'The skill loads with its instructions' },
-        { highlight: 'out', label: 'HTML course is generated and saved' }
-      ];
-      let flowIndex = 0;
-      
-      window.flowNext = function() {
-        if (flowIndex >= flowSteps.length) return;
-        const step = flowSteps[flowIndex];
-        
-        document.querySelectorAll('.flow-actor').forEach(a => a.classList.remove('active'));
-        document.getElementById('flow-actor-' + step.highlight).classList.add('active');
-        
-        document.getElementById('flow-label').textContent = step.label;
-        flowIndex++;
-        document.getElementById('flow-progress').textContent = 'Step ' + flowIndex + ' / ' + flowSteps.length;
-      };
-      
-      window.flowReset = function() {
-        flowIndex = 0;
-        document.querySelectorAll('.flow-actor').forEach(a => a.classList.remove('active'));
-        document.getElementById('flow-label').textContent = 'Click "Next Step" to trace a request';
-        document.getElementById('flow-progress').textContent = 'Step 0 / ' + flowSteps.length;
-      };
-      
-      // Tooltips
-      let activeTooltip = null;
-      
-      function positionTooltip(term, tip) {
-        const rect = term.getBoundingClientRect();
-        const tipWidth = 280;
-        let left = rect.left + rect.width / 2 - tipWidth / 2;
-        left = Math.max(8, Math.min(left, window.innerWidth - tipWidth - 8));
-        
-        document.body.appendChild(tip);
-        const tipHeight = tip.offsetHeight;
-        
-        if (rect.top - tipHeight - 8 < 0) {
-          tip.style.top = (rect.bottom + 8) + 'px';
-          tip.style.left = left + 'px';
-          tip.classList.add('flip');
-        } else {
-          tip.style.top = (rect.top - tipHeight - 8) + 'px';
-          tip.style.left = left + 'px';
-          tip.classList.remove('flip');
-        }
-      }
-      
-      document.querySelectorAll('.term').forEach(term => {
-        const tip = document.createElement('span');
-        tip.className = 'term-tooltip';
-        tip.textContent = term.dataset.definition;
-        
-        term.addEventListener('mouseenter', () => {
-          if (activeTooltip && activeTooltip !== tip) {
-            activeTooltip.classList.remove('visible');
-            activeTooltip.remove();
-          }
-          positionTooltip(term, tip);
-          requestAnimationFrame(() => tip.classList.add('visible'));
-          activeTooltip = tip;
-        });
-        
-        term.addEventListener('mouseleave', () => {
-          tip.classList.remove('visible');
-          setTimeout(() => { if (!tip.classList.contains('visible')) tip.remove(); }, 150);
-          activeTooltip = null;
-        });
-        
-        term.addEventListener('click', (e) => {
-          e.stopPropagation();
-          if (activeTooltip && activeTooltip !== tip) {
-            activeTooltip.classList.remove('visible');
-            activeTooltip.remove();
-          }
-          if (tip.classList.contains('visible')) {
-            tip.classList.remove('visible');
-            tip.remove();
-            activeTooltip = null;
-          } else {
-            positionTooltip(term, tip);
-            requestAnimationFrame(() => tip.classList.add('visible'));
-            activeTooltip = tip;
-          }
-        });
-      });
-      
-      document.addEventListener('click', () => {
-        if (activeTooltip) {
-          activeTooltip.classList.remove('visible');
-          activeTooltip.remove();
-          activeTooltip = null;
-        }
-      });
-      
-      // Keyboard navigation
-      document.addEventListener('keydown', (e) => {
-        if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
-        
-        const modules = Array.from(document.querySelectorAll('.module'));
-        const currentIndex = modules.findIndex(m => {
-          const rect = m.getBoundingClientRect();
-          return rect.top >= -100 && rect.top <= 200;
-        });
-        
-        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
-          e.preventDefault();
-          const nextIndex = Math.min(currentIndex + 1, modules.length - 1);
-          modules[nextIndex].scrollIntoView({ behavior: 'smooth' });
-        }
-        if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
-          e.preventDefault();
-          const prevIndex = Math.max(currentIndex - 1, 0);
-          modules[prevIndex].scrollIntoView({ behavior: 'smooth' });
-        }
-      });
-    })();
-  </script>
+  // PROGRESS BAR
+  const progressBar = document.getElementById('progress-bar');
+  window.addEventListener('scroll', () => {
+    requestAnimationFrame(() => {
+      const pct = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+      progressBar.style.width = pct + '%';
+      updateNav();
+    });
+  }, { passive: true });
+
+  // NAV DOTS
+  const modules = document.querySelectorAll('.module, .hero-module');
+  const dots = document.querySelectorAll('.nav-dot');
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      const el = document.getElementById(dot.dataset.target);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+  function updateNav() {
+    let current = '';
+    modules.forEach(m => { if (window.scrollY >= m.offsetTop - 100) current = m.id; });
+    dots.forEach(d => d.classList.toggle('active', d.dataset.target === current));
+  }
+
+  // KEYBOARD NAV
+  document.addEventListener('keydown', e => {
+    if (['INPUT','TEXTAREA'].includes(e.target.tagName)) return;
+    const mods = [...modules];
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+      const idx = mods.findIndex(m => m.getBoundingClientRect().top > 50);
+      if (idx >= 0) mods[idx].scrollIntoView({ behavior: 'smooth' });
+      e.preventDefault();
+    }
+    if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+      const idx = [...mods].reverse().findIndex(m => m.getBoundingClientRect().bottom < window.innerHeight - 50);
+      if (idx >= 0) [...mods].reverse()[idx].scrollIntoView({ behavior: 'smooth' });
+      e.preventDefault();
+    }
+  });
+
+  // INTERSECTION OBSERVER
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+  document.querySelectorAll('.animate-in').forEach(el => observer.observe(el));
+
+  // STAGGER
+  document.querySelectorAll('.stagger-children').forEach(parent => {
+    Array.from(parent.children).forEach((child, i) => child.style.setProperty('--stagger-index', i));
+  });
+
+  // GLOSSARY TOOLTIPS
+  let activeTooltip = null;
+  function positionTooltip(term, tip) {
+    const rect = term.getBoundingClientRect();
+    const tipWidth = 300;
+    let left = Math.max(8, Math.min(rect.left + rect.width / 2 - tipWidth / 2, window.innerWidth - tipWidth - 8));
+    document.body.appendChild(tip);
+    const tipH = tip.offsetHeight;
+    tip.style.left = left + 'px';
+    if (rect.top - tipH - 8 < 0) {
+      tip.style.top = (rect.bottom + 8) + 'px'; tip.classList.add('flip');
+    } else {
+      tip.style.top = (rect.top - tipH - 8) + 'px'; tip.classList.remove('flip');
+    }
+  }
+  document.querySelectorAll('.term').forEach(term => {
+    const tip = document.createElement('span');
+    tip.className = 'term-tooltip'; tip.textContent = term.dataset.definition;
+    term.addEventListener('mouseenter', () => {
+      if (activeTooltip && activeTooltip !== tip) { activeTooltip.classList.remove('visible'); activeTooltip.remove(); }
+      positionTooltip(term, tip); requestAnimationFrame(() => tip.classList.add('visible')); activeTooltip = tip;
+    });
+    term.addEventListener('mouseleave', () => {
+      tip.classList.remove('visible');
+      setTimeout(() => { if (!tip.classList.contains('visible')) tip.remove(); }, 150);
+      activeTooltip = null;
+    });
+    term.addEventListener('click', e => {
+      e.stopPropagation();
+      if (activeTooltip && activeTooltip !== tip) { activeTooltip.classList.remove('visible'); activeTooltip.remove(); }
+      if (tip.classList.contains('visible')) { tip.classList.remove('visible'); tip.remove(); activeTooltip = null; }
+      else { positionTooltip(term, tip); requestAnimationFrame(() => tip.classList.add('visible')); activeTooltip = tip; }
+    });
+  });
+  document.addEventListener('click', () => {
+    if (activeTooltip) { activeTooltip.classList.remove('visible'); activeTooltip.remove(); activeTooltip = null; }
+  });
+
+  // MODULE 2: CHAT ANIMATION
+  const chatMsgs = document.querySelectorAll('#chat-m2 .chat-message');
+  const chatTyping = document.getElementById('chat-typing-m2');
+  const chatTypingAvatar = document.getElementById('typing-avatar-m2');
+  const chatProg = document.getElementById('chat-prog-m2');
+  let chatIdx = 0, chatInterval = null;
+  const chatActors = {
+    you: { init: 'You', color: 'var(--color-actor-4)' },
+    carousel: { init: '🎨', color: 'var(--color-actor-1)' },
+    excalidraw: { init: '📐', color: 'var(--color-actor-5)' },
+    auditor: { init: '🔍', color: 'var(--color-accent)' }
+  };
+  function chatM2ShowNext() {
+    if (chatIdx >= chatMsgs.length) return;
+    const msg = chatMsgs[chatIdx];
+    const sender = msg.dataset.sender;
+    const actor = chatActors[sender] || { init: '?', color: 'gray' };
+    chatTypingAvatar.textContent = actor.init;
+    chatTypingAvatar.style.background = actor.color;
+    chatTyping.style.display = 'flex';
+    setTimeout(() => {
+      chatTyping.style.display = 'none';
+      msg.style.display = 'flex';
+      chatIdx++;
+      chatProg.textContent = chatIdx + ' / ' + chatMsgs.length + ' messages';
+    }, 700);
+  }
+  window.chatM2Next = chatM2ShowNext;
+  window.chatM2PlayAll = function() {
+    chatM2Reset();
+    chatInterval = setInterval(() => {
+      if (chatIdx >= chatMsgs.length) { clearInterval(chatInterval); return; }
+      chatM2ShowNext();
+    }, 1400);
+  };
+  window.chatM2Reset = function() {
+    clearInterval(chatInterval); chatIdx = 0;
+    chatMsgs.forEach(m => m.style.display = 'none');
+    chatTyping.style.display = 'none';
+    chatProg.textContent = '0 / ' + chatMsgs.length + ' messages';
+  };
+
+  // MODULE 3: FLOW ANIMATION
+  const flowActors = { you: 'fa-you', claude: 'fa-claude', skill: 'fa-skill', output: 'fa-output' };
+  const flowSteps3 = [
+    { actor: 'you', label: 'You type /carousel-creator make a carousel about AI productivity' },
+    { actor: 'claude', label: 'Claude Code matches the slash command and loads carousel-creator/SKILL.md into its context' },
+    { actor: 'skill', label: 'Claude reads the full SKILL.md: format specs, content arc, design rules, validation checklist' },
+    { actor: 'claude', label: 'Claude plans the content arc (Hook → Value → CTA) and chooses a color palette' },
+    { actor: 'claude', label: 'Claude generates 8 SVG slides one by one, running the validation checklist on each' },
+    { actor: 'output', label: '8 SVG files + caption.md saved to 20250506-1430/slides/ — done in one pass.' }
+  ];
+  let flowIdx3 = 0, flowInterval3 = null;
+  function flowHighlight(actorKey) {
+    Object.values(flowActors).forEach(id => document.getElementById(id)?.classList.remove('active'));
+    const el = document.getElementById(flowActors[actorKey]);
+    if (el) el.classList.add('active');
+  }
+  window.flowM3Next = function() {
+    if (flowIdx3 >= flowSteps3.length) return;
+    const step = flowSteps3[flowIdx3];
+    flowHighlight(step.actor);
+    document.getElementById('flow-label-m3').textContent = step.label;
+    document.getElementById('flow-prog-m3').textContent = 'Step ' + (flowIdx3 + 1) + ' / ' + flowSteps3.length;
+    flowIdx3++;
+  };
+  window.flowM3PlayAll = function() {
+    flowM3Reset();
+    flowInterval3 = setInterval(() => {
+      if (flowIdx3 >= flowSteps3.length) { clearInterval(flowInterval3); return; }
+      flowM3Next();
+    }, 1600);
+  };
+  window.flowM3Reset = function() {
+    clearInterval(flowInterval3); flowIdx3 = 0;
+    Object.values(flowActors).forEach(id => document.getElementById(id)?.classList.remove('active'));
+    document.getElementById('flow-label-m3').textContent = 'Click "Next Step" to begin the journey';
+    document.getElementById('flow-prog-m3').textContent = 'Step 0 / ' + flowSteps3.length;
+  };
+
+})();
+</script>
 </body>
 </html>
