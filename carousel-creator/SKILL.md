@@ -112,13 +112,9 @@ Instagram users scan quickly. Optimize every slide for fast reading:
 - Short strong headlines
 - Concise supporting text
 - Readable body copy
+- Smartly use the slide real estate without keep too much of blank space
 - Clean bullet structures
 - Visual hierarchy and highlighted key words
-
-**Avoid:**
-- Giant blocks of text
-- Paragraph-heavy slides
-- Overcrowded layouts
 
 ---
 
