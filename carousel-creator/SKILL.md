@@ -164,11 +164,11 @@ Every slide must be fully finished SVG code.
 
 ## File Saving
 
-Save all output to a **date-wise folder** in the current working directory.
+Save all output to a **date-wise folder** in the current working directory. You MUST replace `YYYYMMDD-HHMMSS` with the actual current date and time.
 
 **Folder structure:**
 ```
-YYYYMMDD-HHMM/
+YYYYMMDD-HHMMSS/
 ├── slides/
 │   ├── {topic-slug}-slide-1.svg
 │   ├── {topic-slug}-slide-2.svg
@@ -260,5 +260,5 @@ Always optimize for:
 - Mobile readability and fast scanning
 - Consistent branding across all slides
 - Polished SVG output only — no HTML wrappers
-- **Save all SVG files to `YYYYMMDD-HHMM/slides/`**
-- **Generate caption with hashtags and save to `YYYYMMDD-HHMM/caption.md`**
+- **Save all SVG files to `YYYYMMDD-HHMMSS/slides/`** (using actual current date and time)
+- **Generate caption with hashtags and save to `YYYYMMDD-HHMMSS/caption.md`**
